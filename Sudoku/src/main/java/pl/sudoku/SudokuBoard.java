@@ -4,6 +4,7 @@ import java.util.Vector;
 
 public class SudokuBoard {
     private final int[][] board = new int [9][9];
+    private SudokuSolver solver;
 
     public SudokuBoard(int[][] sudokuBoard) {
         for (int i = 0; i < 9; i++) {
@@ -12,10 +13,10 @@ public class SudokuBoard {
     }
 
     public SudokuBoard() {
+        solver = new BacktrackingSudokuSolver();
     }
 
     public void solveGame() {
-        SudokuSolver solver = new BacktrackingSudokuSolver();
         solver.solve(this);
     }
 
