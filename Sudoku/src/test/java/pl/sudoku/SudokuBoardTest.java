@@ -39,17 +39,31 @@ public class SudokuBoardTest {
 
     @Test
     public void valueGetterTest() {
-        assertEquals(0, exampleSudokuBoard_1.getValue(-9,-9));
-        assertEquals(0, exampleSudokuBoard_1.getValue(0,-9));
-        assertEquals(0, exampleSudokuBoard_1.getValue(-9,0));
-        assertEquals(0, exampleSudokuBoard_1.getValue(0,9));
-        assertEquals(0, exampleSudokuBoard_1.getValue(9,0));
-        assertEquals(0, exampleSudokuBoard_1.getValue(9,9));
-        assertEquals(5, exampleSudokuBoard_1.getValue(4,4));
-        assertEquals(5, exampleSudokuBoard_1.getValue(0,0));
-        assertEquals(2, exampleSudokuBoard_1.getValue(0,8));
-        assertEquals(3, exampleSudokuBoard_1.getValue(8,0));
-        assertEquals(9, exampleSudokuBoard_1.getValue(8,8));
+        assertEquals(0, exampleSudokuBoard_1.get(-9,-9));
+        assertEquals(0, exampleSudokuBoard_1.get(0,-9));
+        assertEquals(0, exampleSudokuBoard_1.get(-9,0));
+        assertEquals(0, exampleSudokuBoard_1.get(0,9));
+        assertEquals(0, exampleSudokuBoard_1.get(9,0));
+        assertEquals(0, exampleSudokuBoard_1.get(9,9));
+        assertEquals(5, exampleSudokuBoard_1.get(4,4));
+        assertEquals(5, exampleSudokuBoard_1.get(0,0));
+        assertEquals(2, exampleSudokuBoard_1.get(0,8));
+        assertEquals(3, exampleSudokuBoard_1.get(8,0));
+        assertEquals(9, exampleSudokuBoard_1.get(8,8));
+    }
+    @Test
+    public void valueSetterTest()
+    {
+        exampleSudokuBoard_1.set(0,0,9);
+        assertEquals(9,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,0);
+        assertEquals(0,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,5);
+        assertEquals(5,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,-5);
+        assertEquals(5,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,10);
+        assertEquals(5,exampleSudokuBoard_1.get(0,0));
     }
 
     @Test
@@ -84,14 +98,14 @@ public class SudokuBoardTest {
 
     @Test
     public void sudokuBoardUniquenessTest() {
-        exampleSudokuBoard_2.fillBoard();
-        exampleSudokuBoard_3.fillBoard();
+        exampleSudokuBoard_2.solveGame();
+        exampleSudokuBoard_3.solveGame();
 
         boolean areSudokusIdentical = true;
 
         for (int i = 0; i < 9; i ++) {
             for (int j = 0; j < 9; j++) {
-                if (exampleSudokuBoard_1.getValue(i, j) != exampleSudokuBoard_2.getValue(i, j)) {
+                if (exampleSudokuBoard_1.get(i, j) != exampleSudokuBoard_2.get(i, j)) {
                     areSudokusIdentical = false;
                     break;
                 }
@@ -102,10 +116,10 @@ public class SudokuBoardTest {
 
     @Test
     public void checkIfSudokuBoardCorrectTest() {
-        exampleSudokuBoard_2.fillBoard();
+        exampleSudokuBoard_2.solveGame();
         for (int i = 0; i < 9; i++) {
             assertTrue(exampleSudokuBoard_2.checkValuesInALine(i));
-        }
+         }
 
         for (int i = 0; i < 9; i++) {
             assertTrue(exampleSudokuBoard_2.checkValuesInAColumn(i));
@@ -116,6 +130,7 @@ public class SudokuBoardTest {
                 assertTrue(exampleSudokuBoard_2.checkValuesInAMatrix(i, z));
             }
         }
+
     }
 
     @Test
@@ -124,7 +139,7 @@ public class SudokuBoardTest {
         String sudokuOutput_2 = exampleSudokuBoard_1.showSudokuBoard();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                sudokuOutput_1 += exampleSudokuBoard_1.getValue(i, j) + " ";
+                sudokuOutput_1 += exampleSudokuBoard_1.get(i, j) + " ";
             }
             sudokuOutput_1 += '\n';
         }
