@@ -53,6 +53,20 @@ public class SudokuBoardTest {
     }
 
     @Test
+    public void valueSetterTest() {
+        exampleSudokuBoard_4.set(0,0, -1);
+        assertEquals(5, exampleSudokuBoard_4.get(0,0));
+        exampleSudokuBoard_4.set(0,0, 10);
+        assertEquals(5, exampleSudokuBoard_4.get(0,0));
+        exampleSudokuBoard_4.set(0, 0, 0);
+        assertEquals(0, exampleSudokuBoard_4.get(0, 0));
+        exampleSudokuBoard_4.set(0, 0, 9);
+        assertEquals(9, exampleSudokuBoard_4.get(0, 0));
+        exampleSudokuBoard_4.set(0, 0, 5);
+        assertEquals(5, exampleSudokuBoard_4.get(0, 0));
+    }
+
+    @Test
     public void valuesCheckerInALineTest() {
         assertTrue(exampleSudokuBoard_1.checkValuesInALine(1));
     }

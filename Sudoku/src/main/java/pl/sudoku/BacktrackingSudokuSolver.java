@@ -1,6 +1,7 @@
 package pl.sudoku;
 
 public class BacktrackingSudokuSolver implements SudokuSolver {
+    @Override
     public void solve(SudokuBoard board) {
 
         for (int i = 0; i < 3; i++) {
