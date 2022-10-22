@@ -67,36 +67,6 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void valuesCheckerInALineTest() {
-        assertTrue(exampleSudokuBoard_1.checkValuesInALine(1));
-    }
-
-    @Test
-    public void valuesCheckerInAColumnTest() {
-        assertTrue(exampleSudokuBoard_1.checkValuesInAColumn(1));
-    }
-
-    @Test
-    public void valuesCheckerInAMatrixTest() {
-        assertTrue(exampleSudokuBoard_1.checkValuesInAMatrix(4,4));
-    }
-
-    @Test
-    public void valuesCheckerInALineFailTest() {
-        assertFalse(exampleSudokuBoard_4.checkValuesInALine(0));
-    }
-
-    @Test
-    public void valuesCheckerInAColumnFailTest() {
-        assertFalse(exampleSudokuBoard_4.checkValuesInAColumn(0));
-    }
-
-    @Test
-    public void valuesCheckerInAMatrixFailTest() {
-        assertFalse(exampleSudokuBoard_4.checkValuesInAMatrix(0,0));
-    }
-
-    @Test
     public void sudokuBoardUniquenessTest() {
         exampleSudokuBoard_2.solveGame();
         exampleSudokuBoard_3.solveGame();
@@ -118,19 +88,12 @@ public class SudokuBoardTest {
     @Test
     public void checkIfSudokuBoardCorrectTest() {
         exampleSudokuBoard_2.solveGame();
-        for (int i = 0; i < 9; i++) {
-            assertTrue(exampleSudokuBoard_2.checkValuesInALine(i));
-        }
+        assertTrue(exampleSudokuBoard_2.checkBoard());
+    }
 
-        for (int i = 0; i < 9; i++) {
-            assertTrue(exampleSudokuBoard_2.checkValuesInAColumn(i));
-        }
-
-        for (int i = 0; i < 3; i++) {
-            for (int z = 0; z < 3; z++) {
-                assertTrue(exampleSudokuBoard_2.checkValuesInAMatrix(i, z));
-            }
-        }
+    @Test
+    public void checkIfSudokuBoardIsNotCorrectTest(){
+        assertFalse(exampleSudokuBoard_4.checkBoard());
     }
 
     @Test

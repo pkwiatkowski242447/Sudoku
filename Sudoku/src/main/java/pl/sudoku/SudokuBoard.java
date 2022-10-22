@@ -53,7 +53,29 @@ public class SudokuBoard {
         return sudokuOutput;
     }
 
-    public boolean checkValuesInALine(int numberOfALine) {
+    public boolean checkBoard() {
+        boolean correctBoard = true;
+        for (int i = 0; i < 9; i++) {
+            if (!checkValuesInALine(i)) {
+                correctBoard = false;
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            if (!checkValuesInAColumn(i)) {
+                correctBoard = false;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (!checkValuesInAMatrix(3 * i, 3 * j)) {
+                    correctBoard = false;
+                }
+            }
+        }
+        return correctBoard;
+    }
+
+    private boolean checkValuesInALine(int numberOfALine) {
 
         Vector<Integer> valuesInALine = new Vector<>();
 
@@ -67,7 +89,7 @@ public class SudokuBoard {
         return true;
     }
 
-    public boolean checkValuesInAColumn(int numberOfAColumn) {
+    private boolean checkValuesInAColumn(int numberOfAColumn) {
 
         Vector<Integer> valuesInAColumn = new Vector<>();
 
@@ -81,7 +103,7 @@ public class SudokuBoard {
         return true;
     }
 
-    public boolean checkValuesInAMatrix(int numberOfALine, int numberOfAColumn) {
+    private boolean checkValuesInAMatrix(int numberOfALine, int numberOfAColumn) {
 
         int matrixFirstLine = 3 * (numberOfALine / 3);
         int matrixFirstColumn = 3 * (numberOfAColumn / 3);
