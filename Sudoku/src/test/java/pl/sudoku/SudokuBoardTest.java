@@ -75,7 +75,7 @@ public class SudokuBoardTest {
 
         for (int i = 0; i < 9; i ++) {
             for (int j = 0; j < 9; j++) {
-                if (exampleSudokuBoard_1.get(i, j) != exampleSudokuBoard_2.get(i, j)) {
+                if (exampleSudokuBoard_2.get(i, j) != exampleSudokuBoard_3.get(i, j)) {
                     areSudokusIdentical = false;
                     break;
                 }
