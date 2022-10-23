@@ -3,7 +3,7 @@ package pl.sudoku;
 import java.util.Vector;
 
 public class SudokuBoard {
-    public SudokuSolver solveobject;
+    private SudokuSolver solveobject;
     private final int[][] board = new int [9][9];
 
     public SudokuBoard(int[][] sudokuBoard) {

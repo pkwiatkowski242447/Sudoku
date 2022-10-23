@@ -1,7 +1,7 @@
 package pl.sudoku;
 
 public class BacktrackingSudokuSolver implements SudokuSolver {
-    public void fillSingleMatrix(int numberOfALineMatrix,
+    private void fillSingleMatrix(int numberOfALineMatrix,
                                  int numberOfAColumnMatrix,
                                  SudokuBoard board) {
         int exampleValue;
@@ -18,7 +18,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         }
     }
 
-    public boolean fillTheRestOfMatrices(int numberOfALine,int numberOfAColumn,SudokuBoard board) {
+   private boolean fillTheRestOfMatrices(int numberOfALine,int numberOfAColumn,SudokuBoard board) {
         if (numberOfALine < 8 && numberOfAColumn >= 9) {
             numberOfALine++;
             numberOfAColumn = 0;
@@ -55,7 +55,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return false;
     }
 
-    public boolean horizontalCheck(int value, int lineNumber, SudokuBoard board) {
+    private boolean horizontalCheck(int value, int lineNumber, SudokuBoard board) {
         for (int i = 0; i < 9; i++) {
             if (board.get(lineNumber, i) == value) {
                 return false;
@@ -64,7 +64,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return true;
     }
 
-    public boolean verticalCheck(int value, int columnNumber, SudokuBoard board) {
+    private boolean verticalCheck(int value, int columnNumber, SudokuBoard board) {
         for (int i = 0; i < 9; i++) {
             if (board.get(i, columnNumber) == value) {
                 return false;
@@ -73,7 +73,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return true;
     }
 
-    public boolean matrixCheck(int value, int lineNumber, int columnNumber, SudokuBoard board) {
+    private boolean matrixCheck(int value, int lineNumber, int columnNumber, SudokuBoard board) {
         int squareX = lineNumber / 3;
         int squareY = columnNumber / 3;
 
@@ -87,7 +87,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return true;
     }
 
-    public int randomNumberGenerator(int rangeOfGenerating) {
+    private int randomNumberGenerator(int rangeOfGenerating) {
         return (int) (Math.random() * rangeOfGenerating + 1);
     }
 
