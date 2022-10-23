@@ -3,7 +3,8 @@ package pl.sudoku;
 import java.util.Vector;
 
 public class SudokuBoard {
-    private final int[][] board = new int [9][9];
+    private final int[][] board = new int[9][9];
+    private SudokuSolver solver;
 
     public SudokuBoard(int[][] sudokuBoard) {
         for (int i = 0; i < 9; i++) {
@@ -11,78 +12,15 @@ public class SudokuBoard {
         }
     }
 
-    public SudokuBoard() {
+    public SudokuBoard(SudokuSolver solver1) {
+        solver = solver1;
     }
 
-    public void fillBoard() {
-        fillDiagonalMatrices();
-        fillTheRestOfMatrices(0,3);
+    public void solveGame() {
+        solver.solve(this);
     }
 
-    public int randomNumberGenerator(int rangeOfGenerating) {
-        return (int)(Math.random() * rangeOfGenerating + 1);
-    }
-
-    public void fillDiagonalMatrices() {
-        for (int i = 0; i < 3; i++) {
-            fillSingleMatrix(i, i);
-        }
-    }
-
-    public void fillSingleMatrix(int numberOfALineMatrix, int numberOfAColumnMatrix) {
-        int exampleValue;
-
-        for (int i = 0; i < 3; i++) {
-            for (int z = 0; z < 3; z++) {
-                do {
-                    exampleValue = randomNumberGenerator(9);
-                } while (!matrixCheck(exampleValue,
-                        (3 * numberOfALineMatrix + i),
-                        (3 * numberOfAColumnMatrix + z)));
-                board[3 * numberOfALineMatrix + i][3 * numberOfAColumnMatrix + z] = exampleValue;
-            }
-        }
-    }
-
-    public boolean fillTheRestOfMatrices(int numberOfALine, int numberOfAColumn) {
-        if (numberOfALine < 8 && numberOfAColumn >= 9) {
-            numberOfALine++;
-            numberOfAColumn = 0;
-        }
-
-        if (numberOfALine < 3) {
-            if (numberOfAColumn < 3) {
-                numberOfAColumn = 3;
-            }
-        } else if (numberOfALine < 6) {
-            if (numberOfAColumn == 3) {
-                numberOfAColumn = 6;
-            }
-        } else {
-            if (numberOfAColumn == 6) {
-                numberOfALine++;
-                numberOfAColumn = 0;
-            }
-            if (numberOfALine >= 9) {
-                return true;
-            }
-        }
-
-        for (int i = 1; i <= 9; i++) {
-            if ((verticalCheck(i, numberOfAColumn)
-                    && horizontalCheck(i, numberOfALine))
-                    && matrixCheck(i, numberOfALine, numberOfAColumn)) {
-                board[numberOfALine][numberOfAColumn] = i;
-                if (fillTheRestOfMatrices(numberOfALine, numberOfAColumn + 1)) {
-                    return true;
-                }
-                board[numberOfALine][numberOfAColumn] = 0;
-            }
-        }
-        return false;
-    }
-
-    public int getValue(int x, int y) {
+    public int get(int x, int y) {
         if ((x >= 9 || y >= 9) || (x < 0 || y < 0)) {
             return 0;
         } else {
@@ -90,50 +28,55 @@ public class SudokuBoard {
         }
     }
 
-    public boolean horizontalCheck(int value, int lineNumber) {
-        for (int i = 0; i < 9; i++) {
-            if (board[lineNumber][i] == value) {
-                return false;
-            }
+    public void set(int x, int y, int value) {
+        if (value >= 0 && value <= 9) {
+            board[x][y] = value;
         }
-        return true;
     }
 
-    public boolean verticalCheck(int value, int columnNumber) {
-        for (int i = 0; i < 9; i++) {
-            if (board[i][columnNumber] == value) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    public boolean matrixCheck(int value, int lineNumber, int columnNumber) {
-        int squareX = lineNumber / 3;
-        int squareY = columnNumber / 3;
-
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board[squareX * 3 + i][squareY * 3 + j] == value) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    public String showSudokuBoard() {
+    public String toString() {
         String sudokuOutput = "";
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                sudokuOutput += board[i][j] + " ";
+        sudokuOutput += "|-----------------------|\n";
+        for (int i = 0; i < 3; i++) {
+            for (int l = 0; l < 3; l++) {
+                sudokuOutput += "| ";
+                for (int j = 0; j < 3; j++) {
+                    for (int z = 0; z < 3; z++) {
+                        sudokuOutput += board[i * 3 + l][j * 3 + z] + " ";
+                    }
+                    sudokuOutput += "| ";
+                }
+                sudokuOutput += '\n';
             }
-            sudokuOutput += '\n';
+            sudokuOutput += "|-----------------------|\n";
         }
         return sudokuOutput;
     }
 
-    public boolean checkValuesInALine(int numberOfALine) {
+    public boolean checkBoard() {
+        boolean correctBoard = true;
+        for (int i = 0; i < 9; i++) {
+            if (!checkValuesInALine(i)) {
+                correctBoard = false;
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            if (!checkValuesInAColumn(i)) {
+                correctBoard = false;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (!checkValuesInAMatrix(3 * i, 3 * j)) {
+                    correctBoard = false;
+                }
+            }
+        }
+        return correctBoard;
+    }
+
+    private boolean checkValuesInALine(int numberOfALine) {
 
         Vector<Integer> valuesInALine = new Vector<>();
 
@@ -147,7 +90,7 @@ public class SudokuBoard {
         return true;
     }
 
-    public boolean checkValuesInAColumn(int numberOfAColumn) {
+    private boolean checkValuesInAColumn(int numberOfAColumn) {
 
         Vector<Integer> valuesInAColumn = new Vector<>();
 
@@ -161,7 +104,7 @@ public class SudokuBoard {
         return true;
     }
 
-    public boolean checkValuesInAMatrix(int numberOfALine, int numberOfAColumn) {
+    private boolean checkValuesInAMatrix(int numberOfALine, int numberOfAColumn) {
 
         int matrixFirstLine = 3 * (numberOfALine / 3);
         int matrixFirstColumn = 3 * (numberOfAColumn / 3);
