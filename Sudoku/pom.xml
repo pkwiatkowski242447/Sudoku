@@ -141,6 +141,16 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.15.0</version>
+            </plugin>
         </plugins>
     </reporting>
 
@@ -158,5 +168,20 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <developers>
+        <developer>
+            <id>242447</id>
+            <name>Piotr Kwiatkowski</name>
+            <email>242447@edu.p.lodz.pl</email>
+        </developer>
+        <developer>
+            <id>242405</id>
+            <name>Aleksander Janicki</name>
+            <email>242405@edu.p.lodz.pl</email>
+        </developer>
+    </developers>
+
+    <description>Projekt grupy laboratoryjnej JM_PN_1200_06</description>
 
 </project>
