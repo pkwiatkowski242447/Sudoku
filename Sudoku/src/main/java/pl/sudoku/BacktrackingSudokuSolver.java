@@ -1,14 +1,7 @@
 package pl.sudoku;
 
 public class BacktrackingSudokuSolver implements SudokuSolver {
-    @Override
-    public void solve(SudokuBoard board) {
 
-        for (int i = 0; i < 3; i++) {
-            fillSingleMatrix(i, i, board);
-        }
-        fillTheRestOfMatrices(0,3, board);
-    }
 
     private void fillSingleMatrix(int numberOfALineMatrix,
                                   int numberOfAColumnMatrix,
@@ -21,8 +14,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                     exampleValue = randomNumberGenerator(9);
                 } while (!matrixCheck(exampleValue,
                         (3 * numberOfALineMatrix + i),
-                        (3 * numberOfAColumnMatrix + z),
-                        board));
+                        (3 * numberOfAColumnMatrix + z), board));
                 board.set(3 * numberOfALineMatrix + i, 3 * numberOfAColumnMatrix + z, exampleValue);
             }
         }
@@ -103,4 +95,13 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         }
         return true;
     }
+
+    @Override
+    public void solve(SudokuBoard board) {
+        for (int i = 0; i < 3; i++) {
+            fillSingleMatrix(i, i, board);
+        }
+        fillTheRestOfMatrices(0, 3, board);
+    }
+
 }

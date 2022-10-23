@@ -53,19 +53,19 @@ public class SudokuBoardTest {
         assertEquals(3, exampleSudokuBoard_1.get(8,0));
         assertEquals(9, exampleSudokuBoard_1.get(8,8));
     }
-
     @Test
-    public void valueSetterTest() {
-        exampleSudokuBoard_4.set(0,0, -1);
-        assertEquals(5, exampleSudokuBoard_4.get(0,0));
-        exampleSudokuBoard_4.set(0,0, 10);
-        assertEquals(5, exampleSudokuBoard_4.get(0,0));
-        exampleSudokuBoard_4.set(0, 0, 0);
-        assertEquals(0, exampleSudokuBoard_4.get(0, 0));
-        exampleSudokuBoard_4.set(0, 0, 9);
-        assertEquals(9, exampleSudokuBoard_4.get(0, 0));
-        exampleSudokuBoard_4.set(0, 0, 5);
-        assertEquals(5, exampleSudokuBoard_4.get(0, 0));
+    public void valueSetterTest()
+    {
+        exampleSudokuBoard_1.set(0,0,9);
+        assertEquals(9,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,0);
+        assertEquals(0,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,5);
+        assertEquals(5,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,-5);
+        assertEquals(5,exampleSudokuBoard_1.get(0,0));
+        exampleSudokuBoard_1.set(0,0,10);
+        assertEquals(5,exampleSudokuBoard_1.get(0,0));
     }
 
     @Test

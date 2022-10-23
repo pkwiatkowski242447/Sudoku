@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+target/
+*.zip
+build/
+dist/
+nbproject/
+.idea/
+*.iml
+
+=======
 .idea
 target
 .gitignore.bak
+>>>>>>> 3437d02fced4530275659a26f4201832ab65df7f
