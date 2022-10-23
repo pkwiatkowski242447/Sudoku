@@ -12,8 +12,8 @@ public class SudokuBoard {
         }
     }
 
-    public SudokuBoard() {
-        solver = new BacktrackingSudokuSolver();
+    public SudokuBoard(SudokuSolver solver1) {
+        solver = solver1;
     }
 
     public void solveGame() {

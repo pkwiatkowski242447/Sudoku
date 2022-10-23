@@ -33,8 +33,10 @@ public class SudokuBoardTest {
     };
 
     SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(exampleBoard_1);
-    SudokuBoard exampleSudokuBoard_2 = new SudokuBoard();
-    SudokuBoard exampleSudokuBoard_3 = new SudokuBoard();
+    SudokuSolver exampleSolver_1 = new BacktrackingSudokuSolver();
+    SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleSolver_1);
+    SudokuSolver exampleSolver_2 = new BacktrackingSudokuSolver();
+    SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(exampleSolver_2);
     SudokuBoard exampleSudokuBoard_4 = new SudokuBoard(exampleBoard_2);
 
     @Test
@@ -80,7 +82,6 @@ public class SudokuBoardTest {
                     break;
                 }
             }
-            break;
         }
         assertFalse(areSudokusIdentical);
     }
@@ -116,6 +117,6 @@ public class SudokuBoardTest {
             sudokuOutput_1 += "|-----------------------|\n";
         }
 
-        assertTrue(sudokuOutput_1.equals(sudokuOutput_2));
+        assertEquals(sudokuOutput_1, sudokuOutput_2);
     }
 }
