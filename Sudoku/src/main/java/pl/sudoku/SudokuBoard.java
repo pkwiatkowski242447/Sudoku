@@ -3,8 +3,8 @@ package pl.sudoku;
 import java.util.Vector;
 
 public class SudokuBoard {
-    private SudokuSolver solveobject;
-    private final int[][] board = new int [9][9];
+    private final int[][] board = new int[9][9];
+    private SudokuSolver solver;
 
     public SudokuBoard(int[][] sudokuBoard) {
         for (int i = 0; i < 9; i++) {
@@ -12,36 +12,71 @@ public class SudokuBoard {
         }
     }
 
-    public SudokuBoard() {
-        solveobject = new BacktrackingSudokuSolver();
+    public SudokuBoard(SudokuSolver solver1) {
+        solver = solver1;
+    }
+
+    public void solveGame() {
+        solver.solve(this);
     }
 
     public int get(int x, int y) {
-     if ((x >= 9 || y >= 9) || (x < 0 || y < 0)) {
-         return 0;
-       } else {
+        if ((x >= 9 || y >= 9) || (x < 0 || y < 0)) {
+            return 0;
+        } else {
             return board[x][y];
         }
     }
 
     public void set(int x, int y, int value) {
-        if (value  >= 0 && value <= 9) {
+        if (value >= 0 && value <= 9) {
             board[x][y] = value;
         }
     }
 
-    public String showSudokuBoard() {
+
+    public String toString() {
         String sudokuOutput = "";
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                sudokuOutput += board[i][j] + " ";
+        sudokuOutput += "|-----------------------|\n";
+        for (int i = 0; i < 3; i++) {
+            for (int l = 0; l < 3; l++) {
+                sudokuOutput += "| ";
+                for (int j = 0; j < 3; j++) {
+                    for (int z = 0; z < 3; z++) {
+                        sudokuOutput += board[i * 3 + l][j * 3 + z] + " ";
+                    }
+                    sudokuOutput += "| ";
+                }
+                sudokuOutput += '\n';
             }
-            sudokuOutput += '\n';
+            sudokuOutput += "|-----------------------|\n";
         }
         return sudokuOutput;
     }
 
-    public boolean checkValuesInALine(int numberOfALine) {
+    public boolean checkBoard() {
+        boolean correctBoard = true;
+        for (int i = 0; i < 9; i++) {
+            if (!checkValuesInALine(i)) {
+                correctBoard = false;
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            if (!checkValuesInAColumn(i)) {
+                correctBoard = false;
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (!checkValuesInAMatrix(3 * i, 3 * j)) {
+                    correctBoard = false;
+                }
+            }
+        }
+        return correctBoard;
+    }
+
+    private boolean checkValuesInALine(int numberOfALine) {
 
         Vector<Integer> valuesInALine = new Vector<>();
 
@@ -55,7 +90,7 @@ public class SudokuBoard {
         return true;
     }
 
-    public boolean checkValuesInAColumn(int numberOfAColumn) {
+    private boolean checkValuesInAColumn(int numberOfAColumn) {
 
         Vector<Integer> valuesInAColumn = new Vector<>();
 
@@ -69,7 +104,7 @@ public class SudokuBoard {
         return true;
     }
 
-    public boolean checkValuesInAMatrix(int numberOfALine, int numberOfAColumn) {
+    private boolean checkValuesInAMatrix(int numberOfALine, int numberOfAColumn) {
 
         int matrixFirstLine = 3 * (numberOfALine / 3);
         int matrixFirstColumn = 3 * (numberOfAColumn / 3);
@@ -86,9 +121,5 @@ public class SudokuBoard {
             }
         }
         return true;
-    }
-
-    public void solveGame() {
-        solveobject.solve(this);
     }
 }

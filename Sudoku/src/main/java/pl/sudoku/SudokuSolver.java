@@ -1,5 +1,5 @@
 package pl.sudoku;
 
-interface SudokuSolver {
+public interface SudokuSolver {
     public void solve(SudokuBoard board);
 }

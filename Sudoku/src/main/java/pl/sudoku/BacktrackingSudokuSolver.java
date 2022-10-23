@@ -1,9 +1,11 @@
 package pl.sudoku;
 
 public class BacktrackingSudokuSolver implements SudokuSolver {
+
+
     private void fillSingleMatrix(int numberOfALineMatrix,
-                                 int numberOfAColumnMatrix,
-                                 SudokuBoard board) {
+                                  int numberOfAColumnMatrix,
+                                  SudokuBoard board) {
         int exampleValue;
 
         for (int i = 0; i < 3; i++) {
@@ -18,11 +20,18 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         }
     }
 
-   private boolean fillTheRestOfMatrices(int numberOfALine,int numberOfAColumn,SudokuBoard board) {
+    private int randomNumberGenerator(int rangeOfGenerating) {
+        return (int)(Math.random() * rangeOfGenerating + 1);
+    }
+
+    private boolean fillTheRestOfMatrices(int numberOfALine,
+                                          int numberOfAColumn,
+                                          SudokuBoard board) {
         if (numberOfALine < 8 && numberOfAColumn >= 9) {
             numberOfALine++;
             numberOfAColumn = 0;
         }
+
         if (numberOfALine < 3) {
             if (numberOfAColumn < 3) {
                 numberOfAColumn = 3;
@@ -87,10 +96,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return true;
     }
 
-    private int randomNumberGenerator(int rangeOfGenerating) {
-        return (int) (Math.random() * rangeOfGenerating + 1);
-    }
-
     @Override
     public void solve(SudokuBoard board) {
         for (int i = 0; i < 3; i++) {
@@ -98,4 +103,5 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         }
         fillTheRestOfMatrices(0, 3, board);
     }
+
 }
