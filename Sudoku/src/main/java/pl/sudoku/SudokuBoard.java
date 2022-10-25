@@ -1,18 +1,44 @@
 package pl.sudoku;
 
-import java.util.Vector;
-
 public class SudokuBoard {
-    private final int[][] board = new int[9][9];
+    private final SudokuField[][] board = new SudokuField[9][9];
     private SudokuSolver solver;
 
-    public SudokuBoard(int[][] sudokuBoard) {
+    private void generateSudokuFields() {
         for (int i = 0; i < 9; i++) {
-            System.arraycopy(sudokuBoard[i], 0, board[i], 0, 9);
+            for (int j = 0; j < 9; j++) {
+                board[i][j] = new SudokuField();
+            }
         }
     }
 
+    public SudokuBoard(int[][] sudokuBoard) {
+        boolean correctBoard = true;
+        generateSudokuFields();
+
+        for (int i = 0; i < 9; i++) {
+            for (int z = 0; z < 9; z++) {
+                if (sudokuBoard[i][z] <= 0 && sudokuBoard[i][z] > 9) {
+                    correctBoard = false;
+                    break;
+                }
+            }
+        }
+
+        if (correctBoard) {
+            for (int i = 0; i < 9; i++) {
+                for (int z = 0; z < 9; z++) {
+                    this.set(i, z, sudokuBoard[i][z]);
+                }
+            }
+        } else {
+            this.solveGame();
+        }
+
+    }
+
     public SudokuBoard(SudokuSolver solver1) {
+        generateSudokuFields();
         solver = solver1;
     }
 
@@ -24,13 +50,13 @@ public class SudokuBoard {
         if ((x >= 9 || y >= 9) || (x < 0 || y < 0)) {
             return 0;
         } else {
-            return board[x][y];
+            return board[x][y].getFieldValue();
         }
     }
 
     public void set(int x, int y, int value) {
         if (value >= 0 && value <= 9) {
-            board[x][y] = value;
+            board[x][y].setFieldValue(value);
         }
     }
 
@@ -43,7 +69,7 @@ public class SudokuBoard {
                 sudokuOutput += "| ";
                 for (int j = 0; j < 3; j++) {
                     for (int z = 0; z < 3; z++) {
-                        sudokuOutput += board[i * 3 + l][j * 3 + z] + " ";
+                        sudokuOutput += board[i * 3 + l][j * 3 + z].getFieldValue() + " ";
                     }
                     sudokuOutput += "| ";
                 }
@@ -57,18 +83,18 @@ public class SudokuBoard {
     public boolean checkBoard() {
         boolean correctBoard = true;
         for (int i = 0; i < 9; i++) {
-            if (!checkValuesInALine(i)) {
+            if (!getRow(i).verify()) {
                 correctBoard = false;
             }
         }
         for (int i = 0; i < 9; i++) {
-            if (!checkValuesInAColumn(i)) {
+            if (!getColumn(i).verify()) {
                 correctBoard = false;
             }
         }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (!checkValuesInAMatrix(3 * i, 3 * j)) {
+                if (!getBox(3 * i,3 * j).verify()) {
                     correctBoard = false;
                 }
             }
@@ -76,50 +102,33 @@ public class SudokuBoard {
         return correctBoard;
     }
 
-    private boolean checkValuesInALine(int numberOfALine) {
-
-        Vector<Integer> valuesInALine = new Vector<>();
-
-        for (int i = 0; i < 9; i++) {
-            if (valuesInALine.contains(board[numberOfALine][i])) {
-                return false;
-            } else {
-                valuesInALine.add(board[numberOfALine][i]);
-            }
-        }
-        return true;
+    public SudokuRow getRow(int y) {
+        SudokuField[] row = new SudokuField[9];
+        System.arraycopy(board[y], 0, row, 0, 9);
+        return new SudokuRow(row);
     }
 
-    private boolean checkValuesInAColumn(int numberOfAColumn) {
-
-        Vector<Integer> valuesInAColumn = new Vector<>();
-
+    public SudokuColumn getColumn(int x) {
+        SudokuField[] column = new SudokuField[9];
         for (int i = 0; i < 9; i++) {
-            if (valuesInAColumn.contains(board[i][numberOfAColumn])) {
-                return false;
-            } else {
-                valuesInAColumn.add(board[i][numberOfAColumn]);
-            }
+            column[i] = board[i][x];
         }
-        return true;
+        return new SudokuColumn(column);
     }
 
-    private boolean checkValuesInAMatrix(int numberOfALine, int numberOfAColumn) {
+    public SudokuBox getBox(int x, int y) {
 
-        int matrixFirstLine = 3 * (numberOfALine / 3);
-        int matrixFirstColumn = 3 * (numberOfAColumn / 3);
+        int firstBoxRow = 3 * (x / 3);
+        int firstBoxColumn = 3 * (y / 3);
 
-        Vector<Integer> valuesInAMatrix = new Vector<>();
-
+        SudokuField[][] box = new SudokuField[3][3];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (valuesInAMatrix.contains(board[matrixFirstLine + i][matrixFirstColumn + j])) {
-                    return false;
-                } else {
-                    valuesInAMatrix.add(board[matrixFirstLine + i][matrixFirstColumn + j]);
-                }
+                box[i][j] = board[firstBoxRow + i][firstBoxColumn + j];
+
             }
         }
-        return true;
+        return new SudokuBox(box);
     }
+
 }

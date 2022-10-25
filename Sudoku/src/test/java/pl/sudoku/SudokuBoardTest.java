@@ -32,12 +32,22 @@ public class SudokuBoardTest {
             {3,4,5,2,8,6,1,7,9}
     };
 
+    int[][] incorrectBoard = {
+            {5,3,4,6,7,8,9,10,2},
+            {6,-1,2,1,9,5,3,4,8},
+            {1,9,8,3,4,2,1,6,7},
+            {8,4,9,7,6,1,4,2,3},
+            {5,2,6,8,5,3,7,9,1},
+            {7,1,3,9,2,4,8,5,6},
+            {9,6,1,5,3,7,2,8,4},
+            {2,-3,7,4,1,9,6,-2,5},
+            {3,4,5,2,8,6,1,7,9}
+    };
+
     SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(exampleBoard_1);
     SudokuSolver exampleSolver_1 = new BacktrackingSudokuSolver();
     SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleSolver_1);
-    SudokuSolver exampleSolver_2 = new BacktrackingSudokuSolver();
-    SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(exampleSolver_2);
-    SudokuBoard exampleSudokuBoard_4 = new SudokuBoard(exampleBoard_2);
+    SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(exampleBoard_2);
 
     @Test
     public void valueGetterTest() {
@@ -69,17 +79,47 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void sudokuBoardUniquenessTest() {
-        exampleSudokuBoard_2.solveGame();
-        exampleSudokuBoard_3.solveGame();
+    public void sudokuWhenPassedBoardIsCorrect() {
+        SudokuBoard testSudokuBoard = new SudokuBoard(exampleBoard_1);
+        for (int i = 0; i < 9; i++) {
+            for (int z = 0; z < 9; z++) {
+                assertEquals(testSudokuBoard.get(i, z), exampleBoard_1[i][z]);
+            }
+        }
+    }
 
+    @Test
+    public void sudokuWhenPassedBoardIsIncorrect() {
+        SudokuBoard testSudokuBoard = new SudokuBoard(incorrectBoard);
+        boolean areTheSame = true;
+        for (int i = 0; i < 9; i++) {
+            for (int z = 0; z < 9; z++) {
+                if (testSudokuBoard.get(i, z) != exampleBoard_1[i][z]) {
+                    areTheSame = false;
+                }
+            }
+        }
+        assertFalse(areTheSame);
+    }
+
+    @Test
+    public void sudokuBoardUniquenessTest() {
         boolean areSudokusIdentical = true;
+        exampleSudokuBoard_2.solveGame();
+        int[][] boardContent = new int[9][9];
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                boardContent[i][j] = exampleSudokuBoard_2.get(i, j);
+            }
+        }
+
+        exampleSudokuBoard_2.solveGame();
 
         for (int i = 0; i < 9; i ++) {
             for (int j = 0; j < 9; j++) {
-                if (exampleSudokuBoard_2.get(i, j) != exampleSudokuBoard_3.get(i, j)) {
+                if (exampleSudokuBoard_2.get(i, j) != boardContent[i][j]) {
                     areSudokusIdentical = false;
-                    break;
                 }
             }
         }
@@ -94,7 +134,7 @@ public class SudokuBoardTest {
 
     @Test
     public void checkIfSudokuBoardIsNotCorrectTest(){
-        assertFalse(exampleSudokuBoard_4.checkBoard());
+        assertFalse(exampleSudokuBoard_2.checkBoard());
     }
 
     @Test

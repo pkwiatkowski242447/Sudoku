@@ -96,8 +96,17 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return true;
     }
 
+    private void cleanBoardBeforeNextGenerate(SudokuBoard board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                board.set(i, j, 0);
+            }
+        }
+    }
+
     @Override
     public void solve(SudokuBoard board) {
+        cleanBoardBeforeNextGenerate(board);
         for (int i = 0; i < 3; i++) {
             fillSingleMatrix(i, i, board);
         }
