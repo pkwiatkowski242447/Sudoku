@@ -2,7 +2,7 @@ package pl.sudoku;
 
 public class SudokuBoard {
     private final SudokuField[][] board = new SudokuField[9][9];
-    private SudokuSolver solver;
+    private final SudokuSolver solver;
 
     private void generateSudokuFields() {
         for (int i = 0; i < 9; i++) {
@@ -13,14 +13,16 @@ public class SudokuBoard {
     }
 
     public SudokuBoard(int[][] sudokuBoard) {
+        solver = new BacktrackingSudokuSolver();
         boolean correctBoard = true;
         generateSudokuFields();
 
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
-                if (sudokuBoard[i][z] <= 0 && sudokuBoard[i][z] > 9) {
+                if (sudokuBoard[i][z] <= 0) {
                     correctBoard = false;
-                    break;
+                } else if (sudokuBoard[i][z] > 9) {
+                    correctBoard = false;
                 }
             }
         }
@@ -125,7 +127,6 @@ public class SudokuBoard {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 box[i][j] = board[firstBoxRow + i][firstBoxColumn + j];
-
             }
         }
         return new SudokuBox(box);

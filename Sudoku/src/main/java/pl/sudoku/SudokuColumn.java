@@ -4,10 +4,10 @@ import java.util.Vector;
 
 public class SudokuColumn extends SudokuStructure {
 
-    private SudokuField[] column = new SudokuField[9];
+    private final SudokuField[] column;
 
-    public SudokuColumn(final SudokuField[] column) {
-        this.column = column;
+    public SudokuColumn(final SudokuField[] givenColumn) {
+        this.column = givenColumn;
     }
 
     @Override
@@ -18,9 +18,8 @@ public class SudokuColumn extends SudokuStructure {
 
         for (int i = 0; i < 9; i++) {
             fieldValue = column[i].getFieldValue();
-            if ((fieldValue <= 0 || fieldValue > 9) || valuesInAColumn.contains(fieldValue)) {
+            if (valuesInAColumn.contains(fieldValue)) {
                 correctColumn = false;
-                break;
             } else {
                 valuesInAColumn.add(fieldValue);
             }
