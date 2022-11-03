@@ -18,7 +18,9 @@ public class SudokuColumn extends SudokuStructure {
 
         for (int i = 0; i < 9; i++) {
             fieldValue = column[i].getFieldValue();
-            if (valuesInAColumn.contains(fieldValue)) {
+            if (fieldValue == 0) {
+                correctColumn = false;
+            } else if (valuesInAColumn.contains(fieldValue)) {
                 correctColumn = false;
             } else {
                 valuesInAColumn.add(fieldValue);

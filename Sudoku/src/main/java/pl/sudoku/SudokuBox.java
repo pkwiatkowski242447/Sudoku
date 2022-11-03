@@ -19,7 +19,9 @@ public class SudokuBox extends SudokuStructure {
         for (int i = 0; i < 3; i++) {
             for (int z = 0; z < 3; z++) {
                 fieldValue = box[i][z].getFieldValue();
-                if (valuesInABox.contains(fieldValue)) {
+                if (fieldValue == 0) {
+                    correctBox = false;
+                } else if (valuesInABox.contains(fieldValue)) {
                     correctBox = false;
                 } else {
                     valuesInABox.add(fieldValue);

@@ -18,7 +18,9 @@ public class SudokuRow extends SudokuStructure {
 
         for (int i = 0; i < 9; i++) {
             fieldValue = row[i].getFieldValue();
-            if (valuesInARow.contains(fieldValue)) {
+            if (fieldValue == 0) {
+                correctRow = false;
+            } else if (valuesInARow.contains(fieldValue)) {
                 correctRow = false;
             } else {
                 valuesInARow.add(fieldValue);

@@ -1,8 +1,13 @@
 package pl.sudoku;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Vector;
+
 public class SudokuBoard {
     private final SudokuField[][] board = new SudokuField[9][9];
     private final SudokuSolver solver;
+    private Vector<Observer> vectorOfObservers = new Vector<>();
 
     private void generateSudokuFields() {
         for (int i = 0; i < 9; i++) {
@@ -60,9 +65,27 @@ public class SudokuBoard {
         if (value >= 0 && value <= 9) {
             board[x][y].setFieldValue(value);
         }
+
+        if (value == this.get(x, y)) {
+            notifyObservers();
+        }
     }
 
+    public List<Observer> getObserversList() {
+        return Collections.unmodifiableList(vectorOfObservers);
+    }
 
+    public int[][] convertToIntArray() {
+        int[][] finalArray = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                finalArray[i][j] = board[i][j].getFieldValue();
+            }
+        }
+        return finalArray;
+    }
+
+    @Override
     public String toString() {
         String sudokuOutput = "";
         sudokuOutput += "|-----------------------|\n";
@@ -82,7 +105,7 @@ public class SudokuBoard {
         return sudokuOutput;
     }
 
-    public boolean checkBoard() {
+    boolean checkBoard() {
         boolean correctBoard = true;
         for (int i = 0; i < 9; i++) {
             if (!getRow(i).verify()) {
@@ -130,6 +153,24 @@ public class SudokuBoard {
             }
         }
         return new SudokuBox(box);
+    }
+
+    public void addObserver(Observer observer) {
+        if (!vectorOfObservers.contains(observer) & observer != null) {
+            vectorOfObservers.add(observer);
+        }
+    }
+
+    public void removeObserver(Observer observer) {
+        if (observer != null & vectorOfObservers.contains(observer)) {
+            vectorOfObservers.remove(observer);
+        }
+    }
+
+    public void notifyObservers() {
+        for (Observer observer : vectorOfObservers) {
+            observer.update(this);
+        }
     }
 
 }

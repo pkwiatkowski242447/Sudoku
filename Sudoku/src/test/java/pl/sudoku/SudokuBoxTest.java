@@ -33,5 +33,7 @@ public class SudokuBoxTest {
     public void negativeVerificationTestDueToDuplicates() {
         SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(incorrectBoard);
         assertFalse(exampleSudokuBoard_1.getBox(0,0).verify());
+        exampleSudokuBoard_1.set(0,0,0);
+        assertFalse(exampleSudokuBoard_1.getBox(0,0).verify());
     }
 }
