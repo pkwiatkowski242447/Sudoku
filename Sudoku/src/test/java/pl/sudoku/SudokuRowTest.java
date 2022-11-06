@@ -1,9 +1,7 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuRowTest {
     int[][] exampleBoard = {
@@ -17,23 +15,22 @@ public class SudokuRowTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
+
     @Test
-    public void PositiveTest() {
-        SudokuSolver solverek = new BacktrackingSudokuSolver();
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(solverek);
+    public void positiveVerificationTest() {
+        SudokuSolver solver = new BacktrackingSudokuSolver();
+        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(solver);
         exampleSudokuBoard_1.solveGame();
-        for(int i=0; i<9; i++) {
-                assertTrue(exampleSudokuBoard_1.getRow(i).verify());
+        for (int i =0; i < 9; i++) {
+            assertTrue(exampleSudokuBoard_1.getRow(i).verify());
         }
     }
 
     @Test
-    public void NegativeTest() {
-
+    public void negativeVerificationDueToDuplicatesTest() {
         SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleBoard);
         assertFalse(exampleSudokuBoard_2.getRow(0).verify());
         exampleSudokuBoard_2.set(0,7,1);
         assertTrue(exampleSudokuBoard_2.getRow(0).verify());
-
     }
 }

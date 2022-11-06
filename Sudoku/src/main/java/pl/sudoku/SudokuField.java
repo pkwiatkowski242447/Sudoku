@@ -1,15 +1,16 @@
 package pl.sudoku;
 
 public class SudokuField {
+
     private int value;
 
     public int getFieldValue() {
         return value;
     }
 
-    public void setFieldValue(int value1) {
-        if (value1 >= 0 && value1 <= 9) {
-            value = value1;
+    public void setFieldValue(int value) {
+        if (value >= 0 && value <= 9) {
+            this.value = value;
         }
     }
 }

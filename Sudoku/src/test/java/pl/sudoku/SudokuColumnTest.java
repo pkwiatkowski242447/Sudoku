@@ -1,12 +1,11 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuColumnTest {
-    int[][] exampleBoard = {
+
+    int[][] incorrectBoard = {
             {5,3,4,6,7,8,9,5,2},
             {6,5,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,1,6,7},
@@ -14,25 +13,26 @@ public class SudokuColumnTest {
             {5,2,6,8,5,3,7,9,1},
             {7,1,3,9,2,4,8,5,6},
             {9,6,1,5,3,7,2,8,4},
-            {2,8,7,4,1,9,6,3,5},
+            {1,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
+
     @Test
-    public void PositiveTest() {
-        SudokuSolver solverek = new BacktrackingSudokuSolver();
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(solverek);
+    public void positiveVerificationTest() {
+        SudokuSolver solver = new BacktrackingSudokuSolver();
+        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(solver);
         exampleSudokuBoard_1.solveGame();
-        for(int i=0; i<9; i++) {
+        for (int i = 0; i < 9; i++) {
             assertTrue(exampleSudokuBoard_1.getColumn(i).verify());
         }
     }
 
     @Test
-    public void NegativeTest() {
-        SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleBoard);
-        assertFalse(exampleSudokuBoard_2.getColumn(7).verify());
-        exampleSudokuBoard_2.set(0,7,1);
-        assertTrue(exampleSudokuBoard_2.getRow(7).verify());
 
+    public void negativeVerificationDueToDuplicatesTest() {
+        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(incorrectBoard);
+        assertFalse(exampleSudokuBoard_1.getColumn(0).verify());
+        exampleSudokuBoard_1.set(0,0,0);
+        assertFalse(exampleSudokuBoard_1.getColumn(0).verify());
     }
 }

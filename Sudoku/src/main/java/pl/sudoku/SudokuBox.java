@@ -1,7 +1,7 @@
 package pl.sudoku;
 
 public class SudokuBox extends SudokuStructure {
-    public SudokuBox(SudokuField[] group) {
-        super(group);
+    public SudokuBox(final SudokuField[] box) {
+        super(box);
     }
 }
