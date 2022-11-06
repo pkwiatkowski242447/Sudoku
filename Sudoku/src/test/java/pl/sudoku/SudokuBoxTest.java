@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuBoxTest {
 
-    int[][] incorrectBoard = {
-            {5,3,1,6,7,8,9,5,2},
+    int[][] exampleBoard = {
+            {5,3,4,6,7,8,9,5,2},
             {6,5,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,1,6,7},
             {8,4,9,7,6,1,4,2,3},
@@ -17,10 +17,9 @@ public class SudokuBoxTest {
             {3,4,5,2,8,6,1,7,9}
     };
 
-    @Test
-    public void positiveVerificationTest() {
-        SudokuSolver solver = new BacktrackingSudokuSolver();
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(solver);
+    public void PositiveTest() {
+        SudokuSolver solverek = new BacktrackingSudokuSolver();
+        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(solverek);
         exampleSudokuBoard_1.solveGame();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -30,10 +29,10 @@ public class SudokuBoxTest {
     }
 
     @Test
-    public void negativeVerificationTestDueToDuplicates() {
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(incorrectBoard);
-        assertFalse(exampleSudokuBoard_1.getBox(0,0).verify());
-        exampleSudokuBoard_1.set(0,0,0);
-        assertFalse(exampleSudokuBoard_1.getBox(0,0).verify());
+    public void NegativeTest() {
+        SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleBoard);
+        assertFalse(exampleSudokuBoard_2.getBox(0,2).verify());
+        exampleSudokuBoard_2.set(0,4,0);
+        assertFalse(exampleSudokuBoard_2.getBox(0,3).verify());
     }
 }

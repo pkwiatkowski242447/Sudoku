@@ -4,27 +4,23 @@ import java.util.Vector;
 
 public abstract class SudokuStructure {
 
-    protected SudokuField[] structure;
+    protected SudokuField[] group;
 
-    public SudokuStructure(final SudokuField[] structure) {
-        this.structure = structure;
+    public SudokuStructure(SudokuField[] group) {
+        this.group = group;
     }
 
     public boolean verify() {
-        boolean correctStructure = true;
-        Vector<Integer> valuesInStructure = new Vector<>();
-        int sudokuFieldValue;
+        Vector<Integer> valuesInAGroup = new Vector<>();
+        int valueInAGroup;
         for (int i = 0; i < 9; i++) {
-            sudokuFieldValue = structure[i].getFieldValue();
-            if (sudokuFieldValue == 0) {
-                correctStructure = false;
-            } else if (valuesInStructure.contains(sudokuFieldValue)) {
-                correctStructure = false;
+            valueInAGroup = group[i].getFieldValue();
+            if (valuesInAGroup.contains(valueInAGroup) || valueInAGroup == 0) {
+                return false;
             } else {
-                valuesInStructure.add(sudokuFieldValue);
+                valuesInAGroup.add(valueInAGroup);
             }
-
         }
-        return correctStructure;
+        return true;
     }
 }

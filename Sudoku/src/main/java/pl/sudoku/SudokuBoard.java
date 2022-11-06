@@ -66,7 +66,6 @@ public class SudokuBoard {
         if (value >= 0 && value <= 9) {
             board[x][y].setFieldValue(value);
         }
-
         if (value == this.get(x, y)) {
             notifyObservers();
         }
@@ -86,7 +85,6 @@ public class SudokuBoard {
         return finalArray;
     }
 
-    @Override
     public String toString() {
         String sudokuOutput = "";
         sudokuOutput += "|-----------------------|\n";
@@ -149,14 +147,12 @@ public class SudokuBoard {
     }
 
     public SudokuBox getBox(int x, int y) {
-
-        int firstBoxRow = 3 * (x / 3);
-        int firstBoxColumn = 3 * (y / 3);
-
         SudokuField[] box = new SudokuField[9];
+        int matrixFirstLine = 3 * (x / 3);
+        int matrixFirstColumn = 3 * (y / 3);
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                box[3 * i + j] = board[firstBoxRow + i][firstBoxColumn + j];
+            for (int h = 0; h < 3; h++) {
+                box[3 * i + h] = board[matrixFirstLine + i][matrixFirstColumn + h];
             }
         }
         return new SudokuBox(box);

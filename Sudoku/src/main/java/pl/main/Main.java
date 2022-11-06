@@ -20,8 +20,6 @@ public class Main {
         exampleSudoku.addObserver(observer);
         exampleSudoku.set(0,0,0);
     }
-
-
 }
 
  */

@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuRowTest {
-
-    int[][] incorrectBoard = {
-            {5,3,9,6,7,8,9,5,2},
+    int[][] exampleBoard = {
+            {5,3,4,6,7,8,9,5,2},
             {6,5,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,1,6,7},
             {8,4,9,7,6,1,4,2,3},
@@ -29,9 +28,9 @@ public class SudokuRowTest {
 
     @Test
     public void negativeVerificationDueToDuplicatesTest() {
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(incorrectBoard);
-        assertFalse(exampleSudokuBoard_1.getRow(0).verify());
-        exampleSudokuBoard_1.set(0,0,0);
-        assertFalse(exampleSudokuBoard_1.getRow(0).verify());
+        SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleBoard);
+        assertFalse(exampleSudokuBoard_2.getRow(0).verify());
+        exampleSudokuBoard_2.set(0,7,1);
+        assertTrue(exampleSudokuBoard_2.getRow(0).verify());
     }
 }

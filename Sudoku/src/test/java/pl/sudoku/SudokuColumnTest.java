@@ -28,6 +28,7 @@ public class SudokuColumnTest {
     }
 
     @Test
+
     public void negativeVerificationDueToDuplicatesTest() {
         SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(incorrectBoard);
         assertFalse(exampleSudokuBoard_1.getColumn(0).verify());

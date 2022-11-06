@@ -13,5 +13,4 @@ public class SudokuField {
             this.value = value;
         }
     }
-
 }
