@@ -99,7 +99,7 @@ public class SudokuBoard {
         int matrixFirstColumn = 3 * (y / 3);
         for (int i = 0; i < 3; i++) {
             for (int h = 0; h < 3; h++) {
-                box[3 * i + h] = board[matrixFirstLine + i][matrixFirstColumn + i];
+                box[3 * i + h] = board[matrixFirstLine + i][matrixFirstColumn + h];
             }
         }
         return new SudokuBox(box);

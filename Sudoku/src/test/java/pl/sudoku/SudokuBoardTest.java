@@ -86,13 +86,11 @@ public class SudokuBoardTest {
         assertFalse(areSudokusIdentical);
     }
 
-    //@Test
-   /*
+    @Test
     public void checkIfSudokuBoardCorrectTest() {
         exampleSudokuBoard_2.solveGame();
         assertTrue(exampleSudokuBoard_2.checkBoard());
     }
-    */
 
     @Test
     public void checkIfSudokuBoardIsNotCorrectTest(){

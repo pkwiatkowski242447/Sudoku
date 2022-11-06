@@ -15,7 +15,7 @@ public abstract class SudokuStructure {
         int valueInAGroup;
         for (int i = 0; i < 9; i++) {
             valueInAGroup = group[i].getFieldValue();
-            if (valuesInAGroup.contains(valueInAGroup)) {
+            if (valuesInAGroup.contains(valueInAGroup) || valueInAGroup == 0) {
                 return false;
             } else {
                 valuesInAGroup.add(valueInAGroup);
