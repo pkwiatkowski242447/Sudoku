@@ -1,5 +1,6 @@
 package pl.sudoku;
 
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -105,7 +106,13 @@ public class SudokuBoard {
         return sudokuOutput;
     }
 
-    boolean checkBoard() {
+    public Method getCheckBoard() throws NoSuchMethodException {
+        Method method = this.getClass().getDeclaredMethod("checkBoard", null);
+        method.setAccessible(true);
+        return method;
+    }
+
+    private boolean checkBoard() {
         boolean correctBoard = true;
         for (int i = 0; i < 9; i++) {
             if (!getRow(i).verify()) {
@@ -146,10 +153,10 @@ public class SudokuBoard {
         int firstBoxRow = 3 * (x / 3);
         int firstBoxColumn = 3 * (y / 3);
 
-        SudokuField[][] box = new SudokuField[3][3];
+        SudokuField[] box = new SudokuField[9];
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                box[i][j] = board[firstBoxRow + i][firstBoxColumn + j];
+                box[3 * i + j] = board[firstBoxRow + i][firstBoxColumn + j];
             }
         }
         return new SudokuBox(box);

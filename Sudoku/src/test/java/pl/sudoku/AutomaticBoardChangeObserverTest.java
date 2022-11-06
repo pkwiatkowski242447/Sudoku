@@ -62,18 +62,4 @@ public class AutomaticBoardChangeObserverTest {
             }
         }
     }
-
-    @Test
-    public void getBoardTest() {
-        AutomaticBoardChangeObserver observer = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-
-        int[][] board1 = observer.getBoard();
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                assertEquals(board1[i][j], correctBoard[i][j]);
-            }
-        }
-    }
-
 }

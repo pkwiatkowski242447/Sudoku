@@ -1,9 +1,16 @@
 package pl.sudoku;
 
 public abstract class Observer {
+
+    protected SudokuBoard board;
+
+    public Observer(final SudokuBoard board) {
+        this.board = new SudokuBoard(board.convertToIntArray());
+    }
+
     public abstract void update(SudokuBoard exampleBoard);
 
-    protected boolean checkBoard(SudokuBoard someBoard) {
+    protected boolean checkBoard(final SudokuBoard someBoard) {
         boolean correctBoard = true;
         for (int i = 0; i < 9; i++) {
             if (!someBoard.getRow(i).verify()) {
@@ -21,4 +28,16 @@ public abstract class Observer {
         }
         return correctBoard;
     }
+
+    public int[][] getBoard() {
+        int[][] board1 = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                board1[i][j] = board.get(i, j);
+            }
+        }
+        return board1;
+    }
+
+
 }

@@ -1,8 +1,12 @@
 package pl.main;
-
-import java.lang.System;
 /*
-import pl.sudoku.*;
+import java.lang.System;
+import pl.sudoku.AutomaticBoardChangeObserver;
+import pl.sudoku.BacktrackingSudokuSolver;
+import pl.sudoku.NonAutomaticBoardChangeObserver;
+import pl.sudoku.Observer;
+import pl.sudoku.SudokuBoard;
+import pl.sudoku.SudokuSolver;
 
 public class Main {
 

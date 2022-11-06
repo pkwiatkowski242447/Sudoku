@@ -54,18 +54,4 @@ public class NonAutomaticBoardChangeTest {
         int[][] postChange = observer.getBoard();
         assertTrue(preChange[0][0] != postChange[0][0]);
     }
-
-    @Test
-    public void getBoardTest() {
-        NonAutomaticBoardChangeObserver observer = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-
-        int[][] observerBoard = observer.getBoard();
-
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                assertEquals(observerBoard[i][j], correctBoard[i][j]);
-            }
-        }
-    }
 }

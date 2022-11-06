@@ -1,6 +1,10 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuBoardTest {
@@ -129,14 +133,18 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void checkIfSudokuBoardCorrectTest() {
+    public void checkIfSudokuBoardCorrectTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         exampleSudokuBoard_2.solveGame();
-        assertTrue(exampleSudokuBoard_2.checkBoard());
+        Method m = exampleSudokuBoard_2.getCheckBoard();
+        Boolean result = (Boolean) m.invoke(exampleSudokuBoard_2);
+        assertTrue(result);
     }
 
     @Test
-    public void checkIfSudokuBoardIsNotCorrectTest(){
-        assertFalse(exampleSudokuBoard_3.checkBoard());
+    public void checkIfSudokuBoardIsNotCorrectTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Method m = exampleSudokuBoard_3.getCheckBoard();
+        Boolean result = (Boolean) m.invoke(exampleSudokuBoard_3);
+        assertFalse(result);
     }
 
     @Test
