@@ -17,6 +17,7 @@ public class SudokuBoxTest {
             {3,4,5,2,8,6,1,7,9}
     };
 
+    @Test
     public void PositiveTest() {
         SudokuSolver solverek = new BacktrackingSudokuSolver();
         SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(solverek);

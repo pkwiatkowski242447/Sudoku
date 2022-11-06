@@ -105,7 +105,7 @@ public class SudokuBoard {
     }
 
     public Method getCheckBoard() throws NoSuchMethodException {
-        Method method = this.getClass().getDeclaredMethod("checkBoard", null);
+        Method method = this.getClass().getDeclaredMethod("checkBoard");
         method.setAccessible(true);
         return method;
     }
@@ -151,9 +151,7 @@ public class SudokuBoard {
         int matrixFirstLine = 3 * (x / 3);
         int matrixFirstColumn = 3 * (y / 3);
         for (int i = 0; i < 3; i++) {
-            for (int h = 0; h < 3; h++) {
-                box[3 * i + h] = board[matrixFirstLine + i][matrixFirstColumn + h];
-            }
+            System.arraycopy(board[matrixFirstLine + i], matrixFirstColumn, box, 3 * i, 3);
         }
         return new SudokuBox(box);
     }

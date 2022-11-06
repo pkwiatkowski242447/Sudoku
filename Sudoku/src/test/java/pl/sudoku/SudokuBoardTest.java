@@ -195,8 +195,7 @@ public class SudokuBoardTest {
         Observer observer = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
         exampleSudokuBoard_1.addObserver(observer);
         assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
-        Observer observer1 = observer;
-        exampleSudokuBoard_1.addObserver(observer1);
+        exampleSudokuBoard_1.addObserver(observer);
         assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
     }
 
