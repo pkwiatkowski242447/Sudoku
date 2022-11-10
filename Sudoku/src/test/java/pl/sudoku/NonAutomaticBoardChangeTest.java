@@ -33,7 +33,7 @@ public class NonAutomaticBoardChangeTest {
 
     @Test
     public void updateIncorrectBoardTest() {
-        NonAutomaticBoardChangeObserver observer = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
+        NonAutomaticBoardChangeBoardChangeObserver observer = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
         exampleSudokuBoard_1.addObserver(observer);
         int[][] preChange = observer.getBoard();
         exampleSudokuBoard_1.set(0,2,0);
@@ -47,7 +47,7 @@ public class NonAutomaticBoardChangeTest {
 
     @Test
     public void updateCorrectBoardTest() {
-        NonAutomaticBoardChangeObserver observer = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_2);
+        NonAutomaticBoardChangeBoardChangeObserver observer = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_2);
         exampleSudokuBoard_2.addObserver(observer);
         int[][] preChange = observer.getBoard();
         exampleSudokuBoard_2.set(0,0,5);

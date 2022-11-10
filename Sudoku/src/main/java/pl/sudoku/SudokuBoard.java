@@ -1,27 +1,27 @@
 package pl.sudoku;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
+import java.util.Set;
 
 public class SudokuBoard {
-    private final SudokuField[][] board = new SudokuField[9][9];
+    private final List<SudokuField> board = Arrays.asList(new SudokuField[81]);
     private final SudokuSolver solver;
-    private Vector<Observer> vectorOfObservers = new Vector<>();
+    private Set<Observer> setOfObservers = new HashSet<>();
 
-    private void generateSudokuFields() {
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                board[i][j] = new SudokuField();
-            }
+    private void generateSudokuFields(int amount, List<SudokuField> list) {
+        for (int i = 0; i < amount; i++) {
+            list.set(i, new SudokuField());
         }
     }
 
     public SudokuBoard(int[][] sudokuBoard) {
         solver = new BacktrackingSudokuSolver();
         boolean correctBoard = true;
-        generateSudokuFields();
+        generateSudokuFields(81, board);
 
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
@@ -46,7 +46,7 @@ public class SudokuBoard {
     }
 
     public SudokuBoard(SudokuSolver solver1) {
-        generateSudokuFields();
+        generateSudokuFields(81, board);
         solver = solver1;
     }
 
@@ -58,28 +58,28 @@ public class SudokuBoard {
         if ((x >= 9 || y >= 9) || (x < 0 || y < 0)) {
             return 0;
         } else {
-            return board[x][y].getFieldValue();
+            return board.get(x * 9 + y).getFieldValue();
         }
     }
 
     public void set(int x, int y, int value) {
         if (value >= 0 && value <= 9) {
-            board[x][y].setFieldValue(value);
+            board.get(x *  9 + y).setFieldValue(value);
         }
         if (value == this.get(x, y)) {
             notifyObservers();
         }
     }
 
-    public List<Observer> getObserversList() {
-        return Collections.unmodifiableList(vectorOfObservers);
+    public Set<Observer> getSetOfObservers() {
+        return Collections.unmodifiableSet(setOfObservers);
     }
 
     public int[][] convertToIntArray() {
         int[][] finalArray = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                finalArray[i][j] = board[i][j].getFieldValue();
+                finalArray[i][j] = board.get(i * 9 + j).getFieldValue();
             }
         }
         return finalArray;
@@ -93,7 +93,7 @@ public class SudokuBoard {
                 sudokuOutput += "| ";
                 for (int j = 0; j < 3; j++) {
                     for (int z = 0; z < 3; z++) {
-                        sudokuOutput += board[i * 3 + l][j * 3 + z].getFieldValue() + " ";
+                        sudokuOutput += this.get(i * 3 + l, j * 3 + z) + " ";
                     }
                     sudokuOutput += "| ";
                 }
@@ -133,43 +133,65 @@ public class SudokuBoard {
     }
 
     public SudokuRow getRow(int y) {
-        SudokuField[] row = new SudokuField[9];
-        System.arraycopy(board[y], 0, row, 0, 9);
-        return new SudokuRow(row);
+        if (y >= 0 & y < 9) {
+            List<SudokuField> row = Arrays.asList(new SudokuField[9]);
+            generateSudokuFields(9, row);
+            for (int i = 0; i < 9; i++) {
+                row.get(i).setFieldValue(board.get(y * 9 + i).getFieldValue());
+            }
+            return new SudokuRow(row);
+        } else {
+            return null;
+        }
     }
 
     public SudokuColumn getColumn(int x) {
-        SudokuField[] column = new SudokuField[9];
-        for (int i = 0; i < 9; i++) {
-            column[i] = board[i][x];
+        if (x >= 0 & x < 9) {
+            List<SudokuField> column = Arrays.asList(new SudokuField[9]);
+            generateSudokuFields(9, column);
+            for (int i = 0; i < 9; i++) {
+                column.get(i).setFieldValue(board.get(i * 9 + x).getFieldValue());
+            }
+            return new SudokuColumn(column);
+        } else {
+            return null;
         }
-        return new SudokuColumn(column);
     }
 
     public SudokuBox getBox(int x, int y) {
-        SudokuField[] box = new SudokuField[9];
-        int matrixFirstLine = 3 * (x / 3);
-        int matrixFirstColumn = 3 * (y / 3);
-        for (int i = 0; i < 3; i++) {
-            System.arraycopy(board[matrixFirstLine + i], matrixFirstColumn, box, 3 * i, 3);
+        if ((x >= 0 & y >= 0) & (x < 9 & y < 9)) {
+            List<SudokuField> box = Arrays.asList(new SudokuField[9]);
+            generateSudokuFields(9, box);
+            int matrixFirstLine = 3 * (x / 3);
+            int matrixFirstColumn = 3 * (y / 3);
+            for (int i = 0; i < 3; i++) {
+                for (int f = 0; f < 3; f++) {
+                    box.get(i * 3 + f)
+                            .setFieldValue(board.get(matrixFirstLine * 9
+                                            + matrixFirstColumn + i * 9 + f)
+                                    .getFieldValue());
+                }
+            }
+            return new SudokuBox(box);
+        } else {
+            return null;
         }
-        return new SudokuBox(box);
     }
 
     public void addObserver(Observer observer) {
-        if (!vectorOfObservers.contains(observer) & observer != null) {
-            vectorOfObservers.add(observer);
+        if (observer != null) {
+            setOfObservers.add(observer);
         }
     }
 
     public void removeObserver(Observer observer) {
-        if (observer != null & vectorOfObservers.contains(observer)) {
-            vectorOfObservers.remove(observer);
+        if (observer != null) {
+            setOfObservers.remove(observer);
         }
     }
 
     public void notifyObservers() {
-        for (Observer observer : vectorOfObservers) {
+        for (Observer observer : setOfObservers) {
             observer.update(this);
         }
     }

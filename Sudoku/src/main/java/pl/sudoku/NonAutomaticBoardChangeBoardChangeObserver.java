@@ -1,9 +1,9 @@
 package pl.sudoku;
 
-public class NonAutomaticBoardChangeObserver extends Observer {
+public class NonAutomaticBoardChangeBoardChangeObserver extends BoardChangeObserver {
 
     @Override
-    public void update(SudokuBoard boardAfterChange) {
+    public void update(final SudokuBoard boardAfterChange) {
         if (super.checkBoard(boardAfterChange)) {
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
@@ -13,7 +13,7 @@ public class NonAutomaticBoardChangeObserver extends Observer {
         }
     }
 
-    public NonAutomaticBoardChangeObserver(final SudokuBoard board) {
+    public NonAutomaticBoardChangeBoardChangeObserver(final SudokuBoard board) {
         super(board);
     }
 }

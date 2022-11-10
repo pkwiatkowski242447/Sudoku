@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class AutomaticBoardChangeObserverTest {
+public class AutomaticBoardChangeBoardChangeObserverTest {
 
     int[][] correctBoard = {
             {5,3,4,6,7,8,9,1,2},
@@ -37,8 +37,8 @@ public class AutomaticBoardChangeObserverTest {
     @Test
     public void updateObserverIncorrectBoardTest() {
         System.setOut(new PrintStream(outContent));
-        Observer observer = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
+        BoardChangeObserver boardChangeObserver = new AutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
         exampleSudokuBoard_1.set(0,0,0);
         System.setOut(originalOut);
         assertEquals(outContent.toString(), "Nieprawidłowe uzupełnienie planszy.");
@@ -46,7 +46,7 @@ public class AutomaticBoardChangeObserverTest {
 
     @Test
     public void updateObserverCorrectBoardTest() {
-        AutomaticBoardChangeObserver observer = new AutomaticBoardChangeObserver(exampleSudokuBoard_2);
+        AutomaticBoardChangeBoardChangeObserver observer = new AutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_2);
         exampleSudokuBoard_2.addObserver(observer);
         exampleSudokuBoard_2.set(0,0,5);
 
