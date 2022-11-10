@@ -18,16 +18,16 @@ public class SudokuBoard {
         }
     }
 
-    public SudokuBoard(int[][] sudokuBoard) {
+    public SudokuBoard(List<Integer> sudokuBoard) {
         solver = new BacktrackingSudokuSolver();
         boolean correctBoard = true;
         generateSudokuFields(81, board);
 
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
-                if (sudokuBoard[i][z] <= 0) {
+                if (sudokuBoard.get(i * 9 + z) <= 0) {
                     correctBoard = false;
-                } else if (sudokuBoard[i][z] > 9) {
+                } else if (sudokuBoard.get(i * 9 + z) > 9) {
                     correctBoard = false;
                 }
             }
@@ -36,7 +36,7 @@ public class SudokuBoard {
         if (correctBoard) {
             for (int i = 0; i < 9; i++) {
                 for (int z = 0; z < 9; z++) {
-                    this.set(i, z, sudokuBoard[i][z]);
+                    this.set(i, z, sudokuBoard.get(i * 9 + z));
                 }
             }
         } else {
@@ -75,14 +75,14 @@ public class SudokuBoard {
         return Collections.unmodifiableSet(setOfObservers);
     }
 
-    public int[][] convertToIntArray() {
-        int[][] finalArray = new int[9][9];
+    public List<Integer> convertToIntList() {
+        List<Integer> finalList = Arrays.asList(new Integer[81]);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                finalArray[i][j] = board.get(i * 9 + j).getFieldValue();
+                finalList.set(i * 9 + j, board.get(i * 9 + j).getFieldValue());
             }
         }
-        return finalArray;
+        return finalList;
     }
 
     public String toString() {
@@ -93,7 +93,7 @@ public class SudokuBoard {
                 sudokuOutput += "| ";
                 for (int j = 0; j < 3; j++) {
                     for (int z = 0; z < 3; z++) {
-                        sudokuOutput += this.get(i * 3 + l, j * 3 + z) + " ";
+                        sudokuOutput += get(i * 3 + l, j * 3 + z) + " ";
                     }
                     sudokuOutput += "| ";
                 }

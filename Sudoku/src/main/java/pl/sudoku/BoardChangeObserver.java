@@ -5,7 +5,7 @@ public abstract class BoardChangeObserver implements Observer {
     protected SudokuBoard board;
 
     public BoardChangeObserver(final SudokuBoard board) {
-        this.board = new SudokuBoard(board.convertToIntArray());
+        this.board = new SudokuBoard(board.convertToIntList());
     }
 
     public abstract void update(final SudokuBoard sudokuBoard);
