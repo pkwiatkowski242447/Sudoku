@@ -14,6 +14,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <organization>
+        <name>Grupa laboratoryjna JM_PN_1200_06</name>
+    </organization>
+
+    <inceptionYear>2022</inceptionYear>
+
     <build>
         <plugins>
 
@@ -102,6 +108,51 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.0.0-M5</version>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <configuration>
+                    <header>header.txt</header>
+                    <properties>
+                        <projectName>Programowanie komponentowe - Sudoku</projectName>
+                    </properties>
+                    <includes>
+                        <include>src/*/java/**/*.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>check</goal>
+                            <goal>format</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.0.0</version>
+
+                <configuration>
+                    <licenseName>apache_v2</licenseName>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>first</id>
+                        <goals>
+                            <goal>download-licenses</goal>
+                            <goal>update-project-license</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
