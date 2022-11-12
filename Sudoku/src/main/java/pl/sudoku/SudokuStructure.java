@@ -1,7 +1,7 @@
 package pl.sudoku;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public abstract class SudokuStructure {
 
@@ -12,7 +12,7 @@ public abstract class SudokuStructure {
     }
 
     public boolean verify() {
-        Vector<Integer> valuesInAGroup = new Vector<>();
+        List<Integer> valuesInAGroup = new ArrayList<>();
         int valueInAGroup;
         for (int i = 0; i < 9; i++) {
             valueInAGroup = group.get(i).getFieldValue();

@@ -13,8 +13,8 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                 do {
                     exampleValue = randomNumberGenerator(9);
                 } while (!matrixCheck(exampleValue,
-                        (3 * numberOfALineMatrix + i),
-                        (3 * numberOfAColumnMatrix + z), board));
+                        3 * numberOfALineMatrix + i,
+                        3 * numberOfAColumnMatrix + z, board));
                 board.set(3 * numberOfALineMatrix + i, 3 * numberOfAColumnMatrix + z, exampleValue);
             }
         }
@@ -51,9 +51,9 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         }
 
         for (int i = 1; i <= 9; i++) {
-            if ((verticalCheck(i, numberOfAColumn, board)
-                    && horizontalCheck(i, numberOfALine, board))
-                    && matrixCheck(i, numberOfALine, numberOfAColumn, board)) {
+            if (verticalCheck(i, numberOfAColumn, board)
+                    & horizontalCheck(i, numberOfALine, board)
+                    & matrixCheck(i, numberOfALine, numberOfAColumn, board)) {
                 board.set(numberOfALine, numberOfAColumn, i);
                 if (fillTheRestOfMatrices(numberOfALine, numberOfAColumn + 1, board)) {
                     return true;

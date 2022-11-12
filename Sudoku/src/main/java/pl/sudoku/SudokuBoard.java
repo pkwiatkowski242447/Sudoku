@@ -51,11 +51,13 @@ public class SudokuBoard {
     }
 
     public void solveGame() {
-        solver.solve(this);
+        do {
+            solver.solve(this);
+        } while (!checkBoard());
     }
 
     public int get(int x, int y) {
-        if ((x >= 9 || y >= 9) || (x < 0 || y < 0)) {
+        if (x >= 9 || y >= 9 || x < 0 || y < 0) {
             return 0;
         } else {
             return board.get(x * 9 + y).getFieldValue();
