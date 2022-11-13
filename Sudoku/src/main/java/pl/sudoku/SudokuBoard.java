@@ -170,7 +170,7 @@ public class SudokuBoard {
             List<SudokuField> column = Arrays.asList(new SudokuField[9]);
             generateSudokuFields(9, column);
             for (int i = 0; i < 9; i++) {
-                column.get(i).setFieldValue(board.get(i * 9 + x).getFieldValue());
+                column.get(i).setFieldValue(get(i, x));
             }
             return new SudokuColumn(column);
         } else {
