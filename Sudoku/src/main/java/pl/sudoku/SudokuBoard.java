@@ -1,21 +1,3 @@
-/*
- * Project name: Programowanie komponentowe - Sudoku
- *
- * Copyright © ${inceptionYear} ${organization.name}
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package pl.sudoku;
 
 import java.lang.reflect.Method;
@@ -26,26 +8,30 @@ import java.util.List;
 import java.util.Set;
 
 public class SudokuBoard {
-    private final List<SudokuField> board = Arrays.asList(new SudokuField[81]);
+
+    private final SudokuField[][] board = new SudokuField[9][9];
+
     private final SudokuSolver solver;
     private Set<Observer> setOfObservers = new HashSet<>();
 
-    private void generateSudokuFields(int amount, List<SudokuField> list) {
-        for (int i = 0; i < amount; i++) {
-            list.set(i, new SudokuField());
+    private void generateSudokuFields() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                board[i][j] = new SudokuField();
+            }
         }
     }
 
-    public SudokuBoard(List<Integer> sudokuBoard) {
+    public SudokuBoard(int[][] sudokuBoard) {
         solver = new BacktrackingSudokuSolver();
         boolean correctBoard = true;
-        generateSudokuFields(81, board);
+        generateSudokuFields();
 
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
-                if (sudokuBoard.get(i * 9 + z) <= 0) {
+                if (sudokuBoard[i][z] <= 0) {
                     correctBoard = false;
-                } else if (sudokuBoard.get(i * 9 + z) > 9) {
+                } else if (sudokuBoard[i][z] > 9) {
                     correctBoard = false;
                 }
             }
@@ -54,7 +40,7 @@ public class SudokuBoard {
         if (correctBoard) {
             for (int i = 0; i < 9; i++) {
                 for (int z = 0; z < 9; z++) {
-                    this.set(i, z, sudokuBoard.get(i * 9 + z));
+                    this.set(i, z, sudokuBoard[i][z]);
                 }
             }
         } else {
@@ -64,27 +50,26 @@ public class SudokuBoard {
     }
 
     public SudokuBoard(SudokuSolver solver1) {
-        generateSudokuFields(81, board);
+        generateSudokuFields();
         solver = solver1;
     }
 
     public void solveGame() {
-        do {
-            solver.solve(this);
-        } while (!checkBoard());
+        solver.solve(this);
+        checkBoard();
     }
 
     public int get(int x, int y) {
         if (x >= 9 || y >= 9 || x < 0 || y < 0) {
             return 0;
         } else {
-            return board.get(x * 9 + y).getFieldValue();
+            return board[x][y].getFieldValue();
         }
     }
 
     public void set(int x, int y, int value) {
         if (value >= 0 && value <= 9) {
-            board.get(x *  9 + y).setFieldValue(value);
+            board[x][y].setFieldValue(value);
         }
         if (value == this.get(x, y)) {
             notifyObservers();
@@ -95,14 +80,14 @@ public class SudokuBoard {
         return Collections.unmodifiableSet(setOfObservers);
     }
 
-    public List<Integer> convertToIntList() {
-        List<Integer> finalList = Arrays.asList(new Integer[81]);
+    public int[][] convertToIntArray() {
+        int[][] finalArray = new int[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                finalList.set(i * 9 + j, board.get(i * 9 + j).getFieldValue());
+                finalArray[i][j] = board[i][j].getFieldValue();
             }
         }
-        return finalList;
+        return finalArray;
     }
 
     public String toString() {
@@ -155,9 +140,11 @@ public class SudokuBoard {
     public SudokuRow getRow(int y) {
         if (y >= 0 & y < 9) {
             List<SudokuField> row = Arrays.asList(new SudokuField[9]);
-            generateSudokuFields(9, row);
             for (int i = 0; i < 9; i++) {
-                row.get(i).setFieldValue(board.get(y * 9 + i).getFieldValue());
+                row.set(i, new SudokuField());
+            }
+            for (int i = 0; i < 9; i++) {
+                row.get(i).setFieldValue(get(y,i));
             }
             return new SudokuRow(row);
         } else {
@@ -168,7 +155,9 @@ public class SudokuBoard {
     public SudokuColumn getColumn(int x) {
         if (x >= 0 & x < 9) {
             List<SudokuField> column = Arrays.asList(new SudokuField[9]);
-            generateSudokuFields(9, column);
+            for (int i = 0; i < 9; i++) {
+                column.set(i, new SudokuField());
+            }
             for (int i = 0; i < 9; i++) {
                 column.get(i).setFieldValue(get(i, x));
             }
@@ -181,15 +170,15 @@ public class SudokuBoard {
     public SudokuBox getBox(int x, int y) {
         if ((x >= 0 & y >= 0) & (x < 9 & y < 9)) {
             List<SudokuField> box = Arrays.asList(new SudokuField[9]);
-            generateSudokuFields(9, box);
             int matrixFirstLine = 3 * (x / 3);
             int matrixFirstColumn = 3 * (y / 3);
+            for (int i = 0; i < 9; i++) {
+                box.set(i, new SudokuField());
+            }
             for (int i = 0; i < 3; i++) {
                 for (int f = 0; f < 3; f++) {
                     box.get(i * 3 + f)
-                            .setFieldValue(board.get(matrixFirstLine * 9
-                                            + matrixFirstColumn + i * 9 + f)
-                                    .getFieldValue());
+                            .setFieldValue(get(matrixFirstLine + i,matrixFirstColumn + f));
                 }
             }
             return new SudokuBox(box);
