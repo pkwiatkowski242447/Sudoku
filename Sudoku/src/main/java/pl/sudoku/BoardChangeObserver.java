@@ -1,14 +1,14 @@
 package pl.sudoku;
 
-public abstract class Extender implements Observer {
+public abstract class BoardChangeObserver implements Observer {
+
     protected SudokuBoard board;
 
-    public Extender(final SudokuBoard board) {
+    public BoardChangeObserver(final SudokuBoard board) {
         this.board = new SudokuBoard(board.convertToIntArray());
     }
 
-    @Override
-    public abstract void update(SudokuBoard exampleBoard);
+    public abstract void update(final SudokuBoard sudokuBoard);
 
     protected boolean checkBoard(final SudokuBoard someBoard) {
         boolean correctBoard = true;
@@ -38,4 +38,6 @@ public abstract class Extender implements Observer {
         }
         return board1;
     }
+
+
 }

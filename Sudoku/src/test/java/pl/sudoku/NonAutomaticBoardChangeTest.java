@@ -16,8 +16,9 @@ public class NonAutomaticBoardChangeTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
+
     int[][] incorrectBoard = {
-            {7,3,4,6,7,8,9,1,2},
+            {9,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,5,6,7},
             {8,5,9,7,6,1,4,2,3},
@@ -27,6 +28,7 @@ public class NonAutomaticBoardChangeTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
+
 
     SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
     SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);

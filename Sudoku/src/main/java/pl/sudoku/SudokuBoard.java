@@ -1,15 +1,18 @@
 package pl.sudoku;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Vector;
+import java.util.Set;
 
 public class SudokuBoard {
 
     private final SudokuField[][] board = new SudokuField[9][9];
+
     private final SudokuSolver solver;
-    private Vector<Observer> vectorOfObservers = new Vector<>();
+    private Set<Observer> setOfObservers = new HashSet<>();
 
     private void generateSudokuFields() {
         for (int i = 0; i < 9; i++) {
@@ -73,8 +76,8 @@ public class SudokuBoard {
         }
     }
 
-    public List<Observer> getObserversList() {
-        return Collections.unmodifiableList(vectorOfObservers);
+    public Set<Observer> getSetOfObservers() {
+        return Collections.unmodifiableSet(setOfObservers);
     }
 
     public int[][] convertToIntArray() {
@@ -95,7 +98,7 @@ public class SudokuBoard {
                 sudokuOutput += "| ";
                 for (int j = 0; j < 3; j++) {
                     for (int z = 0; z < 3; z++) {
-                        sudokuOutput += board[i * 3 + l][j * 3 + z].getFieldValue() + " ";
+                        sudokuOutput += get(i * 3 + l, j * 3 + z) + " ";
                     }
                     sudokuOutput += "| ";
                 }
@@ -135,43 +138,69 @@ public class SudokuBoard {
     }
 
     public SudokuRow getRow(int y) {
-        SudokuField[] row = new SudokuField[9];
-        System.arraycopy(board[y], 0, row, 0, 9);
-        return new SudokuRow(List.of(row));
+        if (y >= 0 & y < 9) {
+            List<SudokuField> row = Arrays.asList(new SudokuField[9]);
+            for (int i = 0; i < 9; i++) {
+                row.set(i, new SudokuField());
+            }
+            for (int i = 0; i < 9; i++) {
+                row.get(i).setFieldValue(get(y,i));
+            }
+            return new SudokuRow(row);
+        } else {
+            return null;
+        }
     }
 
     public SudokuColumn getColumn(int x) {
-        SudokuField[] column = new SudokuField[9];
-        for (int i = 0; i < 9; i++) {
-            column[i] = board[i][x];
+        if (x >= 0 & x < 9) {
+            List<SudokuField> column = Arrays.asList(new SudokuField[9]);
+            for (int i = 0; i < 9; i++) {
+                column.set(i, new SudokuField());
+            }
+            for (int i = 0; i < 9; i++) {
+                column.get(i).setFieldValue(get(i, x));
+            }
+            return new SudokuColumn(column);
+        } else {
+            return null;
         }
-        return new SudokuColumn(List.of(column));
     }
 
     public SudokuBox getBox(int x, int y) {
-        SudokuField[] box = new SudokuField[9];
-        int matrixFirstLine = 3 * (x / 3);
-        int matrixFirstColumn = 3 * (y / 3);
-        for (int i = 0; i < 3; i++) {
-            System.arraycopy(board[matrixFirstLine + i], matrixFirstColumn, box, 3 * i, 3);
+        if ((x >= 0 & y >= 0) & (x < 9 & y < 9)) {
+            List<SudokuField> box = Arrays.asList(new SudokuField[9]);
+            int matrixFirstLine = 3 * (x / 3);
+            int matrixFirstColumn = 3 * (y / 3);
+            for (int i = 0; i < 9; i++) {
+                box.set(i, new SudokuField());
+            }
+            for (int i = 0; i < 3; i++) {
+                for (int f = 0; f < 3; f++) {
+                    box.get(i * 3 + f)
+                            .setFieldValue(get(matrixFirstLine + i,matrixFirstColumn + f));
+                }
+            }
+            return new SudokuBox(box);
+        } else {
+            return null;
         }
-        return new SudokuBox(List.of(box));
     }
 
     public void addObserver(Observer observer) {
-        if (!vectorOfObservers.contains(observer) & observer != null) {
-            vectorOfObservers.add(observer);
+        if (observer != null) {
+            setOfObservers.add(observer);
         }
     }
 
     public void removeObserver(Observer observer) {
-        if (observer != null & vectorOfObservers.contains(observer)) {
-            vectorOfObservers.remove(observer);
+        if (observer != null) {
+            setOfObservers.remove(observer);
         }
     }
 
     public void notifyObservers() {
-        for (Observer observer : vectorOfObservers) {
+        for (Observer observer : setOfObservers) {
             observer.update(this);
         }
     }

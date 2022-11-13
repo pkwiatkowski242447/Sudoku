@@ -1,9 +1,13 @@
 package pl.sudoku;
 
-public class AutomaticBoardChangeObserver extends Extender {
+public class AutomaticBoardChangeObserver extends BoardChangeObserver {
+
+    public AutomaticBoardChangeObserver(final SudokuBoard board) {
+        super(board);
+    }
 
     @Override
-    public void update(SudokuBoard boardAfterChange) {
+    public void update(final SudokuBoard boardAfterChange) {
         if (!super.checkBoard(boardAfterChange)) {
             System.out.print("Nieprawidłowe uzupełnienie planszy.");
         } else {
@@ -13,9 +17,5 @@ public class AutomaticBoardChangeObserver extends Extender {
                 }
             }
         }
-    }
-
-    public AutomaticBoardChangeObserver(SudokuBoard board) {
-        super(board);
     }
 }
