@@ -1,20 +1,21 @@
 package pl.sudoku;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class SudokuStructure {
 
-    protected SudokuField[] group;
+    protected List<SudokuField> group;
 
-    public SudokuStructure(SudokuField[] group) {
+    public SudokuStructure(List<SudokuField> group) {
         this.group = group;
     }
 
     public boolean verify() {
-        Vector<Integer> valuesInAGroup = new Vector<>();
+        List<Integer> valuesInAGroup = new ArrayList<>();
         int valueInAGroup;
         for (int i = 0; i < 9; i++) {
-            valueInAGroup = group[i].getFieldValue();
+            valueInAGroup = group.get(i).getFieldValue();
             if (valuesInAGroup.contains(valueInAGroup) || valueInAGroup == 0) {
                 return false;
             } else {
