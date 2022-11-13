@@ -20,10 +20,12 @@ package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
 
-public class NonAutomaticBoardChangeTest {
+public class AutomaticBoardChangeBoardChangeObserverTest {
 
     Integer[] correctBoard = {
             5,3,4,6,7,8,9,1,2,
@@ -53,28 +55,35 @@ public class NonAutomaticBoardChangeTest {
 
     SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(sudokuFieldList_1);
     SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(sudokuFieldList_2);
+    ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+    PrintStream originalOut = System.out;
 
     @Test
-    public void updateIncorrectBoardTest() {
-        NonAutomaticBoardChangeBoardChangeObserver observer = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-        int[][] preChange = observer.getBoard();
-        exampleSudokuBoard_1.set(0,2,0);
-        int[][] postChange = observer.getBoard();
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                assertEquals(preChange[i][j], postChange[i][j]);
-            }
-        }
+    public void updateObserverIncorrectBoardTest() {
+        System.setOut(new PrintStream(outContent));
+        BoardChangeObserver boardChangeObserver = new AutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        exampleSudokuBoard_1.set(0,0,0);
+        System.setOut(originalOut);
+        assertEquals(outContent.toString(), "Nieprawidłowe uzupełnienie planszy.");
     }
 
     @Test
-    public void updateCorrectBoardTest() {
-        NonAutomaticBoardChangeBoardChangeObserver observer = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_2);
+    public void updateObserverCorrectBoardTest() {
+        AutomaticBoardChangeBoardChangeObserver observer = new AutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_2);
         exampleSudokuBoard_2.addObserver(observer);
-        int[][] preChange = observer.getBoard();
         exampleSudokuBoard_2.set(0,0,5);
-        int[][] postChange = observer.getBoard();
-        assertTrue(preChange[0][0] != postChange[0][0]);
+
+        int[][] board1 = new int[9][9];
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                board1[i][j] = exampleSudokuBoard_2.get(i,j);
+            }
+        }
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                assertEquals(board1[i][j], exampleSudokuBoard_2.get(i, j));
+            }
+        }
     }
 }

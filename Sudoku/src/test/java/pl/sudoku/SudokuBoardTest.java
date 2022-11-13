@@ -1,57 +1,80 @@
+/*
+ * Project name: Programowanie komponentowe - Sudoku
+ *
+ * Copyright © ${inceptionYear} ${organization.name}
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuBoardTest {
 
-    int[][] exampleBoard_1 = {
-            {5,3,4,6,7,8,9,1,2},
-            {6,7,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,5,6,7},
-            {8,5,9,7,6,1,4,2,3},
-            {4,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,8,7,4,1,9,6,3,5},
-            {3,4,5,2,8,6,1,7,9}
+    Integer[] exampleBoard_1 = {
+            5,3,4,6,7,8,9,1,2,
+            6,7,2,1,9,5,3,4,8,
+            1,9,8,3,4,2,5,6,7,
+            8,5,9,7,6,1,4,2,3,
+            4,2,6,8,5,3,7,9,1,
+            7,1,3,9,2,4,8,5,6,
+            9,6,1,5,3,7,2,8,4,
+            2,8,7,4,1,9,6,3,5,
+            3,4,5,2,8,6,1,7,9
     };
 
-    /*  Plansza bardzo podobna do exmpleBoard_1, ale w pierwszym wierszu, kolumnie i macierzy 3x3
-        zmieniono niektóre wartości, aby plansza, czy też układ liczb był niepoprawny
-     */
-    int[][] exampleBoard_2 = {
-            {5,3,4,6,7,8,9,5,2},
-            {6,5,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,1,6,7},
-            {8,4,9,7,6,1,4,2,3},
-            {5,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,8,7,4,1,9,6,3,5},
-            {3,4,5,2,8,6,1,7,9}
+    Integer[] exampleBoard_2 = {
+            5,3,4,6,7,8,9,5,2,
+            6,5,2,1,9,5,3,4,8,
+            1,9,8,3,4,2,1,6,7,
+            8,4,9,7,6,1,4,2,3,
+            5,2,6,8,5,3,7,9,1,
+            7,1,3,9,2,4,8,5,6,
+            9,6,1,5,3,7,2,8,4,
+            2,8,7,4,1,9,6,3,5,
+            3,4,5,2,8,6,1,7,9
     };
 
-    int[][] incorrectBoard = {
-            {5,3,4,6,7,8,9,10,2},
-            {6,-1,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,1,6,7},
-            {8,4,9,7,6,1,4,2,3},
-            {5,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,-3,7,4,1,9,6,-2,5},
-            {3,4,5,2,8,6,1,7,9}
+    Integer[] incorrectBoard = {
+            5,3,4,6,7,8,9,10,2,
+            6,-1,2,1,9,5,3,4,8,
+            1,9,8,3,4,2,1,6,7,
+            8,4,9,7,6,1,4,2,3,
+            5,2,6,8,5,3,7,9,1,
+            7,1,3,9,2,4,8,5,6,
+            9,6,1,5,3,7,2,8,4,
+            2,-3,7,4,1,9,6,-2,5,
+            3,4,5,2,8,6,1,7,9
     };
 
-    SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(exampleBoard_1);
+
+    List<Integer> sudokuFieldList_1 = Arrays.asList(exampleBoard_1);
+    List<Integer> sudokuFieldList_2 = Arrays.asList(exampleBoard_2);
+    List<Integer> sudokuFieldList_3 = Arrays.asList(incorrectBoard);
+
+    SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(sudokuFieldList_1);
     SudokuSolver exampleSolver_1 = new BacktrackingSudokuSolver();
     SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleSolver_1);
-    SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(exampleBoard_2);
+    SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(sudokuFieldList_2);
+    SudokuBoard exampleSudokuBoard_4 = new SudokuBoard(exampleSolver_1);
 
     @Test
     public void valueGetterTest() {
@@ -84,23 +107,23 @@ public class SudokuBoardTest {
 
     @Test
     public void sudokuWhenPassedBoardIsCorrect() {
-        SudokuBoard testSudokuBoard = new SudokuBoard(exampleBoard_1);
+        SudokuBoard testSudokuBoard = new SudokuBoard(sudokuFieldList_1);
 
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
-                assertEquals(testSudokuBoard.get(i, z), exampleBoard_1[i][z]);
+                assertEquals(testSudokuBoard.get(i, z), sudokuFieldList_1.get(i * 9 + z));
             }
         }
     }
 
     @Test
     public void sudokuWhenPassedBoardIsIncorrect() {
-        SudokuBoard testSudokuBoard = new SudokuBoard(incorrectBoard);
+        SudokuBoard testSudokuBoard = new SudokuBoard(sudokuFieldList_3);
 
         boolean areTheSame = true;
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
-                if (testSudokuBoard.get(i, z) != exampleBoard_1[i][z]) {
+                if (testSudokuBoard.get(i, z) != sudokuFieldList_3.get(i * 9 + z)) {
                     areTheSame = false;
                 }
             }
@@ -112,11 +135,11 @@ public class SudokuBoardTest {
     public void sudokuBoardUniquenessTest() {
         boolean areSudokusIdentical = true;
         exampleSudokuBoard_2.solveGame();
-        int[][] boardContent = new int[9][9];
+        List<Integer> boardContent = Arrays.asList(new Integer[81]);
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                boardContent[i][j] = exampleSudokuBoard_2.get(i, j);
+                boardContent.set(i * 9 + j, exampleSudokuBoard_2.get(i, j));
             }
         }
 
@@ -124,7 +147,7 @@ public class SudokuBoardTest {
 
         for (int i = 0; i < 9; i ++) {
             for (int j = 0; j < 9; j++) {
-                if (exampleSudokuBoard_2.get(i, j) != boardContent[i][j]) {
+                if (exampleSudokuBoard_2.get(i, j) != boardContent.get(i * 9 + j)) {
                     areSudokusIdentical = false;
                 }
             }
@@ -173,63 +196,98 @@ public class SudokuBoardTest {
 
     @Test
     public void addCorrectObserverTest() {
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 0);
-        Observer observer = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
-        Observer observer1 = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer1);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 2);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
+        BoardChangeObserver boardChangeObserver = new AutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
+        BoardChangeObserver boardChangeObserver1 = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver1);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 2);
     }
 
     @Test
     public void addObserverThatIsNullTest() {
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 0);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
         exampleSudokuBoard_1.addObserver(null);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 0);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
     }
 
     @Test
     public void addObserverAlreadyOnBoardTest() {
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 0);
-        Observer observer = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
-        Observer observer1 = observer;
-        exampleSudokuBoard_1.addObserver(observer1);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
+        BoardChangeObserver boardChangeObserver = new AutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
     }
 
     @Test
     public void removeCorrectObserverTest() {
-        Observer observer = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
-        exampleSudokuBoard_1.removeObserver(observer);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 0);
+        BoardChangeObserver boardChangeObserver = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
+        exampleSudokuBoard_1.removeObserver(boardChangeObserver);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
     }
 
     @Test
     public void removeObserverThatIsNullTest() {
-        Observer observer = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
+        BoardChangeObserver boardChangeObserver = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
         exampleSudokuBoard_1.removeObserver(null);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
     }
 
     @Test
     public void removeObserverThatIsNotOnBoardTest() {
-        Observer observer = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        Observer observer1 = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
-        exampleSudokuBoard_1.addObserver(observer);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
-        exampleSudokuBoard_1.removeObserver(observer1);
-        assertEquals(exampleSudokuBoard_1.getObserversList().size(), 1);
+        BoardChangeObserver boardChangeObserver = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        BoardChangeObserver boardChangeObserver1 = new NonAutomaticBoardChangeBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
+        exampleSudokuBoard_1.removeObserver(boardChangeObserver1);
+        assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
     }
 
     @Test
     public void notifyObserversTest() {
         exampleSudokuBoard_1.notifyObservers();
+    }
+
+    @Test
+    public void getRowTest() {
+        exampleSudokuBoard_4.solveGame();
+        for (int i = 0; i < 9; i++) {
+            assertNotNull(exampleSudokuBoard_4.getRow(i));
+        }
+        assertNull(exampleSudokuBoard_4.getRow(9));
+        assertNull(exampleSudokuBoard_4.getRow(-1));
+    }
+
+    @Test
+    public void getColumnTest() {
+        exampleSudokuBoard_4.solveGame();
+        for (int i = 0; i < 9; i++) {
+            assertNotNull(exampleSudokuBoard_4.getColumn(i));
+        }
+        assertNull(exampleSudokuBoard_4.getColumn(9));
+        assertNull(exampleSudokuBoard_4.getColumn(-1));
+    }
+
+    @Test
+    public void getBoxTest() {
+        exampleSudokuBoard_4.solveGame();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                assertNotNull(exampleSudokuBoard_4.getBox(3 * i,3* j));
+            }
+        }
+        assertNull(exampleSudokuBoard_4.getBox(-1,-1));
+        assertNull(exampleSudokuBoard_4.getBox(9,9));
+        assertNull(exampleSudokuBoard_4.getBox(-1,9));
+        assertNull(exampleSudokuBoard_4.getBox(9,-1));
+        assertNull(exampleSudokuBoard_4.getBox(9,5));
+        assertNull(exampleSudokuBoard_4.getBox(3,-1));
     }
 }

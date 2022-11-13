@@ -18,10 +18,22 @@
 
 package pl.sudoku;
 
-import java.util.List;
+public class AutomaticBoardChangeBoardChangeObserver extends BoardChangeObserver {
 
-public class SudokuRow extends SudokuStructure {
-    public SudokuRow(final List<SudokuField> row) {
-        super(row);
+    public AutomaticBoardChangeBoardChangeObserver(final SudokuBoard board) {
+        super(board);
+    }
+
+    @Override
+    public void update(final SudokuBoard boardAfterChange) {
+        if (!super.checkBoard(boardAfterChange)) {
+            System.out.print("Nieprawidłowe uzupełnienie planszy.");
+        } else {
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    this.board.set(i, j, boardAfterChange.convertToIntList().get(i * 9 + j));
+                }
+            }
+        }
     }
 }
