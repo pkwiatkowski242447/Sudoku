@@ -1,6 +1,6 @@
 package pl.sudoku;
 
-public class NonAutomaticBoardChangeObserver extends Observer {
+public class NonAutomaticBoardChangeObserver extends Extender {
 
     @Override
     public void update(SudokuBoard boardAfterChange) {

@@ -180,5 +180,11 @@
             <email>242405@edu.p.lodz.pl</email>
         </developer>
     </developers>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
     <description>Projekt grupy laboratoryjnej JM_PN_1200_06</description>
 </project>

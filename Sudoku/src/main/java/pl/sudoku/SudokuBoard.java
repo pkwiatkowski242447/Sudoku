@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Vector;
 
 public class SudokuBoard {
+
     private final SudokuField[][] board = new SudokuField[9][9];
     private final SudokuSolver solver;
     private Vector<Observer> vectorOfObservers = new Vector<>();
@@ -52,10 +53,11 @@ public class SudokuBoard {
 
     public void solveGame() {
         solver.solve(this);
+        checkBoard();
     }
 
     public int get(int x, int y) {
-        if ((x >= 9 || y >= 9) || (x < 0 || y < 0)) {
+        if (x >= 9 || y >= 9 || x < 0 || y < 0) {
             return 0;
         } else {
             return board[x][y].getFieldValue();
@@ -135,7 +137,7 @@ public class SudokuBoard {
     public SudokuRow getRow(int y) {
         SudokuField[] row = new SudokuField[9];
         System.arraycopy(board[y], 0, row, 0, 9);
-        return new SudokuRow(row);
+        return new SudokuRow(List.of(row));
     }
 
     public SudokuColumn getColumn(int x) {
@@ -143,7 +145,7 @@ public class SudokuBoard {
         for (int i = 0; i < 9; i++) {
             column[i] = board[i][x];
         }
-        return new SudokuColumn(column);
+        return new SudokuColumn(List.of(column));
     }
 
     public SudokuBox getBox(int x, int y) {
@@ -153,7 +155,7 @@ public class SudokuBoard {
         for (int i = 0; i < 3; i++) {
             System.arraycopy(board[matrixFirstLine + i], matrixFirstColumn, box, 3 * i, 3);
         }
-        return new SudokuBox(box);
+        return new SudokuBox(List.of(box));
     }
 
     public void addObserver(Observer observer) {

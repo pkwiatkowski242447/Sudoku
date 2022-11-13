@@ -1,7 +1,9 @@
 package pl.sudoku;
 
+import java.util.List;
+
 public class SudokuRow extends SudokuStructure {
-    public SudokuRow(final SudokuField[] row) {
+    public SudokuRow(List row) {
         super(row);
     }
 }
