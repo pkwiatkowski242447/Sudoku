@@ -1,6 +1,7 @@
 package pl.sudoku;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class SudokuStructure {
@@ -8,7 +9,13 @@ public abstract class SudokuStructure {
     protected List<SudokuField> group;
 
     public SudokuStructure(List<SudokuField> group) {
-        this.group = group;
+        this.group = Arrays.asList(new SudokuField[9]);
+        for (int i = 0; i < 9; i++) {
+            this.group.set(i, new SudokuField());
+        }
+        for (int i = 0; i < 9; i++) {
+            this.group.get(i).setFieldValue(group.get(i).getFieldValue());
+        }
     }
 
     public boolean verify() {
