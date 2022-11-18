@@ -56,6 +56,7 @@ public class SudokuColumnTest {
         assertFalse(exampleColumn_1.equals(exampleColumn_2));
         assertTrue(exampleColumn_2.equals(exampleColumn_2));
         assertFalse(exampleColumn_1.equals(exampleSudokuBoard_3));
+        assertFalse(exampleColumn_1.equals(null));
     }
 
     @Test

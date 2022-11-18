@@ -16,7 +16,6 @@ public class SudokuFieldTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
-
     SudokuField exampleSudokuField_1 = new SudokuField();
     SudokuField exampleSudokuField_2 = new SudokuField();
 
@@ -53,6 +52,7 @@ public class SudokuFieldTest {
 
     @Test
     public void equalsTest() {
+       SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
        exampleSudokuField_1.setFieldValue(1);
        exampleSudokuField_2.setFieldValue(1);
        assertTrue(exampleSudokuField_1.equals(exampleSudokuField_2));
@@ -60,6 +60,8 @@ public class SudokuFieldTest {
        assertFalse(exampleSudokuField_1.equals(exampleSudokuField_2));
        assertFalse(exampleSudokuField_2.equals(null));
        assertTrue(exampleSudokuField_2.equals(exampleSudokuField_2));
+       assertFalse(exampleSudokuField_1.equals(exampleSudokuBoard_1));
+       assertFalse(exampleSudokuField_1.equals(null));
     }
 
     @Test

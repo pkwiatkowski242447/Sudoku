@@ -57,6 +57,7 @@ public class SudokuBoxTest {
         assertFalse(exampleBox_1.equals(exampleBox_2));
         assertTrue(exampleBox_2.equals(exampleBox_2));
         assertFalse(exampleBox_1.equals(exampleSudokuBoard_3));
+        assertFalse(exampleBox_1.equals(null));
     }
 
     @Test

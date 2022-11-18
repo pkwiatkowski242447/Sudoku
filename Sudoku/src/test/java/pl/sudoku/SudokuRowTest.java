@@ -55,6 +55,7 @@ public class SudokuRowTest {
         assertFalse(exampleRow_1.equals(exampleRow_2));
         assertTrue(exampleRow_2.equals(exampleRow_2));
         assertFalse(exampleRow_1.equals(exampleSudokuBoard_3));
+        assertFalse(exampleRow_1.equals(null));
     }
 
     @Test
