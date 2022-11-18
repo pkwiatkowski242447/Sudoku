@@ -38,11 +38,43 @@ public class SudokuColumnTest {
     }
 
     @Test
-
     public void negativeVerificationDueToDuplicatesTest() {
         SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(incorrectBoard);
         assertFalse(exampleSudokuBoard_1.getColumn(0).verify());
         exampleSudokuBoard_1.set(0,0,0);
         assertFalse(exampleSudokuBoard_1.getColumn(0).verify());
+    }
+
+    @Test
+    public void equalsTest() {
+        SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);
+        SudokuColumn exampleColumn_1 = exampleSudokuBoard_3.getColumn(0);
+        SudokuColumn exampleColumn_2 = exampleSudokuBoard_3.getColumn(0);
+        assertFalse(exampleColumn_1 == null);
+        assertTrue(exampleColumn_1.equals(exampleColumn_2));
+        exampleColumn_2 = exampleSudokuBoard_3.getColumn(1);
+        assertFalse(exampleColumn_1.equals(exampleColumn_2));
+        assertTrue(exampleColumn_2.equals(exampleColumn_2));
+        assertFalse(exampleColumn_1.equals(exampleSudokuBoard_3));
+    }
+
+    @Test
+    public void toStringTest() {
+        SudokuBoard exampleSudokuBoard_4 = new SudokuBoard(correctBoard);
+        SudokuColumn exampleColumn = exampleSudokuBoard_4.getColumn(3);
+        String toString = exampleColumn.toString();
+        assertTrue(toString != null);
+        assertTrue(toString.length() > 0);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        SudokuBoard exampleSudokuBoard_5 = new SudokuBoard(correctBoard);
+        SudokuColumn exampleColumn_4 = exampleSudokuBoard_5.getColumn(4);
+        SudokuColumn exampleColumn_5 = exampleSudokuBoard_5.getColumn(5);
+        assertTrue(exampleColumn_4.hashCode() != 0);
+        assertTrue(exampleColumn_4.hashCode() != exampleColumn_5.hashCode());
+        exampleColumn_5 = exampleSudokuBoard_5.getColumn(4);
+        assertTrue(exampleColumn_4.hashCode() == exampleColumn_5.hashCode());
     }
 }

@@ -32,6 +32,8 @@ public class NonAutomaticBoardChangeTest {
 
     SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
     SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);
+    NonAutomaticBoardChangeObserver exampleObserver_1 = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
+    NonAutomaticBoardChangeObserver exampleObserver_2 = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
 
     @Test
     public void updateIncorrectBoardTest() {
@@ -55,5 +57,20 @@ public class NonAutomaticBoardChangeTest {
         exampleSudokuBoard_2.set(0,0,5);
         int[][] postChange = observer.getBoard();
         assertTrue(preChange[0][0] != postChange[0][0]);
+    }
+
+    @Test
+    public void equalsTest() {
+        assertTrue(exampleObserver_1.equals(exampleObserver_2));
+        assertFalse(exampleObserver_1.equals(exampleSudokuBoard_1));
+        assertFalse(exampleObserver_1.equals(null));
+        assertTrue(exampleObserver_1.equals(exampleObserver_1));
+    }
+
+    @Test
+    public void toStringTest() {
+        String toString = exampleObserver_1.toString();
+        assertTrue(toString.length() > 0);
+        assertFalse(toString == null);
     }
 }

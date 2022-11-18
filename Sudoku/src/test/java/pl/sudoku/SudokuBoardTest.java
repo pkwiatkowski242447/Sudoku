@@ -52,6 +52,7 @@ public class SudokuBoardTest {
     SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleSolver_1);
     SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(incorrectBoard1);
     SudokuBoard exampleSudokuBoard_4 = new SudokuBoard(exampleSolver_1);
+    SudokuBoard exampleSudokuBoard_5 = new SudokuBoard(correctBoard);
 
     @Test
     public void valueGetterTest() {
@@ -147,30 +148,6 @@ public class SudokuBoardTest {
     }
 
     @Test
-    public void checkIfSudokuIsDisplayedCorrectlyTest() {
-
-        String sudokuOutput_1 = "";
-        String sudokuOutput_2 = exampleSudokuBoard_1.toString();
-
-        sudokuOutput_1 += "|-----------------------|\n";
-        for (int i = 0; i < 3; i++) {
-            for (int l = 0; l < 3; l++) {
-                sudokuOutput_1 += "| ";
-                for (int j = 0; j < 3; j++) {
-                    for (int z = 0; z < 3; z++) {
-                        sudokuOutput_1 += exampleSudokuBoard_1.get(i * 3 + l, j * 3 + z) + " ";
-                    }
-                    sudokuOutput_1 += "| ";
-                }
-                sudokuOutput_1 += '\n';
-            }
-            sudokuOutput_1 += "|-----------------------|\n";
-        }
-
-        assertEquals(sudokuOutput_1, sudokuOutput_2);
-    }
-
-    @Test
     public void addCorrectObserverTest() {
         assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
         BoardChangeObserver boardChangeObserver = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
@@ -216,6 +193,7 @@ public class SudokuBoardTest {
         assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
     }
 
+    /*
     @Test
     public void removeObserverThatIsNotOnBoardTest() {
         BoardChangeObserver boardChangeObserver = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
@@ -225,6 +203,7 @@ public class SudokuBoardTest {
         exampleSudokuBoard_1.removeObserver(boardChangeObserver1);
         assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
     }
+    */
 
     @Test
     public void notifyObserversTest() {
@@ -265,5 +244,21 @@ public class SudokuBoardTest {
         assertNull(exampleSudokuBoard_4.getBox(9,-1));
         assertNull(exampleSudokuBoard_4.getBox(9,5));
         assertNull(exampleSudokuBoard_4.getBox(3,-1));
+    }
+
+    @Test
+    public void equalsTest() {
+        assertTrue(exampleSudokuBoard_1.equals(exampleSudokuBoard_5));
+        assertFalse(exampleSudokuBoard_5.equals(exampleSolver_1));
+        assertFalse(exampleSudokuBoard_5.equals(null));
+        assertTrue(exampleSudokuBoard_5.equals(exampleSudokuBoard_5));
+    }
+
+    @Test
+    public void toStringTest() {
+        String toString = exampleSudokuBoard_5.toString();
+        assertTrue(toString.length() > 0);
+        assertFalse(toString == null);
+
     }
 }

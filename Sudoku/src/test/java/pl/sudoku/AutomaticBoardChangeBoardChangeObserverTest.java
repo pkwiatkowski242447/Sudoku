@@ -36,6 +36,10 @@ public class AutomaticBoardChangeBoardChangeObserverTest {
     ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     PrintStream originalOut = System.out;
 
+    AutomaticBoardChangeObserver exampleObserver_1 = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
+    AutomaticBoardChangeObserver exampleObserver_2 = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
+
+
     @Test
     public void updateObserverIncorrectBoardTest() {
         System.setOut(new PrintStream(outContent));
@@ -63,5 +67,20 @@ public class AutomaticBoardChangeBoardChangeObserverTest {
                 assertEquals(board1[i][j], exampleSudokuBoard_2.get(i, j));
             }
         }
+    }
+
+    @Test
+    public void equalsTest() {
+        assertTrue(exampleObserver_1.equals(exampleObserver_2));
+        assertFalse(exampleObserver_1.equals(exampleSudokuBoard_1));
+        assertFalse(exampleObserver_1.equals(null));
+        assertTrue(exampleObserver_1.equals(exampleObserver_1));
+    }
+
+    @Test
+    public void toStringTest() {
+        String toString = exampleObserver_1.toString();
+        assertTrue(toString.length() > 0);
+        assertFalse(toString == null);
     }
 }

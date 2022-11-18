@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SudokuBoard {
 
@@ -13,6 +16,7 @@ public class SudokuBoard {
 
     private final SudokuSolver solver;
     private Set<Observer> setOfObservers = new HashSet<>();
+
 
     private void generateSudokuFields() {
         for (int i = 0; i < 9; i++) {
@@ -90,25 +94,6 @@ public class SudokuBoard {
         return finalArray;
     }
 
-    public String toString() {
-        String sudokuOutput = "";
-        sudokuOutput += "|-----------------------|\n";
-        for (int i = 0; i < 3; i++) {
-            for (int l = 0; l < 3; l++) {
-                sudokuOutput += "| ";
-                for (int j = 0; j < 3; j++) {
-                    for (int z = 0; z < 3; z++) {
-                        sudokuOutput += get(i * 3 + l, j * 3 + z) + " ";
-                    }
-                    sudokuOutput += "| ";
-                }
-                sudokuOutput += '\n';
-            }
-            sudokuOutput += "|-----------------------|\n";
-        }
-        return sudokuOutput;
-    }
-
     public Method getCheckBoard() throws NoSuchMethodException {
         Method method = this.getClass().getDeclaredMethod("checkBoard");
         method.setAccessible(true);
@@ -129,7 +114,7 @@ public class SudokuBoard {
         }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (!getBox(3 * i,3 * j).verify()) {
+                if (!getBox(3 * i, 3 * j).verify()) {
                     correctBoard = false;
                 }
             }
@@ -144,7 +129,7 @@ public class SudokuBoard {
                 row.set(i, new SudokuField());
             }
             for (int i = 0; i < 9; i++) {
-                row.get(i).setFieldValue(get(y,i));
+                row.get(i).setFieldValue(get(y, i));
             }
             return new SudokuRow(row);
         } else {
@@ -178,7 +163,7 @@ public class SudokuBoard {
             for (int i = 0; i < 3; i++) {
                 for (int f = 0; f < 3; f++) {
                     box.get(i * 3 + f)
-                            .setFieldValue(get(matrixFirstLine + i,matrixFirstColumn + f));
+                            .setFieldValue(get(matrixFirstLine + i, matrixFirstColumn + f));
                 }
             }
             return new SudokuBox(box);
@@ -205,4 +190,30 @@ public class SudokuBoard {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SudokuBoard that = (SudokuBoard) o;
+
+        return new EqualsBuilder().append(board, that.board).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(board).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("board", board)
+                .toString();
+    }
 }

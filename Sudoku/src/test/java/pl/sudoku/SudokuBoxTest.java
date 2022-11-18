@@ -45,4 +45,37 @@ public class SudokuBoxTest {
         exampleSudokuBoard_2.set(0,4,0);
         assertFalse(exampleSudokuBoard_2.getBox(0,3).verify());
     }
+
+    @Test
+    public void equalsTest() {
+        SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);
+        SudokuBox exampleBox_1 = exampleSudokuBoard_3.getBox(0,0);
+        SudokuBox exampleBox_2 = exampleSudokuBoard_3.getBox(0, 0);
+        assertFalse(exampleBox_1 == null);
+        assertTrue(exampleBox_1.equals(exampleBox_2));
+        exampleBox_2 = exampleSudokuBoard_3.getBox(4,5);
+        assertFalse(exampleBox_1.equals(exampleBox_2));
+        assertTrue(exampleBox_2.equals(exampleBox_2));
+        assertFalse(exampleBox_1.equals(exampleSudokuBoard_3));
+    }
+
+    @Test
+    public void toStringTest() {
+        SudokuBoard exampleSudokuBoard_4 = new SudokuBoard(correctBoard);
+        SudokuBox exampleBox = exampleSudokuBoard_4.getBox(3,3);
+        String toString = exampleBox.toString();
+        assertTrue(toString != null);
+        assertTrue(toString.length() > 0);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        SudokuBoard exampleSudokuBoard_5 = new SudokuBoard(correctBoard);
+        SudokuBox exampleBox_4 = exampleSudokuBoard_5.getBox(4,4);
+        SudokuBox exampleBox_5 = exampleSudokuBoard_5.getBox(7,7);
+        assertTrue(exampleBox_4.hashCode() != 0);
+        assertTrue(exampleBox_4.hashCode() != exampleBox_5.hashCode());
+        exampleBox_5 = exampleSudokuBoard_5.getBox(4,4);
+        assertTrue(exampleBox_4.hashCode() == exampleBox_5.hashCode());
+    }
 }

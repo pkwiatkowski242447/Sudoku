@@ -18,6 +18,7 @@ public class SudokuFieldTest {
     };
 
     SudokuField exampleSudokuField_1 = new SudokuField();
+    SudokuField exampleSudokuField_2 = new SudokuField();
 
     @Test
     public void valueGetterTest() {
@@ -48,6 +49,34 @@ public class SudokuFieldTest {
         assertEquals(9, exampleSudokuField_1.getFieldValue());
         exampleSudokuField_1.setFieldValue(0);
         assertEquals(0, exampleSudokuField_1.getFieldValue());
+    }
+
+    @Test
+    public void equalsTest() {
+       exampleSudokuField_1.setFieldValue(1);
+       exampleSudokuField_2.setFieldValue(1);
+       assertTrue(exampleSudokuField_1.equals(exampleSudokuField_2));
+       exampleSudokuField_2.setFieldValue(2);
+       assertFalse(exampleSudokuField_1.equals(exampleSudokuField_2));
+       assertFalse(exampleSudokuField_2.equals(null));
+       assertTrue(exampleSudokuField_2.equals(exampleSudokuField_2));
+    }
+
+    @Test
+    public void toStringTest() {
+        exampleSudokuField_1.setFieldValue(4);
+        String toString = exampleSudokuField_1.toString();
+        assertTrue(toString.length() > 0);
+        assertFalse(toString == null);
+
+    }
+
+    @Test
+    public void hashCodeTest() {
+        exampleSudokuField_1.setFieldValue(5);
+        assertTrue(exampleSudokuField_1.hashCode() != 0);
+        exampleSudokuField_2.setFieldValue(5);
+        assertTrue(exampleSudokuField_1.hashCode() == exampleSudokuField_2.hashCode());
     }
 
 }
