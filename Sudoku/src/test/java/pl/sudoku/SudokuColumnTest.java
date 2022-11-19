@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuColumnTest {
 
-    int[][] correctBoard = {
+    private final int[][] correctBoard = {
             {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,5,6,7},
@@ -16,7 +16,7 @@ public class SudokuColumnTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
-    int[][] incorrectBoard = {
+    private final int[][] incorrectBoard = {
             {5,3,9,6,7,8,9,5,2},
             {6,5,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,1,6,7},
@@ -28,21 +28,117 @@ public class SudokuColumnTest {
             {3,4,5,2,8,6,1,7,9}
     };
 
+    private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
+    private final SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);
+    private final SudokuColumn exampleColumn_1 = exampleSudokuBoard_1.getColumn(0);
+
+    @Test
+    public void IntroTest() {
+        assertNotNull(exampleSudokuBoard_1);
+        assertNotNull(exampleSudokuBoard_2);
+        assertNotNull(exampleColumn_1);
+    }
+
     @Test
     public void positiveVerificationTest() {
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
         exampleSudokuBoard_1.solveGame();
+        SudokuColumn tempColumn;
         for (int i = 0; i < 9; i++) {
-            assertTrue(exampleSudokuBoard_1.getColumn(i).verify());
+            tempColumn = exampleSudokuBoard_1.getColumn(i);
+            assertNotNull(tempColumn);
+            assertTrue(tempColumn.verify());
         }
     }
 
     @Test
-
     public void negativeVerificationDueToDuplicatesTest() {
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(incorrectBoard);
-        assertFalse(exampleSudokuBoard_1.getColumn(0).verify());
-        exampleSudokuBoard_1.set(0,0,0);
-        assertFalse(exampleSudokuBoard_1.getColumn(0).verify());
+        SudokuColumn tempColumn = exampleSudokuBoard_2.getColumn(0);
+
+        assertNotNull(tempColumn);
+
+        assertFalse(tempColumn.verify());
+        exampleSudokuBoard_2.set(0,0,0);
+
+        tempColumn = exampleSudokuBoard_2.getColumn(0);
+
+        assertNotNull(tempColumn);
+
+        assertFalse(tempColumn.verify());
+    }
+
+    @Test
+    public void hashCodeTest() {
+        SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);
+
+        assertNotNull(exampleSudokuBoard_3);
+
+        SudokuColumn tempColumn_2 = exampleSudokuBoard_1.getColumn(1);
+        SudokuColumn tempColumn_3 = exampleSudokuBoard_3.getColumn(0);
+
+        assertNotNull(tempColumn_2);
+        assertNotNull(tempColumn_3);
+
+        assertEquals(exampleColumn_1.hashCode(), exampleColumn_1.hashCode());
+        assertNotEquals(exampleColumn_1.hashCode(), tempColumn_2.hashCode());
+        assertEquals(exampleColumn_1.hashCode(), tempColumn_3.hashCode());
+        assertEquals(exampleColumn_1.hashCode(), tempColumn_3.hashCode());
+    }
+
+    @Test
+    public void equalsTestWhenTheSameObject() {
+        assertTrue(exampleColumn_1.equals(exampleColumn_1));
+    }
+
+    @Test
+    public void equalsTestWhenNullObject() {
+        assertFalse(exampleColumn_1.equals(null));
+    }
+
+    @Test
+    public void equalsTestWhenObjectOfDifferentType() {
+        SudokuSolver someSolver = new BacktrackingSudokuSolver();
+
+        assertNotNull(someSolver);
+        assertEquals(someSolver.getClass(), BacktrackingSudokuSolver.class);
+
+        assertFalse(exampleColumn_1.equals(someSolver));
+    }
+
+    @Test
+    public void equalsTestWhenFieldValuesAreTheSame() {
+        SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);
+
+        assertNotNull(exampleSudokuBoard_3);
+
+        SudokuColumn exampleColumn_2 = exampleSudokuBoard_3.getColumn(0);
+
+        assertNotNull(exampleColumn_2);
+
+        assertNotSame(exampleColumn_1, exampleColumn_2);
+        assertTrue(exampleColumn_1.equals(exampleColumn_2));
+    }
+
+    @Test
+    public void equalsTestWhenFieldValuesAreDifferent() {
+        SudokuColumn exampleColumn_2 = exampleSudokuBoard_1.getColumn(1);
+
+        assertNotNull(exampleColumn_2);
+
+        assertFalse(exampleColumn_1.equals(exampleColumn_2));
+    }
+
+    @Test
+    public void toStringTest() {
+        String someString = exampleColumn_1.toString();
+        assertNotNull(someString);
+        assertTrue(someString.length() > 0);
+    }
+
+    @Test
+    public void getValueInStructureTest() {
+        assertEquals(exampleColumn_1.getValueInStructure(-1), 0);
+        assertEquals(exampleColumn_1.getValueInStructure(10), 0);
+        assertEquals(exampleColumn_1.getValueInStructure(0), 5);
+        assertEquals(exampleColumn_1.getValueInStructure(8), 3);
     }
 }

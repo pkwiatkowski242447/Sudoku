@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuRowTest {
 
-    int[][] correctBoard = {
+    private final int[][] correctBoard = {
             {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,5,6,7},
@@ -16,7 +16,7 @@ public class SudokuRowTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
-    int[][] incorrectBoard = {
+    private final int[][] incorrectBoard = {
             {5,3,4,6,7,8,9,5,2},
             {6,5,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,1,6,7},
@@ -27,21 +27,116 @@ public class SudokuRowTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
+    private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
+    private final SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);
+    private final SudokuRow exampleRow_1 = exampleSudokuBoard_1.getRow(0);
+    @Test
+    public void IntroTest() {
+        assertNotNull(exampleSudokuBoard_1);
+        assertNotNull(exampleSudokuBoard_2);
+        assertNotNull(exampleRow_1);
+    }
 
     @Test
     public void positiveVerificationTest() {
-        SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
         exampleSudokuBoard_1.solveGame();
+        SudokuRow tempRow;
         for (int i =0; i < 9; i++) {
-            assertTrue(exampleSudokuBoard_1.getRow(i).verify());
+            tempRow = exampleSudokuBoard_1.getRow(i);
+            assertNotNull(tempRow);
+            assertEquals(tempRow.getClass(), SudokuRow.class);
+            assertTrue(tempRow.verify());
         }
     }
 
     @Test
     public void negativeVerificationDueToDuplicatesTest() {
-        SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);
+        SudokuRow tempRow = exampleSudokuBoard_2.getRow(0);
+
+        assertNotNull(tempRow);
+
         assertFalse(exampleSudokuBoard_2.getRow(0).verify());
         exampleSudokuBoard_2.set(0,7,1);
+
+        tempRow = exampleSudokuBoard_2.getRow(0);
+
+        assertNotNull(tempRow);
+
         assertTrue(exampleSudokuBoard_2.getRow(0).verify());
+    }
+
+    @Test
+    public void hashCodeTest() {
+        SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);
+
+        assertNotNull(exampleSudokuBoard_3);
+
+        SudokuRow exampleRow_2 = exampleSudokuBoard_1.getRow(1);
+        SudokuRow exampleRow_3 = exampleSudokuBoard_3.getRow(0);
+
+        assertNotNull(exampleRow_2);
+        assertNotNull(exampleRow_3);
+
+        assertEquals(exampleRow_1.hashCode(), exampleRow_1.hashCode());
+        assertNotEquals(exampleRow_1.hashCode(), exampleRow_2.hashCode());
+        assertEquals(exampleRow_1.hashCode(), exampleRow_3.hashCode());
+
+    }
+
+    @Test
+    public void equalsWhenTheSameObject() {
+        assertTrue(exampleRow_1.equals(exampleRow_1));
+    }
+
+    @Test
+    public void equalsWhenNullObject() {
+        assertFalse(exampleRow_1.equals(null));
+    }
+
+    @Test
+    public void equalsWhenObjectOfDifferentType() {
+        SudokuSolver someSolver = new BacktrackingSudokuSolver();
+
+        assertNotNull(someSolver);
+        assertEquals(someSolver.getClass(), BacktrackingSudokuSolver.class);
+
+        assertFalse(exampleRow_1.equals(someSolver));
+    }
+
+    @Test
+    public void equalsWhenFieldsAreTheSame() {
+        SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);
+
+        assertNotNull(exampleSudokuBoard_3);
+
+        SudokuRow exampleRow_2 = exampleSudokuBoard_3.getRow(0);
+
+        assertNotSame(exampleRow_1, exampleRow_2);
+        assertTrue(exampleRow_1.equals(exampleRow_2));
+    }
+
+    @Test
+    public void equalsWhenFieldAreDifferent() {
+        SudokuRow exampleRow_2 = exampleSudokuBoard_1.getRow(1);
+
+        assertNotNull(exampleRow_2);
+
+        assertNotEquals(exampleRow_1, exampleRow_2);
+        assertFalse(exampleRow_1.equals(exampleRow_2));
+    }
+
+    @Test
+    public void toStringTest() {
+        String outputString = exampleRow_1.toString();
+        assertNotNull(outputString);
+        assertTrue(outputString.length() > 0);
+    }
+
+    @Test
+    public void getValueInStructureTest() {
+        assertEquals(exampleRow_1.getValueInStructure(-1), 0);
+        assertEquals(exampleRow_1.getValueInStructure(10), 0);
+        assertEquals(exampleRow_1.getValueInStructure(0), 5);
+        assertEquals(exampleRow_1.getValueInStructure(8), 2);
     }
 }

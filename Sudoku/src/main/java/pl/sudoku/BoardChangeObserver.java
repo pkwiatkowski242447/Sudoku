@@ -1,5 +1,9 @@
 package pl.sudoku;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public abstract class BoardChangeObserver implements Observer {
 
     protected SudokuBoard board;
@@ -39,5 +43,37 @@ public abstract class BoardChangeObserver implements Observer {
         return board1;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
 
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        BoardChangeObserver that = (BoardChangeObserver) o;
+
+        return new EqualsBuilder().append(board, that.board).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(board).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this);
+        toStringBuilder.append("Type: " + this.getClass());
+        toStringBuilder.append("Board: ");
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                toStringBuilder.append(this.getBoard()[i][j]);
+            }
+            toStringBuilder.append('\n');
+        }
+        return toStringBuilder.toString();
+    }
 }
