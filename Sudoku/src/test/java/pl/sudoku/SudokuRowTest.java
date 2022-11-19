@@ -27,7 +27,6 @@ public class SudokuRowTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
-
     private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
     private final SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);
     private final SudokuRow exampleRow_1 = exampleSudokuBoard_1.getRow(0);

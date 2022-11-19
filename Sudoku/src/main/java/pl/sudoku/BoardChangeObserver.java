@@ -44,25 +44,23 @@ public abstract class BoardChangeObserver implements Observer {
     }
 
     @Override
-    public boolean equals(Object someObject) {
-        if (someObject == this) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (someObject == null) {
+
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        if (someObject.getClass() != this.getClass()) {
-            return false;
-        }
-        EqualsBuilder equalsBuilder = new EqualsBuilder();
-        return equalsBuilder.append(this.board,
-                ((BoardChangeObserver) someObject).board).isEquals();
+
+        BoardChangeObserver that = (BoardChangeObserver) o;
+
+        return new EqualsBuilder().append(board, that.board).isEquals();
     }
 
     @Override
     public int hashCode() {
-        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(47, 91);
-        return hashCodeBuilder.append(this.board).hashCode();
+        return new HashCodeBuilder(17, 37).append(board).toHashCode();
     }
 
     @Override

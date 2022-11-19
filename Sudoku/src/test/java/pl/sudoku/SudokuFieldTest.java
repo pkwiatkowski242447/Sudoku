@@ -100,11 +100,8 @@ public class SudokuFieldTest {
         exampleSudokuField_1.setFieldValue(3);
         exampleSudokuField_2.setFieldValue(5);
         SudokuField exampleSudokuField_3 = new SudokuField();
-
         assertNotNull(exampleSudokuField_3);
-
         exampleSudokuField_3.setFieldValue(5);
-
         assertEquals(exampleSudokuField_1.hashCode(), exampleSudokuField_1.hashCode());
         assertNotEquals(exampleSudokuField_1.hashCode(), exampleSudokuField_2.hashCode());
         assertEquals(exampleSudokuField_2.hashCode(), exampleSudokuField_3.hashCode());
@@ -115,11 +112,8 @@ public class SudokuFieldTest {
         exampleSudokuField_1.setFieldValue(3);
         exampleSudokuField_2.setFieldValue(3);
         SudokuField exampleSudokuField_3 = new SudokuField();
-
         assertNotNull(exampleSudokuField_3);
-
         exampleSudokuField_3.setFieldValue(5);
-
         assertEquals(exampleSudokuField_2.toString(), exampleSudokuField_2.toString());
         assertNotEquals(exampleSudokuField_1.toString(), exampleSudokuField_3.toString());
     }

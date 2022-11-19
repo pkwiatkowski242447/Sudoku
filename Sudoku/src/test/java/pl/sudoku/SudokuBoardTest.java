@@ -333,5 +333,4 @@ public class SudokuBoardTest {
         assertEquals(exampleSudokuBoard_5.hashCode(), exampleSudokuBoard_7.hashCode());
         assertNotEquals(exampleSudokuBoard_5.hashCode(), exampleSudokuBoard_6.hashCode());
     }
-
 }

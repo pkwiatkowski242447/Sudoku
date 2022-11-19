@@ -43,23 +43,22 @@ public abstract class SudokuStructure {
     }
 
     @Override
-    public boolean equals(final Object someObject) {
-        if (someObject == this) {
+    public boolean equals(Object o) {
+        if (this == o) {
             return true;
         }
-        if (someObject == null) {
+
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
-        if (someObject.getClass() != this.getClass()) {
-            return false;
-        }
-        EqualsBuilder equalsBuilder = new EqualsBuilder();
-        return equalsBuilder.append(((SudokuStructure)someObject).group, this.group).isEquals();
+
+        SudokuStructure that = (SudokuStructure) o;
+
+        return new EqualsBuilder().append(group, that.group).isEquals();
     }
 
     @Override
     public int hashCode() {
-        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(47, 91);
-        return hashCodeBuilder.append(this.group).hashCode();
+        return new HashCodeBuilder(17, 37).append(group).toHashCode();
     }
 }

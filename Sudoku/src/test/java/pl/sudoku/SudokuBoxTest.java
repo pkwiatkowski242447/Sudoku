@@ -71,19 +71,6 @@ public class SudokuBoxTest {
     }
 
     @Test
-    public void hashCodeTest() {
-        SudokuBox exampleBox_2 = exampleSudokuBoard_1.getBox(0, 4);
-        SudokuBox exampleBox_3 = exampleSudokuBoard_1.getBox(2, 2);
-
-        assertNotNull(exampleBox_2);
-        assertNotNull(exampleBox_3);
-
-        assertEquals(exampleBox_1.hashCode(), exampleBox_1.hashCode());
-        assertEquals(exampleBox_1.hashCode(), exampleBox_3.hashCode());
-        assertNotEquals(exampleBox_1.hashCode(), exampleBox_2.hashCode());
-    }
-
-    @Test
     public void equalsTestWhenTheSameObject() {
         assertTrue(exampleBox_1.equals(exampleBox_1));
     }
@@ -139,5 +126,18 @@ public class SudokuBoxTest {
         assertEquals(exampleBox_1.getValueInStructure(10), 0);
         assertEquals(exampleBox_1.getValueInStructure(0), 5);
         assertEquals(exampleBox_1.getValueInStructure(8), 8);
+    }
+
+    @Test
+    public void hashCodeTest() {
+        SudokuBox exampleBox_2 = exampleSudokuBoard_1.getBox(0, 4);
+        SudokuBox exampleBox_3 = exampleSudokuBoard_1.getBox(2, 2);
+
+        assertNotNull(exampleBox_2);
+        assertNotNull(exampleBox_3);
+
+        assertEquals(exampleBox_1.hashCode(), exampleBox_1.hashCode());
+        assertEquals(exampleBox_1.hashCode(), exampleBox_3.hashCode());
+        assertNotEquals(exampleBox_1.hashCode(), exampleBox_2.hashCode());
     }
 }

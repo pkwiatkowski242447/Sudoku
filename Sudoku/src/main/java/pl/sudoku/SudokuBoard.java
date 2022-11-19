@@ -17,6 +17,7 @@ public class SudokuBoard {
     private final SudokuSolver solver;
     private Set<Observer> setOfObservers = new HashSet<>();
 
+
     private void generateSudokuFields() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -93,48 +94,6 @@ public class SudokuBoard {
         return finalArray;
     }
 
-    @Override
-    public String toString() {
-        ToStringBuilder stringBuilder = new ToStringBuilder(this);
-        stringBuilder.append("\n|-----------------------| \n");
-        for (int i = 0; i < 3; i++) {
-            for (int l = 0; l < 3; l++) {
-                stringBuilder.append("| ");
-                for (int j = 0; j < 3; j++) {
-                    for (int z = 0; z < 3; z++) {
-                        stringBuilder.append(get(i * 3 + l, j * 3 + z) + " ");
-                    }
-                    stringBuilder.append("| ");
-                }
-                stringBuilder.append('\n');
-            }
-            stringBuilder.append("|-----------------------|\n");
-        }
-        return stringBuilder.toString();
-    }
-
-    @Override
-    public boolean equals(final Object someObject) {
-        if (someObject == this) {
-            return true;
-        }
-        if (someObject == null) {
-            return false;
-        }
-        if (someObject.getClass() != this.getClass()) {
-            return false;
-        }
-
-        EqualsBuilder equalsBuilder = new EqualsBuilder();
-        return equalsBuilder.append(((SudokuBoard)someObject).board,this.board).isEquals();
-    }
-
-    @Override
-    public int hashCode() {
-        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(41, 97);
-        return hashCodeBuilder.append(this.board).hashCode();
-    }
-
     public Method getCheckBoard() throws NoSuchMethodException {
         Method method = this.getClass().getDeclaredMethod("checkBoard");
         method.setAccessible(true);
@@ -155,7 +114,7 @@ public class SudokuBoard {
         }
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (!getBox(3 * i,3 * j).verify()) {
+                if (!getBox(3 * i, 3 * j).verify()) {
                     correctBoard = false;
                 }
             }
@@ -170,7 +129,7 @@ public class SudokuBoard {
                 row.set(i, new SudokuField());
             }
             for (int i = 0; i < 9; i++) {
-                row.get(i).setFieldValue(get(y,i));
+                row.get(i).setFieldValue(get(y, i));
             }
             return new SudokuRow(row);
         } else {
@@ -204,7 +163,7 @@ public class SudokuBoard {
             for (int i = 0; i < 3; i++) {
                 for (int f = 0; f < 3; f++) {
                     box.get(i * 3 + f)
-                            .setFieldValue(get(matrixFirstLine + i,matrixFirstColumn + f));
+                            .setFieldValue(get(matrixFirstLine + i, matrixFirstColumn + f));
                 }
             }
             return new SudokuBox(box);
@@ -229,6 +188,43 @@ public class SudokuBoard {
         for (Observer observer : setOfObservers) {
             observer.update(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        SudokuBoard that = (SudokuBoard) o;
+
+        return new EqualsBuilder().append(board, that.board).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(board).toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        ToStringBuilder stringBuilder = new ToStringBuilder(this);
+        stringBuilder.append('\n');
+        for (int i = 0; i < 3; i++) {
+            for (int l = 0; l < 3; l++) {
+                for (int j = 0; j < 3; j++) {
+                    for (int z = 0; z < 3; z++) {
+                        stringBuilder.append(get(i * 3 + l, j * 3 + z));
+                    }
+                }
+                stringBuilder.append('\n');
+            }
+        }
+        return stringBuilder.toString();
     }
 
 }

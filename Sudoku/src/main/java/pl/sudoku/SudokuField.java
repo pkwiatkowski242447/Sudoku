@@ -19,6 +19,20 @@ public class SudokuField {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || this.getClass() != o.getClass()) {
+            return false;
+        }
+
+        SudokuField that = (SudokuField) o;
+
+        return new EqualsBuilder().append(value, that.value).isEquals();
+    }
+
     public String toString() {
         ToStringBuilder stringBuilder = new ToStringBuilder(this);
         stringBuilder.append(this.getFieldValue());
@@ -26,26 +40,7 @@ public class SudokuField {
     }
 
     @Override
-    public boolean equals(final Object someObject) {
-        if (someObject == this) {
-            return true;
-        }
-        if (someObject == null) {
-            return false;
-        }
-        if (someObject.getClass() != this.getClass()) {
-            return false;
-        }
-
-        EqualsBuilder equalsBuilder = new EqualsBuilder();
-        return equalsBuilder.append(this.getFieldValue(),
-                ((SudokuField)someObject).getFieldValue()).isEquals();
-    }
-
-    @Override
     public int hashCode() {
-        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(41,97);
-        return hashCodeBuilder.append(this.getFieldValue()).hashCode();
+        return new HashCodeBuilder(17, 37).append(value).toHashCode();
     }
-
 }

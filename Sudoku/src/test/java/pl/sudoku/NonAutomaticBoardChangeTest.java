@@ -29,7 +29,6 @@ public class NonAutomaticBoardChangeTest {
             {3,4,5,2,8,6,1,7,9}
     };
 
-
     private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
     private final SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);
     private final SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);

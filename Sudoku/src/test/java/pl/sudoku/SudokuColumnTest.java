@@ -51,7 +51,6 @@ public class SudokuColumnTest {
     }
 
     @Test
-
     public void negativeVerificationDueToDuplicatesTest() {
         SudokuColumn tempColumn = exampleSudokuBoard_2.getColumn(0);
 
@@ -68,7 +67,7 @@ public class SudokuColumnTest {
     }
 
     @Test
-    public void testHashCode() {
+    public void hashCodeTest() {
         SudokuBoard exampleSudokuBoard_3 = new SudokuBoard(correctBoard);
 
         assertNotNull(exampleSudokuBoard_3);
@@ -142,5 +141,4 @@ public class SudokuColumnTest {
         assertEquals(exampleColumn_1.getValueInStructure(0), 5);
         assertEquals(exampleColumn_1.getValueInStructure(8), 3);
     }
-
 }
