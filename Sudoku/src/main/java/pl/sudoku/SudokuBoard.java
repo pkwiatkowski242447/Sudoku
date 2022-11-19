@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SudokuBoard {
 
@@ -90,23 +93,46 @@ public class SudokuBoard {
         return finalArray;
     }
 
+    @Override
     public String toString() {
-        String sudokuOutput = "";
-        sudokuOutput += "|-----------------------|\n";
+        ToStringBuilder stringBuilder = new ToStringBuilder(this);
+        stringBuilder.append("\n|-----------------------| \n");
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 3; l++) {
-                sudokuOutput += "| ";
+                stringBuilder.append("| ");
                 for (int j = 0; j < 3; j++) {
                     for (int z = 0; z < 3; z++) {
-                        sudokuOutput += get(i * 3 + l, j * 3 + z) + " ";
+                        stringBuilder.append(get(i * 3 + l, j * 3 + z) + " ");
                     }
-                    sudokuOutput += "| ";
+                    stringBuilder.append("| ");
                 }
-                sudokuOutput += '\n';
+                stringBuilder.append('\n');
             }
-            sudokuOutput += "|-----------------------|\n";
+            stringBuilder.append("|-----------------------|\n");
         }
-        return sudokuOutput;
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(final Object someObject) {
+        if (someObject == this) {
+            return true;
+        }
+        if (someObject == null) {
+            return false;
+        }
+        if (someObject.getClass() != this.getClass()) {
+            return false;
+        }
+
+        EqualsBuilder equalsBuilder = new EqualsBuilder();
+        return equalsBuilder.append(((SudokuBoard)someObject).board,this.board).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        HashCodeBuilder hashCodeBuilder = new HashCodeBuilder(41, 97);
+        return hashCodeBuilder.append(this.board).hashCode();
     }
 
     public Method getCheckBoard() throws NoSuchMethodException {
