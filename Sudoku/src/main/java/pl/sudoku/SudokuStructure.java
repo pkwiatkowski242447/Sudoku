@@ -1,17 +1,31 @@
 package pl.sudoku;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public abstract class SudokuStructure {
 
-    protected List<SudokuField> group;
+    protected final List<SudokuField> group;
 
-    public SudokuStructure(List<SudokuField> group) {
-        this.group = group;
+    public SudokuStructure(final List<SudokuField> group) {
+        this.group = Arrays.asList(new SudokuField[9]);
+        for (int i = 0; i < 9; i++) {
+            this.group.set(i, new SudokuField());
+        }
+        for (int i = 0; i < 9; i++) {
+            this.group.get(i).setFieldValue(group.get(i).getFieldValue());
+        }
+    }
+
+    public int getValueInStructure(int someIndex) {
+        if (someIndex >= 0 & someIndex < 9) {
+            return group.get(someIndex).getFieldValue();
+        } else {
+            return 0;
+        }
     }
 
     public boolean verify() {
@@ -34,7 +48,7 @@ public abstract class SudokuStructure {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
 
@@ -46,12 +60,5 @@ public abstract class SudokuStructure {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(group).toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("group", group)
-                .toString();
     }
 }

@@ -49,7 +49,7 @@ public abstract class BoardChangeObserver implements Observer {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
 
@@ -65,8 +65,15 @@ public abstract class BoardChangeObserver implements Observer {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("board", board)
-                .toString();
+        ToStringBuilder toStringBuilder = new ToStringBuilder(this);
+        toStringBuilder.append("Type: " + this.getClass());
+        toStringBuilder.append("Board: ");
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                toStringBuilder.append(this.getBoard()[i][j]);
+            }
+            toStringBuilder.append('\n');
+        }
+        return toStringBuilder.toString();
     }
 }

@@ -196,7 +196,7 @@ public class SudokuBoard {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
 
@@ -212,8 +212,19 @@ public class SudokuBoard {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
-                .append("board", board)
-                .toString();
+        ToStringBuilder stringBuilder = new ToStringBuilder(this);
+        stringBuilder.append('\n');
+        for (int i = 0; i < 3; i++) {
+            for (int l = 0; l < 3; l++) {
+                for (int j = 0; j < 3; j++) {
+                    for (int z = 0; z < 3; z++) {
+                        stringBuilder.append(get(i * 3 + l, j * 3 + z));
+                    }
+                }
+                stringBuilder.append('\n');
+            }
+        }
+        return stringBuilder.toString();
     }
+
 }

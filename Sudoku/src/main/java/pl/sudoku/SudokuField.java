@@ -24,7 +24,7 @@ public class SudokuField {
             return true;
         }
 
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || this.getClass() != o.getClass()) {
             return false;
         }
 
@@ -33,15 +33,14 @@ public class SudokuField {
         return new EqualsBuilder().append(value, that.value).isEquals();
     }
 
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(value).toHashCode();
+    public String toString() {
+        ToStringBuilder stringBuilder = new ToStringBuilder(this);
+        stringBuilder.append(this.getFieldValue());
+        return stringBuilder.toString();
     }
 
     @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("value", value)
-                .toString();
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(value).toHashCode();
     }
 }

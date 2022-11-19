@@ -1,5 +1,9 @@
 package pl.sudoku;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class BacktrackingSudokuSolver implements SudokuSolver {
 
 
@@ -7,11 +11,14 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                                   int numberOfAColumnMatrix,
                                   SudokuBoard board) {
         int exampleValue;
-
+        List<Integer> rangeOfValues = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
+        Collections.shuffle(rangeOfValues);
         for (int i = 0; i < 3; i++) {
             for (int z = 0; z < 3; z++) {
+                int iter = 0;
                 do {
-                    exampleValue = randomNumberGenerator(9);
+                    exampleValue = rangeOfValues.get(iter);
+                    iter++;
                 } while (!matrixCheck(exampleValue,
                         3 * numberOfALineMatrix + i,
                         3 * numberOfAColumnMatrix + z, board));
@@ -20,9 +27,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         }
     }
 
-    private int randomNumberGenerator(int rangeOfGenerating) {
-        return (int)(Math.random() * rangeOfGenerating + 1);
-    }
 
     private boolean fillTheRestOfMatrices(int numberOfALine,
                                           int numberOfAColumn,

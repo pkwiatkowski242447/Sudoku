@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuFieldTest {
 
-    int[][] correctBoard = {
+    private final int[][] correctBoard = {
             {5,3,4,6,7,8,9,1,2},
             {6,7,2,1,9,5,3,4,8},
             {1,9,8,3,4,2,5,6,7},
@@ -16,15 +16,26 @@ public class SudokuFieldTest {
             {2,8,7,4,1,9,6,3,5},
             {3,4,5,2,8,6,1,7,9}
     };
-    SudokuField exampleSudokuField_1 = new SudokuField();
-    SudokuField exampleSudokuField_2 = new SudokuField();
+
+    private final SudokuField exampleSudokuField_1 = new SudokuField();
+    private final SudokuField exampleSudokuField_2 = new SudokuField();
+
+    @Test
+    public void IntroTest() {
+        assertNotSame(null, exampleSudokuField_1);
+        assertNotSame(null, exampleSudokuField_2);
+    }
 
     @Test
     public void valueGetterTest() {
         SudokuField[][] table = new SudokuField[9][9];
+
+        assertNotNull(table);
+
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 table[i][j] = new SudokuField();
+                assertNotNull(table[i][j]);
                 table[i][j].setFieldValue(correctBoard[i][j]);
             }
         }
@@ -51,34 +62,60 @@ public class SudokuFieldTest {
     }
 
     @Test
-    public void equalsTest() {
-       SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
-       exampleSudokuField_1.setFieldValue(1);
-       exampleSudokuField_2.setFieldValue(1);
-       assertTrue(exampleSudokuField_1.equals(exampleSudokuField_2));
-       exampleSudokuField_2.setFieldValue(2);
-       assertFalse(exampleSudokuField_1.equals(exampleSudokuField_2));
-       assertFalse(exampleSudokuField_2.equals(null));
-       assertTrue(exampleSudokuField_2.equals(exampleSudokuField_2));
-       assertFalse(exampleSudokuField_1.equals(exampleSudokuBoard_1));
-       assertFalse(exampleSudokuField_1.equals(null));
+    public void equalsTestWhenTheSameObject() {
+        assertTrue(exampleSudokuField_1.equals(exampleSudokuField_1));
     }
 
     @Test
-    public void toStringTest() {
-        exampleSudokuField_1.setFieldValue(4);
-        String toString = exampleSudokuField_1.toString();
-        assertTrue(toString.length() > 0);
-        assertFalse(toString == null);
+    public void  equalsTestWhenNullObject() {
+        assertFalse(exampleSudokuField_1.equals(null));
+    }
 
+    @Test
+    public void equalsTestWhenObjectOfDifferentClass() {
+        SudokuSolver exampleSolver = new BacktrackingSudokuSolver();
+
+        assertNotNull(exampleSolver);
+        assertSame(exampleSolver.getClass(), BacktrackingSudokuSolver.class);
+
+        assertFalse(exampleSudokuField_1.equals(exampleSolver));
+    }
+
+    @Test
+    public void equalsTestWhenValuesAreTheSame() {
+        exampleSudokuField_1.setFieldValue(5);
+        exampleSudokuField_2.setFieldValue(5);
+        assertTrue(exampleSudokuField_1.equals(exampleSudokuField_2));
+    }
+
+    @Test
+    public void equalsTestWhenValuesAreDifferent() {
+        exampleSudokuField_1.setFieldValue(5);
+        exampleSudokuField_2.setFieldValue(3);
+        assertFalse(exampleSudokuField_1.equals(exampleSudokuField_2));
     }
 
     @Test
     public void hashCodeTest() {
-        exampleSudokuField_1.setFieldValue(5);
-        assertTrue(exampleSudokuField_1.hashCode() != 0);
+        exampleSudokuField_1.setFieldValue(3);
         exampleSudokuField_2.setFieldValue(5);
-        assertTrue(exampleSudokuField_1.hashCode() == exampleSudokuField_2.hashCode());
+        SudokuField exampleSudokuField_3 = new SudokuField();
+        assertNotNull(exampleSudokuField_3);
+        exampleSudokuField_3.setFieldValue(5);
+        assertEquals(exampleSudokuField_1.hashCode(), exampleSudokuField_1.hashCode());
+        assertNotEquals(exampleSudokuField_1.hashCode(), exampleSudokuField_2.hashCode());
+        assertEquals(exampleSudokuField_2.hashCode(), exampleSudokuField_3.hashCode());
+    }
+
+    @Test
+    public void toStringTest () {
+        exampleSudokuField_1.setFieldValue(3);
+        exampleSudokuField_2.setFieldValue(3);
+        SudokuField exampleSudokuField_3 = new SudokuField();
+        assertNotNull(exampleSudokuField_3);
+        exampleSudokuField_3.setFieldValue(5);
+        assertEquals(exampleSudokuField_2.toString(), exampleSudokuField_2.toString());
+        assertNotEquals(exampleSudokuField_1.toString(), exampleSudokuField_3.toString());
     }
 
 }
