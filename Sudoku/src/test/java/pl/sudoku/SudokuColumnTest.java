@@ -28,6 +28,18 @@ public class SudokuColumnTest {
             {3,4,5,2,8,6,1,7,9}
     };
 
+    private final int[][] correctBoard1 = {
+            {5,6,1,8,4,7,9,2,3},
+            {3,7,9,5,2,1,6,8,4},
+            {4,2,8,9,6,3,1,7,5},
+            {6,1,3,7,8,9,5,4,2},
+            {7,9,4,6,5,2,3,1,8},
+            {8,5,2,1,3,4,7,9,6},
+            {9,3,5,4,7,8,2,6,1},
+            {1,4,6,2,9,5,8,3,7},
+            {2,8,7,3,1,6,4,5,9}
+    };
+
     private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard);
     private final SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(incorrectBoard);
     private final SudokuColumn exampleColumn_1 = exampleSudokuBoard_1.getColumn(0);
@@ -82,6 +94,13 @@ public class SudokuColumnTest {
         assertNotEquals(exampleColumn_1.hashCode(), tempColumn_2.hashCode());
         assertEquals(exampleColumn_1.hashCode(), tempColumn_3.hashCode());
         assertEquals(exampleColumn_1.hashCode(), tempColumn_3.hashCode());
+
+        SudokuBoard exampleSudokuBoard_4 = new SudokuBoard(correctBoard1);
+        assertNotNull(exampleSudokuBoard_4);
+        SudokuRow someRow = exampleSudokuBoard_4.getRow(0);
+        assertNotNull(someRow);
+        assertEquals(exampleColumn_1.hashCode(), someRow.hashCode());
+        assertFalse(exampleColumn_1.equals(someRow));
     }
 
     @Test
