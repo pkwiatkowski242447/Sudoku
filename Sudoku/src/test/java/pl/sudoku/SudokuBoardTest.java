@@ -1,12 +1,10 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuBoardTest {
@@ -293,6 +291,7 @@ public class SudokuBoardTest {
         String outputString = exampleSudokuBoard_1.toString();
         assertNotNull(outputString);
         assertTrue(outputString.length() > 0);
+        System.out.println(outputString);
     }
 
     @Test
