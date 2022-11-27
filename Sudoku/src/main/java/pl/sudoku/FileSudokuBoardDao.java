@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class FileSudokuBoardDao implements Dao<SudokuBoard> {
+public class FileSudokuBoardDao implements Dao<SudokuBoard>,AutoCloseable {
 
     private final String fileName;
 
@@ -34,5 +34,10 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
         } catch (IOException ioException) {
             throw new RuntimeException(ioException);
         }
+    }
+
+    @Override
+    public void close() {
+        System.out.println("Dokonano zamknięcia zasobów.");
     }
 }

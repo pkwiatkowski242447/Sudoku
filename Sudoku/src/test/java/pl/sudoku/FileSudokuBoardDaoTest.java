@@ -1,9 +1,13 @@
 package pl.sudoku;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertTrue;
 import org.junit.jupiter.api.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 public class FileSudokuBoardDaoTest {
 
@@ -11,6 +15,11 @@ public class FileSudokuBoardDaoTest {
     private final SudokuSolver exampleSolver_1 = new BacktrackingSudokuSolver();
     private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(exampleSolver_1);
     private Dao<SudokuBoard> fileSudokuBoardDao;
+
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+    private final PrintStream originalOut = System.out;
+
 
     @Test
     public void IntroTest() {
@@ -39,4 +48,12 @@ public class FileSudokuBoardDaoTest {
         assertThrows(RuntimeException.class, () -> {fileSudokuBoardDao.write(exampleSudokuBoard_1);});
     }
 
+    @Test
+    public void fileSudokuBoardDaoCloseTest() {
+        FileSudokuBoardDao someDao = (FileSudokuBoardDao) newFactory_1.getFileDao("TestDao");
+        System.setOut(new PrintStream(outContent));
+        someDao.close();
+        System.setOut(originalOut);
+        assertEquals(outContent.toString(), "Dokonano zamknięcia zasobów.\r\n");
+    }
 }
