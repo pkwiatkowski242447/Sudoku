@@ -1,10 +1,15 @@
 package pl.sudoku;
 
+import static org.testng.AssertJUnit.assertNotNull;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SudokuBoardDaoFactoryTest {
+    private final SudokuBoardDaoFactory factory = new SudokuBoardDaoFactory();
 
+    @Test
+    public void factoryTest() {
+        assertNotNull(factory.getFileDao("pliczek"));
+    }
     @Test
     public void getFileDaoTest() {
         SudokuBoardDaoFactory exampleFactory_1 = new SudokuBoardDaoFactory();

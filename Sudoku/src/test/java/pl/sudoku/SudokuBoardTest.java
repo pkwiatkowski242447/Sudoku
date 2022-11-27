@@ -291,6 +291,7 @@ public class SudokuBoardTest {
         String outputString = exampleSudokuBoard_1.toString();
         assertNotNull(outputString);
         assertTrue(outputString.length() > 0);
+        System.out.println(outputString);
     }
 
     @Test
