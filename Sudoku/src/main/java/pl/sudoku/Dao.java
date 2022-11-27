@@ -1,6 +1,7 @@
 package pl.sudoku;
 
-public interface Dao <T> {
+public interface Dao<T> {
     T read();
-    void write (T object);
+
+    void write(T object);
 }

@@ -1,8 +1,12 @@
 package pl.sudoku;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
-public class FileSudokuBoardDao implements Dao<SudokuBoard>{
+public class FileSudokuBoardDao implements Dao<SudokuBoard> {
 
     private final String file;
 
@@ -13,13 +17,12 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard>{
     @Override
     public SudokuBoard read() {
         SudokuBoard objectFile = null;
-       try (FileInputStream fileIn = new FileInputStream(file);
-        ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
-           objectFile = (SudokuBoard) objectIn.readObject();
-       }
-       catch (IOException | ClassNotFoundException ex) {
-           ex.printStackTrace();
-       }
+        try (FileInputStream fileIn = new FileInputStream(file);
+             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+            objectFile = (SudokuBoard) objectIn.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
         return objectFile;
     }
 
@@ -30,10 +33,9 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard>{
             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(object);
             objectOut.close();
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
-    
+
 }
