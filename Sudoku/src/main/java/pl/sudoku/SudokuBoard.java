@@ -16,7 +16,7 @@ public class SudokuBoard implements Serializable {
     private final SudokuField[][] board = new SudokuField[9][9];
 
     private final SudokuSolver solver;
-    private Set<Observer> setOfObservers = new HashSet<>();
+    private final Set<Observer> setOfObservers = new HashSet<>();
 
 
     private void generateSudokuFields() {

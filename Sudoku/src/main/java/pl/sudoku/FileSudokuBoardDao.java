@@ -8,16 +8,16 @@ import java.io.ObjectOutputStream;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {
 
-    private final String file;
+    private final String fileName;
 
-    public FileSudokuBoardDao(String file) {
-        this.file = file + ".txt";
+    public FileSudokuBoardDao(final String fileName) {
+        this.fileName = fileName + ".txt";
     }
 
     @Override
     public SudokuBoard read() {
-        SudokuBoard objectFile = null;
-        try (FileInputStream fileIn = new FileInputStream(file);
+        SudokuBoard objectFile;
+        try (FileInputStream fileIn = new FileInputStream(fileName);
              ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
             objectFile = (SudokuBoard) objectIn.readObject();
         } catch (IOException | ClassNotFoundException ex) {
@@ -27,15 +27,12 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     }
 
     @Override
-    public void write(SudokuBoard object) {
-        try {
-            FileOutputStream fileOut = new FileOutputStream(file);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-            objectOut.writeObject(object);
-            objectOut.close();
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
+    public void write(SudokuBoard exampleSudokuBoard) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(exampleSudokuBoard);
+        } catch (IOException ioException) {
+            throw new RuntimeException(ioException);
         }
     }
-
 }
