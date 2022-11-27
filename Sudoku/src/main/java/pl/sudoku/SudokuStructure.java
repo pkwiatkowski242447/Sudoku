@@ -1,12 +1,13 @@
 package pl.sudoku;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public abstract class SudokuStructure {
+public abstract class SudokuStructure implements Serializable {
 
     protected final List<SudokuField> group;
 
