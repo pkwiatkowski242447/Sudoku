@@ -1,5 +1,6 @@
 package pl.sudoku;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,12 +11,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SudokuBoard {
+public class SudokuBoard implements Serializable {
 
     private final SudokuField[][] board = new SudokuField[9][9];
 
     private final SudokuSolver solver;
-    private Set<Observer> setOfObservers = new HashSet<>();
+    private final Set<Observer> setOfObservers = new HashSet<>();
 
 
     private void generateSudokuFields() {
