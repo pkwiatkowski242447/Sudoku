@@ -155,9 +155,20 @@ public class SudokuRowTest {
 
     @Test
     public void getValueInStructureTest() {
-        assertEquals(exampleRow_1.getValueInStructure(-1), 0);
-        assertEquals(exampleRow_1.getValueInStructure(10), 0);
-        assertEquals(exampleRow_1.getValueInStructure(0), 5);
-        assertEquals(exampleRow_1.getValueInStructure(8), 2);
+        assertEquals(exampleRow_1.getValue(-1), 0);
+        assertEquals(exampleRow_1.getValue(10), 0);
+        assertEquals(exampleRow_1.getValue(0), 5);
+        assertEquals(exampleRow_1.getValue(8), 2);
+    }
+
+    @Test
+    public void cloneTest() throws CloneNotSupportedException {
+        SudokuRow sudokuRow = exampleRow_1.clone();
+        assertNotNull(sudokuRow);
+        assertNotSame(sudokuRow, exampleRow_1);
+        assertTrue(sudokuRow.equals(exampleRow_1));
+        for (int i = 0; i < 9; i++) {
+            assertNotSame(exampleRow_1.getSudokuFieldList().get(i), sudokuRow.getSudokuFieldList().get(i));
+        }
     }
 }

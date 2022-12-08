@@ -332,4 +332,26 @@ public class SudokuBoardTest {
         assertEquals(exampleSudokuBoard_5.hashCode(), exampleSudokuBoard_7.hashCode());
         assertNotEquals(exampleSudokuBoard_5.hashCode(), exampleSudokuBoard_6.hashCode());
     }
+
+    @Test
+    public void cloneTest() {
+        BoardChangeObserver boardObserver = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardObserver);
+        SudokuBoard sudokuBoard = exampleSudokuBoard_1.clone();
+        assertNotNull(sudokuBoard);
+        assertNotSame(sudokuBoard, exampleSudokuBoard_1);
+        assertEquals(sudokuBoard, exampleSudokuBoard_1);
+        for (Observer observer : sudokuBoard.getSetOfObservers()) {
+            for (Observer observer1 : exampleSudokuBoard_1.getSetOfObservers()) {
+                assertNotSame(observer, observer1);
+            }
+        }
+
+        assertNotSame(sudokuBoard.getSolver(), exampleSudokuBoard_1.getSolver());
+    }
+
+    @Test
+    public void cloneFailTest() {
+
+    }
 }

@@ -122,10 +122,10 @@ public class SudokuBoxTest {
 
     @Test
     public void getValueInStructureTest() {
-        assertEquals(exampleBox_1.getValueInStructure(-1), 0);
-        assertEquals(exampleBox_1.getValueInStructure(10), 0);
-        assertEquals(exampleBox_1.getValueInStructure(0), 5);
-        assertEquals(exampleBox_1.getValueInStructure(8), 8);
+        assertEquals(exampleBox_1.getValue(-1), 0);
+        assertEquals(exampleBox_1.getValue(10), 0);
+        assertEquals(exampleBox_1.getValue(0), 5);
+        assertEquals(exampleBox_1.getValue(8), 8);
     }
 
     @Test
@@ -139,5 +139,16 @@ public class SudokuBoxTest {
         assertEquals(exampleBox_1.hashCode(), exampleBox_1.hashCode());
         assertEquals(exampleBox_1.hashCode(), exampleBox_3.hashCode());
         assertNotEquals(exampleBox_1.hashCode(), exampleBox_2.hashCode());
+    }
+
+    @Test
+    public void cloneTest() {
+        SudokuBox sudokuBox = exampleBox_1.clone();
+        assertNotNull(sudokuBox);
+        assertNotSame(sudokuBox, exampleBox_1);
+        assertEquals(sudokuBox, exampleBox_1);
+        for (int i = 0; i < 9; i++) {
+            assertNotSame(sudokuBox.getSudokuFieldList().get(i), exampleBox_1.getSudokuFieldList().get(i));
+        }
     }
 }

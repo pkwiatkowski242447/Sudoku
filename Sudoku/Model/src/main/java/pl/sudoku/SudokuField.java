@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SudokuField implements Serializable {
+public class SudokuField implements Serializable, Comparable<SudokuField>, Cloneable {
 
     private int value;
 
@@ -43,5 +43,26 @@ public class SudokuField implements Serializable {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(value).toHashCode();
+    }
+
+    @Override
+    public int compareTo(SudokuField object) {
+        if (object != null) {
+            if (this.getFieldValue() == object.getFieldValue()) {
+                return 0;
+            } else if (this.getFieldValue() > object.getFieldValue()) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else {
+            throw new NullPointerException("Podany argument jest referencją do null'a.");
+        }
+    }
+
+
+    @Override
+    public SudokuField clone() throws CloneNotSupportedException {
+        return (SudokuField) super.clone();
     }
 }

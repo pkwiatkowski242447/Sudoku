@@ -155,9 +155,20 @@ public class SudokuColumnTest {
 
     @Test
     public void getValueInStructureTest() {
-        assertEquals(exampleColumn_1.getValueInStructure(-1), 0);
-        assertEquals(exampleColumn_1.getValueInStructure(10), 0);
-        assertEquals(exampleColumn_1.getValueInStructure(0), 5);
-        assertEquals(exampleColumn_1.getValueInStructure(8), 3);
+        assertEquals(exampleColumn_1.getValue(-1), 0);
+        assertEquals(exampleColumn_1.getValue(10), 0);
+        assertEquals(exampleColumn_1.getValue(0), 5);
+        assertEquals(exampleColumn_1.getValue(8), 3);
+    }
+
+    @Test
+    public void cloneTest() {
+        SudokuColumn sudokuColumn = exampleColumn_1.clone();
+        assertNotNull(sudokuColumn);
+        assertNotSame(sudokuColumn, exampleColumn_1);
+        assertEquals(sudokuColumn, exampleColumn_1);
+        for (int i = 0; i< 9; i++) {
+            assertNotSame(sudokuColumn.getSudokuFieldList().get(i),exampleColumn_1.getSudokuFieldList().get(i));
+        }
     }
 }
