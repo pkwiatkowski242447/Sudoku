@@ -1,5 +1,10 @@
 package pl.sudoku;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -11,7 +16,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SudokuBoard implements Serializable {
+public class SudokuBoard implements Serializable, Cloneable {
 
     private final SudokuField[][] board = new SudokuField[9][9];
 
@@ -228,4 +233,30 @@ public class SudokuBoard implements Serializable {
         return stringBuilder.toString();
     }
 
+
+    @Override
+    public SudokuBoard clone() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+            for (Observer observer : this.getSetOfObservers()) {
+                oos.writeObject(observer);
+            }
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            SudokuBoard board = (SudokuBoard) ois.readObject();
+            for (int i = 0; i < this.getSetOfObservers().size(); i++) {
+                board.addObserver((Observer) ois.readObject());
+            }
+            baos.close();
+            oos.close();
+            bais.close();
+            ois.close();
+            return board;
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

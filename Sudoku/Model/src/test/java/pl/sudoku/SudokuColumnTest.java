@@ -160,4 +160,12 @@ public class SudokuColumnTest {
         assertEquals(exampleColumn_1.getValueInStructure(0), 5);
         assertEquals(exampleColumn_1.getValueInStructure(8), 3);
     }
+
+    @Test
+    public void cloneTest() {
+        SudokuColumn sourceColumn = exampleSudokuBoard_1.getColumn(0);
+        SudokuColumn copyColumn = sourceColumn.clone();
+        assertNotNull(copyColumn);
+        assertEquals(sourceColumn,copyColumn);
+    }
 }

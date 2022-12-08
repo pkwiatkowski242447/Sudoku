@@ -160,4 +160,11 @@ public class SudokuRowTest {
         assertEquals(exampleRow_1.getValueInStructure(0), 5);
         assertEquals(exampleRow_1.getValueInStructure(8), 2);
     }
+
+    @Test
+    public void cloneTest() throws CloneNotSupportedException {
+        SudokuRow sourceRow = exampleSudokuBoard_1.getRow(2);
+        SudokuRow copyRow = sourceRow.clone();
+        assertEquals(sourceRow,copyRow);
+    }
 }

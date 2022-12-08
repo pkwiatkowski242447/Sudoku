@@ -1,12 +1,22 @@
 package pl.sudoku;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SudokuBox extends SudokuStructure {
+public class SudokuBox extends SudokuStructure implements Cloneable {
 
     public SudokuBox(final List<SudokuField> box) {
         super(box);
+    }
+
+    @Override
+    public SudokuBox clone() {
+        List<SudokuField> boxclone = new ArrayList<SudokuField>(group.size());
+        for (int i = 0; i < group.size(); i++) {
+            boxclone.add(this.getGroup().get(i));
+        }
+        return new SudokuBox(boxclone);
     }
 
     @Override

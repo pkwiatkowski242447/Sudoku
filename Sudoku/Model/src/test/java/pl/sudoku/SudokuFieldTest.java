@@ -118,4 +118,24 @@ public class SudokuFieldTest {
         assertNotEquals(exampleSudokuField_1.toString(), exampleSudokuField_3.toString());
     }
 
+    @Test
+    public void cloneTest() throws CloneNotSupportedException {
+        exampleSudokuField_1.setFieldValue(2);
+        SudokuField copyField = exampleSudokuField_1.clone();
+        assertNotNull(copyField);
+        assertEquals(exampleSudokuField_1,copyField);
+    }
+
+    @Test
+    public void compareToTest() {
+    exampleSudokuField_1.setFieldValue(1);
+    exampleSudokuField_2.setFieldValue(2);
+    assertEquals(exampleSudokuField_1.compareTo(exampleSudokuField_2),-1);
+    exampleSudokuField_2.setFieldValue(1);
+    assertEquals(exampleSudokuField_1.compareTo(exampleSudokuField_2),0);
+    exampleSudokuField_1.setFieldValue(3);
+    assertEquals(exampleSudokuField_1.compareTo(exampleSudokuField_2),1);
+    assertThrows(NullPointerException.class, () -> {exampleSudokuField_1.compareTo(null);});
+    }
+
 }

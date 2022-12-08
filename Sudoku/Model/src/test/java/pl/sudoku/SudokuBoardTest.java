@@ -332,4 +332,14 @@ public class SudokuBoardTest {
         assertEquals(exampleSudokuBoard_5.hashCode(), exampleSudokuBoard_7.hashCode());
         assertNotEquals(exampleSudokuBoard_5.hashCode(), exampleSudokuBoard_6.hashCode());
     }
+
+    @Test
+    public void cloneTest() {
+        BoardChangeObserver boardChangeObserver = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        SudokuBoard testBoard = exampleSudokuBoard_1.clone();
+        assertNotNull(testBoard);
+        assertEquals(exampleSudokuBoard_1,testBoard);
+
+    }
 }

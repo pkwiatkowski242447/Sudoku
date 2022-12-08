@@ -2,6 +2,7 @@ package pl.sudoku;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -18,6 +19,10 @@ public abstract class SudokuStructure {
         for (int i = 0; i < 9; i++) {
             this.group.get(i).setFieldValue(group.get(i).getFieldValue());
         }
+    }
+
+    public List<SudokuField> getGroup() {
+        return Collections.unmodifiableList(group);
     }
 
     public int getValueInStructure(int someIndex) {
