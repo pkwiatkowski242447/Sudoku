@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 public enum Difficulty {
-    EASY(40), MEDIUM(50), HARD(60);
+    EASY(50), MEDIUM(60), HARD(70);
 
     private final int enumValue;
 
@@ -15,20 +15,8 @@ public enum Difficulty {
         enumValue = i;
     }
 
-    public void removeSomeFields(SudokuBoard sudokuBoard) {
-        int numberOfFieldsToRemove = enumValue;
-        int xValue = 0;
-        int yValue = 0;
-        List<Integer> values = Arrays.asList(1,2,3,4,5,6,7,8,9);
-        do {
-            Collections.shuffle(values);
-            xValue = values.get(0);
-            yValue = values.get(0);
-            if (sudokuBoard.get(xValue, yValue) != 0) {
-                sudokuBoard.set(xValue,yValue,0);
-                numberOfFieldsToRemove--;
-            }
-        } while (numberOfFieldsToRemove > 0);
+    public int getEnumValue() {
+        return enumValue;
     }
 
     public static Difficulty toRealDiff(String input) {

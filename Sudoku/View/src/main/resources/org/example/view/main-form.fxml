@@ -28,4 +28,6 @@
    </ChoiceBox>
 
    <Button text="Rozpocznij grę" onAction="#playGame"/>
+
+   <Label fx:id = "noDiffSelected"></Label>
 </VBox>

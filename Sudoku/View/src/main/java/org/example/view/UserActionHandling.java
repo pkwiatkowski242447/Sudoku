@@ -14,17 +14,18 @@ import java.io.IOException;
 
 public class UserActionHandling {
     @FXML
-    private Label someText;
-
+    private Label noDiffSelected;
     @FXML
     private ChoiceBox diffLevel;
+    private static Difficulty difficulty;
 
-    private String input;
-    private Difficulty difficulty;
+    public static Difficulty getDifficulty() {
+        return difficulty;
+    }
 
     @FXML
     protected void playGame(ActionEvent actionEvent) throws IOException {
-        input = diffLevel.getSelectionModel().getSelectedItem().toString();
+        String input = diffLevel.getSelectionModel().getSelectedItem().toString();
         difficulty = Difficulty.toRealDiff(input);
         if (difficulty != null) {
             Parent root = FXMLLoader.load(getClass().getResource("game-view.fxml"));
@@ -33,7 +34,7 @@ public class UserActionHandling {
             stage.setScene(scene);
             stage.show();
         } else {
-            someText.setText("Nie wybrano poziomu trudności.");
+            noDiffSelected.setText("Nie wybrano poziomu trudności.");
         }
     }
 }
