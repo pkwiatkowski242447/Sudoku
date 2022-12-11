@@ -140,7 +140,6 @@ public class SudokuBoxTest {
         assertEquals(exampleBox_1.hashCode(), exampleBox_3.hashCode());
         assertNotEquals(exampleBox_1.hashCode(), exampleBox_2.hashCode());
     }
-<<<<<<< HEAD
 
     @Test
     public void cloneTest() {
@@ -151,13 +150,5 @@ public class SudokuBoxTest {
         for (int i = 0; i < 9; i++) {
             assertNotSame(sudokuBox.getSudokuFieldList().get(i), exampleBox_1.getSudokuFieldList().get(i));
         }
-=======
-    @Test
-    public void cloneTest() throws CloneNotSupportedException {
-        SudokuBox sourceBox = exampleSudokuBoard_1.getBox(0,4);
-        SudokuBox copyBox = sourceBox.clone();
-        assertNotNull(copyBox);
-        assertEquals(sourceBox,copyBox);
->>>>>>> 9e138b33089c356a5466a028177ad5a72ab7f608
     }
 }

@@ -19,20 +19,10 @@ public class SudokuRow extends SudokuStructure implements Cloneable {
         return stringBuilder.toString();
     }
 
-<<<<<<< HEAD
 
     @Override
     public SudokuRow clone() {
         List<SudokuField> tempList = new ArrayList<>(this.getSudokuFieldList());
         return new SudokuRow(tempList);
-=======
-    @Override
-    protected SudokuRow clone() {
-        List<SudokuField> rowclone = new ArrayList<SudokuField>(group.size());
-        for (int i = 0; i < group.size(); i++) {
-            rowclone.add(this.getGroup().get(i));
-        }
-        return new SudokuRow(rowclone);
->>>>>>> 9e138b33089c356a5466a028177ad5a72ab7f608
     }
 }

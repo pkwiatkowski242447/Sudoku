@@ -172,10 +172,4 @@ public class SudokuRowTest {
         }
     }
 
-    @Test
-    public void cloneTest() throws CloneNotSupportedException {
-        SudokuRow sourceRow = exampleSudokuBoard_1.getRow(2);
-        SudokuRow copyRow = sourceRow.clone();
-        assertEquals(sourceRow,copyRow);
-    }
 }

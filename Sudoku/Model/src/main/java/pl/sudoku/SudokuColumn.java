@@ -20,20 +20,10 @@ public class SudokuColumn extends SudokuStructure implements Cloneable {
         return stringBuilder.toString();
     }
 
-<<<<<<< HEAD
 
     @Override
     public SudokuColumn clone() {
         List<SudokuField> tempList = new ArrayList<>(this.getSudokuFieldList());
         return new SudokuColumn(tempList);
-=======
-    @Override
-    protected SudokuColumn clone() {
-        List<SudokuField> columnclone = new ArrayList<SudokuField>(group.size());
-         for (int i = 0; i < group.size(); i++) {
-            columnclone.add(this.getGroup().get(i));
-        }
-        return new SudokuColumn(columnclone);
->>>>>>> 9e138b33089c356a5466a028177ad5a72ab7f608
     }
 }
