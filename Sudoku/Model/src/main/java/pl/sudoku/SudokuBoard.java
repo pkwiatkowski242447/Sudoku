@@ -236,6 +236,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         return stringBuilder.toString();
     }
 
+<<<<<<< HEAD
     @Override
     public SudokuBoard clone() {
         try {
@@ -262,6 +263,31 @@ public class SudokuBoard implements Serializable, Cloneable {
 
             return sudokuBoard;
         } catch (IOException | ClassNotFoundException exception) {
+=======
+
+    @Override
+    public SudokuBoard clone() {
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(this);
+            for (Observer observer : this.getSetOfObservers()) {
+                oos.writeObject(observer);
+            }
+            ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            SudokuBoard board = (SudokuBoard) ois.readObject();
+            for (int i = 0; i < this.getSetOfObservers().size(); i++) {
+                board.addObserver((Observer) ois.readObject());
+            }
+            baos.close();
+            oos.close();
+            bais.close();
+            ois.close();
+            return board;
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+>>>>>>> 9e138b33089c356a5466a028177ad5a72ab7f608
             return null;
         }
     }

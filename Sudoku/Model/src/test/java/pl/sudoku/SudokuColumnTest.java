@@ -171,4 +171,12 @@ public class SudokuColumnTest {
             assertNotSame(sudokuColumn.getSudokuFieldList().get(i),exampleColumn_1.getSudokuFieldList().get(i));
         }
     }
+
+    @Test
+    public void cloneTest() {
+        SudokuColumn sourceColumn = exampleSudokuBoard_1.getColumn(0);
+        SudokuColumn copyColumn = sourceColumn.clone();
+        assertNotNull(copyColumn);
+        assertEquals(sourceColumn,copyColumn);
+    }
 }

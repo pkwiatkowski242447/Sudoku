@@ -22,7 +22,15 @@ public abstract class SudokuStructure implements Serializable {
         }
     }
 
+<<<<<<< HEAD
     public int getValue(int someIndex) {
+=======
+    public List<SudokuField> getGroup() {
+        return Collections.unmodifiableList(group);
+    }
+
+    public int getValueInStructure(int someIndex) {
+>>>>>>> 9e138b33089c356a5466a028177ad5a72ab7f608
         if (someIndex >= 0 & someIndex < 9) {
             return group.get(someIndex).getFieldValue();
         } else {

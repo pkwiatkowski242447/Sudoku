@@ -11,6 +11,15 @@ public class SudokuBox extends SudokuStructure implements Cloneable {
     }
 
     @Override
+    public SudokuBox clone() {
+        List<SudokuField> boxclone = new ArrayList<SudokuField>(group.size());
+        for (int i = 0; i < group.size(); i++) {
+            boxclone.add(this.getGroup().get(i));
+        }
+        return new SudokuBox(boxclone);
+    }
+
+    @Override
     public String toString() {
         ToStringBuilder stringBuilder = new ToStringBuilder(this);
         for (int i = 0; i < 3; i++) {

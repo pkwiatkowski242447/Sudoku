@@ -335,6 +335,7 @@ public class SudokuBoardTest {
 
     @Test
     public void cloneTest() {
+<<<<<<< HEAD
         BoardChangeObserver boardObserver = new AutomaticBoardChangeObserver(exampleSudokuBoard_1);
         exampleSudokuBoard_1.addObserver(boardObserver);
         SudokuBoard sudokuBoard = exampleSudokuBoard_1.clone();
@@ -352,6 +353,13 @@ public class SudokuBoardTest {
 
     @Test
     public void cloneFailTest() {
+=======
+        BoardChangeObserver boardChangeObserver = new NonAutomaticBoardChangeObserver(exampleSudokuBoard_1);
+        exampleSudokuBoard_1.addObserver(boardChangeObserver);
+        SudokuBoard testBoard = exampleSudokuBoard_1.clone();
+        assertNotNull(testBoard);
+        assertEquals(exampleSudokuBoard_1,testBoard);
+>>>>>>> 9e138b33089c356a5466a028177ad5a72ab7f608
 
     }
 }
