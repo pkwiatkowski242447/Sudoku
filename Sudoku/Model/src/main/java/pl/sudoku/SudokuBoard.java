@@ -1,5 +1,10 @@
 package pl.sudoku;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -11,10 +16,9 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SudokuBoard implements Serializable {
+public class SudokuBoard implements Serializable, Cloneable {
 
     private final SudokuField[][] board = new SudokuField[9][9];
-
     private final SudokuSolver solver;
     private final Set<Observer> setOfObservers = new HashSet<>();
 
@@ -57,6 +61,10 @@ public class SudokuBoard implements Serializable {
     public SudokuBoard(SudokuSolver solver1) {
         generateSudokuFields();
         solver = solver1;
+    }
+
+    public SudokuSolver getSolver() {
+        return solver;
     }
 
     public void solveGame() {
@@ -228,4 +236,33 @@ public class SudokuBoard implements Serializable {
         return stringBuilder.toString();
     }
 
+    @Override
+    public SudokuBoard clone() {
+        try {
+            ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutput = new ObjectOutputStream(byteOutput);
+
+            objectOutput.writeObject(this);
+            for (Observer observer : this.getSetOfObservers()) {
+                objectOutput.writeObject(observer);
+            }
+
+            ByteArrayInputStream byteInput = new ByteArrayInputStream(byteOutput.toByteArray());
+            ObjectInputStream objectInput = new ObjectInputStream(byteInput);
+
+            SudokuBoard sudokuBoard = (SudokuBoard) objectInput.readObject();
+            for (int i = 0; i < this.getSetOfObservers().size(); i++) {
+                sudokuBoard.addObserver((Observer) objectInput.readObject());
+            }
+
+            byteInput.close();
+            objectInput.close();
+            byteOutput.close();
+            objectOutput.close();
+
+            return sudokuBoard;
+        } catch (IOException | ClassNotFoundException exception) {
+            return null;
+        }
+    }
 }
