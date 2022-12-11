@@ -6,3 +6,4 @@ nbproject/
 .idea/
 *.iml
 .gitignore.bak
+*.txt
