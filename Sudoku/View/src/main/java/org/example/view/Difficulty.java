@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 public enum Difficulty {
-    EASY(50), MEDIUM(60), HARD(70);
+    EASY(40), MEDIUM(50), HARD(60);
 
     private final int enumValue;
 

@@ -171,4 +171,5 @@ public class SudokuRowTest {
             assertNotSame(exampleRow_1.getSudokuFieldList().get(i), sudokuRow.getSudokuFieldList().get(i));
         }
     }
+
 }

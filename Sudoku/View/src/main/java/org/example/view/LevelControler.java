@@ -1,8 +1,6 @@
 package org.example.view;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -11,7 +9,6 @@ import pl.sudoku.BacktrackingSudokuSolver;
 import pl.sudoku.SudokuBoard;
 import pl.sudoku.SudokuSolver;
 
-import java.net.URL;
 import java.util.*;
 
 public class LevelControler {

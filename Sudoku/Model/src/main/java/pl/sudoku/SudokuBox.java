@@ -22,7 +22,6 @@ public class SudokuBox extends SudokuStructure implements Cloneable {
         return stringBuilder.toString();
     }
 
-
     @Override
     public SudokuBox clone() {
         List<SudokuField> tempList = new ArrayList<>(this.getSudokuFieldList());

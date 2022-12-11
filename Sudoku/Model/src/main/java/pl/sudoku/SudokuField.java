@@ -5,7 +5,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class SudokuField implements Serializable, Comparable<SudokuField>, Cloneable {
+
+public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
 
     private int value;
 
@@ -46,12 +47,12 @@ public class SudokuField implements Serializable, Comparable<SudokuField>, Clone
     }
 
     @Override
-    public int compareTo(SudokuField object) {
-        if (object != null) {
-            if (this.getFieldValue() == object.getFieldValue()) {
-                return 0;
-            } else if (this.getFieldValue() > object.getFieldValue()) {
+    public int compareTo(SudokuField o) {
+        if (o != null) {
+            if (o.getFieldValue() < this.getFieldValue()) {
                 return 1;
+            } else if (o.getFieldValue() == this.getFieldValue()) {
+                return 0;
             } else {
                 return -1;
             }
@@ -62,7 +63,7 @@ public class SudokuField implements Serializable, Comparable<SudokuField>, Clone
 
 
     @Override
-    public SudokuField clone() throws CloneNotSupportedException {
+    protected SudokuField clone() throws CloneNotSupportedException {
         return (SudokuField) super.clone();
     }
 }

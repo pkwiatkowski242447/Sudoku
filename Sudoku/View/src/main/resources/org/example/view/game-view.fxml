@@ -3,8 +3,6 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Text?>
 <VBox alignment="CENTER" spacing="20.0"
       xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1"
@@ -40,5 +38,4 @@
     </GridPane>
     </children>
 
-    <Label fx:id="test"></Label>
 </VBox>

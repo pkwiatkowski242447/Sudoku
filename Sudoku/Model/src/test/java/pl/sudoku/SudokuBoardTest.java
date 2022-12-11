@@ -350,8 +350,4 @@ public class SudokuBoardTest {
         assertNotSame(sudokuBoard.getSolver(), exampleSudokuBoard_1.getSolver());
     }
 
-    @Test
-    public void cloneFailTest() {
-
-    }
 }
