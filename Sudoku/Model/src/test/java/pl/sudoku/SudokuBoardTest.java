@@ -346,6 +346,10 @@ public class SudokuBoardTest {
                 assertNotSame(observer, observer1);
             }
         }
+        // Test rozłączonści pól SudokuBoard'a
+
+        sudokuBoard.set(0,0,2);
+        assertNotEquals(exampleSudokuBoard_1.get(0,0),sudokuBoard.get(0,0));
 
         assertNotSame(sudokuBoard.getSolver(), exampleSudokuBoard_1.getSolver());
     }

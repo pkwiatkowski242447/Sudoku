@@ -147,8 +147,8 @@ public class SudokuBoxTest {
         assertNotNull(sudokuBox);
         assertNotSame(sudokuBox, exampleBox_1);
         assertEquals(sudokuBox, exampleBox_1);
-        for (int i = 0; i < 9; i++) {
-            assertNotSame(sudokuBox.getSudokuFieldList().get(i), exampleBox_1.getSudokuFieldList().get(i));
-        }
+        // Test rozłączności
+        sudokuBox.getSudokuFieldList().get(0).setFieldValue(2);
+        assertNotEquals(exampleBox_1.getValue(0), sudokuBox.getValue(0));
     }
 }
