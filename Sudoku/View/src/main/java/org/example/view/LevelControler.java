@@ -29,7 +29,7 @@ public class LevelControler {
         sudokuBoard2 = sudokuBoard1.clone();
 
         difficulty = UserActionHandling.getDifficulty();
-        removeSomeFields(sudokuBoard2, difficulty);
+        difficulty.removeSomeFields(sudokuBoard2);
 
         fillBoard();
     }
@@ -47,26 +47,6 @@ public class LevelControler {
                 }
                 siatka.add(textField,i,j);
             }
-        }
-    }
-
-    public void removeSomeFields(SudokuBoard sudokuBoard, Difficulty difficulty) {
-        int numberOfFieldsToRemove = difficulty.getEnumValue();
-        int xValue = 0;
-        int yValue = 0;
-
-
-        List<Integer> values = new ArrayList<>();
-        for (int i = 0; i < 81; i++) {
-            values.add(i);
-        }
-
-        Collections.shuffle(values);
-
-        for (int i = 0; i < numberOfFieldsToRemove; i++) {
-            xValue = (int) (values.get(i) / 9);
-            yValue = values.get(i) % 9;
-            sudokuBoard.set(xValue, yValue, 0);
         }
     }
 }
