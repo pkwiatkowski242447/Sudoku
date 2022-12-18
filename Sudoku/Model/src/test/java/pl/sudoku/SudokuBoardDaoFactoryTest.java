@@ -4,6 +4,8 @@ import static org.testng.AssertJUnit.assertNotNull;
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class SudokuBoardDaoFactoryTest {
 
     @Test

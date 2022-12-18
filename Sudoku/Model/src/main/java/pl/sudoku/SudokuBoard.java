@@ -11,12 +11,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import pl.sudoku.exceptions.IncorrectFieldIndices;
+import pl.sudoku.exceptions.IncorrectValueException;
+import pl.sudoku.exceptions.InvalidSudokuStructureCoordinatesException;
+import pl.sudoku.exceptions.NullObserverException;
 
 public class SudokuBoard implements Serializable, Cloneable {
+
+    private final Logger logger = LoggerFactory.getLogger(SudokuBoard.class);
 
     private final SudokuField[][] board = new SudokuField[9][9];
     private final SudokuSolver solver;
@@ -72,9 +81,10 @@ public class SudokuBoard implements Serializable, Cloneable {
         checkBoard();
     }
 
-    public int get(int x, int y) {
+    public int get(int x, int y) throws IncorrectFieldIndices {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (x >= 9 || y >= 9 || x < 0 || y < 0) {
-            return 0;
+            throw new IncorrectFieldIndices(resourceBundle.getString("incorrectFieldCoordinates"));
         } else {
             return board[x][y].getFieldValue();
         }
@@ -132,6 +142,7 @@ public class SudokuBoard implements Serializable, Cloneable {
     }
 
     public SudokuRow getRow(int y) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (y >= 0 & y < 9) {
             List<SudokuField> row = Arrays.asList(new SudokuField[9]);
             for (int i = 0; i < 9; i++) {
@@ -142,11 +153,13 @@ public class SudokuBoard implements Serializable, Cloneable {
             }
             return new SudokuRow(row);
         } else {
-            return null;
+            throw new InvalidSudokuStructureCoordinatesException(
+                    resourceBundle.getString("exceptionSudokuRow"));
         }
     }
 
     public SudokuColumn getColumn(int x) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (x >= 0 & x < 9) {
             List<SudokuField> column = Arrays.asList(new SudokuField[9]);
             for (int i = 0; i < 9; i++) {
@@ -157,11 +170,13 @@ public class SudokuBoard implements Serializable, Cloneable {
             }
             return new SudokuColumn(column);
         } else {
-            return null;
+            throw new InvalidSudokuStructureCoordinatesException(
+                    resourceBundle.getString("exceptionSudokuColumn"));
         }
     }
 
     public SudokuBox getBox(int x, int y) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if ((x >= 0 & y >= 0) & (x < 9 & y < 9)) {
             List<SudokuField> box = Arrays.asList(new SudokuField[9]);
             int matrixFirstLine = 3 * (x / 3);
@@ -177,19 +192,28 @@ public class SudokuBoard implements Serializable, Cloneable {
             }
             return new SudokuBox(box);
         } else {
-            return null;
+            throw new InvalidSudokuStructureCoordinatesException(
+                    resourceBundle.getString("exceptionSudokuBox"));
         }
     }
 
     public void addObserver(Observer observer) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (observer != null) {
             setOfObservers.add(observer);
+        } else {
+            throw new NullObserverException(
+                    resourceBundle.getString("addingNullObserver"));
         }
     }
 
     public void removeObserver(Observer observer) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (observer != null) {
             setOfObservers.remove(observer);
+        } else {
+            throw new NullObserverException(
+                    resourceBundle.getString("removingNullObserver"));
         }
     }
 
@@ -238,6 +262,7 @@ public class SudokuBoard implements Serializable, Cloneable {
 
     @Override
     public SudokuBoard clone() {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         try {
             ByteArrayOutputStream byteOutput = new ByteArrayOutputStream();
             ObjectOutputStream objectOutput = new ObjectOutputStream(byteOutput);
@@ -261,8 +286,10 @@ public class SudokuBoard implements Serializable, Cloneable {
             objectOutput.close();
 
             return sudokuBoard;
-        } catch (IOException | ClassNotFoundException exception) {
-            return null;
+        } catch (NullPointerException | IOException | ClassNotFoundException exception) {
+            logger.debug(resourceBundle.getString("sudokuBoardCloneException"));
+            throw new IncorrectValueException(
+                    resourceBundle.getString("sudokuBoardCloneException"));
         }
     }
 }

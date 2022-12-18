@@ -20,6 +20,7 @@ public class SudokuRepositoryTest {
     @Test
     public void overallTest() {
         SudokuBoard sourceBoard = new SudokuBoard(correctBoard);
+        assertNotNull(sourceBoard);
         SudokuBoardRepository sudoku_repo = new SudokuBoardRepository(sourceBoard);
         assertNotNull(sudoku_repo);
         SudokuBoard testBoard = sudoku_repo.createInstance();

@@ -1,9 +1,11 @@
 package pl.sudoku;
 
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import pl.sudoku.exceptions.IncorrectFieldValue;
 
 
 public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
@@ -15,8 +17,12 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
     }
 
     public void setFieldValue(int value) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (value >= 0 && value <= 9) {
             this.value = value;
+        } else {
+            throw new IncorrectFieldValue(
+                    resourceBundle.getString("incorrectValue"));
         }
     }
 
@@ -48,10 +54,11 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
 
     @Override
     public int compareTo(SudokuField o) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (o != null) {
             return this.getFieldValue() - o.getFieldValue();
         } else {
-            throw new NullPointerException("Podany argument jest referencją do null'a.");
+            throw new NullPointerException(resourceBundle.getString("nullArgument"));
         }
     }
 

@@ -1,7 +1,9 @@
 package pl.sudoku;
 
-public interface Dao<T> extends AutoCloseable {
-    T read();
+import pl.sudoku.exceptions.InputOutputOperationException;
 
-    void write(T obj);
+public interface Dao<T> extends AutoCloseable {
+    T read() throws InputOutputOperationException;
+
+    void write(T obj) throws InputOutputOperationException;
 }

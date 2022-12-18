@@ -11,8 +11,12 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class UserActionHandling {
+
+    @FXML
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
     @FXML
     private Label noDiffSelected;
     @FXML
@@ -29,12 +33,12 @@ public class UserActionHandling {
         difficulty = Difficulty.toRealDiff(input);
         if (difficulty != null) {
             Parent root = FXMLLoader.load(getClass().getResource("game-view.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
         } else {
-            noDiffSelected.setText("Nie wybrano poziomu trudności.");
+            noDiffSelected.setText(resourceBundle.getString("noDiffSelected").toString());
         }
     }
 }

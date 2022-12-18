@@ -2,15 +2,14 @@ package org.example.view;
 
 import pl.sudoku.SudokuBoard;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public enum Difficulty {
+
     EASY(40), MEDIUM(50), HARD(60);
 
     private final int enumValue;
+    private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
 
     Difficulty(int i) {
         enumValue = i;
@@ -24,7 +23,7 @@ public enum Difficulty {
         Difficulty difficulty = null;
         if (input != null) {
             switch (input) {
-                case "Prosty" -> difficulty = Difficulty.EASY;
+                case "Łatwy" -> difficulty = Difficulty.EASY;
                 case "Średni" -> difficulty = Difficulty.MEDIUM;
                 case "Trudny" -> difficulty = Difficulty.HARD;
             }
