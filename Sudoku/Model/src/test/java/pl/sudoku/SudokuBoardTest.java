@@ -3,6 +3,7 @@ package pl.sudoku;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import pl.sudoku.exceptions.IncorrectFieldIndices;
+import pl.sudoku.exceptions.IncorrectValueException;
 import pl.sudoku.exceptions.InvalidSudokuStructureCoordinatesException;
 import pl.sudoku.exceptions.NullObserverException;
 

@@ -19,9 +19,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.exceptions.IncorrectFieldIndices;
-import pl.sudoku.exceptions.IncorrectValueException;
 import pl.sudoku.exceptions.InvalidSudokuStructureCoordinatesException;
 import pl.sudoku.exceptions.NullObserverException;
+import pl.sudoku.exceptions.SudokuBoardCloneException;
 
 public class SudokuBoard implements Serializable, Cloneable {
 
@@ -286,10 +286,10 @@ public class SudokuBoard implements Serializable, Cloneable {
             objectOutput.close();
 
             return sudokuBoard;
-        } catch (NullPointerException | IOException | ClassNotFoundException exception) {
+        } catch (IOException | ClassNotFoundException exception) {
             logger.debug(resourceBundle.getString("sudokuBoardCloneException"));
-            throw new IncorrectValueException(
-                    resourceBundle.getString("sudokuBoardCloneException"));
+            throw new SudokuBoardCloneException(
+                    resourceBundle.getString("sudokuBoardCloneException"), exception.getCause());
         }
     }
 }

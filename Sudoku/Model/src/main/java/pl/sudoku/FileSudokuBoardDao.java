@@ -1,6 +1,7 @@
 package pl.sudoku;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.sudoku.exceptions.FileException;
 import pl.sudoku.exceptions.InputOutputOperationException;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {
@@ -15,21 +17,36 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     private static final Logger logger = LoggerFactory.getLogger(FileSudokuBoardDao.class);
 
     private String fileName;
+    private FileInputStream fileInputStream;
+    private FileOutputStream fileOutputStream;
+    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
 
-    public FileSudokuBoardDao(final String fileName) {
+    public FileSudokuBoardDao(final String fileName) throws InputOutputOperationException {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         this.fileName = fileName + ".txt";
+        try {
+            fileOutputStream = new FileOutputStream(this.fileName);
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            fileInputStream = new FileInputStream(this.fileName);
+            objectInputStream = new ObjectInputStream(fileInputStream);
+        } catch (FileNotFoundException exception) {
+            throw new FileException(resourceBundle.getString("fileNotFound"), exception.getCause());
+        } catch (IOException ioException) {
+            throw new InputOutputOperationException(
+                    resourceBundle.getString("IOException"), ioException.getCause());
+        }
     }
 
     @Override
     public SudokuBoard read() throws InputOutputOperationException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         SudokuBoard objectFile;
-        try (FileInputStream fileInputStream = new FileInputStream(fileName);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+        try {
             objectFile = (SudokuBoard) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException exception) {
             throw new InputOutputOperationException(
-                    resourceBundle.getString("fileDaoReadException"));
+                    resourceBundle.getString("fileDaoReadException"), exception.getCause());
         }
         return objectFile;
     }
@@ -37,18 +54,26 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     @Override
     public void write(SudokuBoard exampleSudokuBoard) throws InputOutputOperationException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
-        try (FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+        try {
             objectOutputStream.writeObject(exampleSudokuBoard);
-        } catch (IOException | NullPointerException exception) {
+        } catch (IOException exception) {
             throw new InputOutputOperationException(
-                    resourceBundle.getString("fileDaoWriteException"));
+                    resourceBundle.getString("fileDaoWriteException"), exception.getCause());
         }
     }
 
     @Override
-    public void close() {
+    public void close() throws InputOutputOperationException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+        try {
+            fileInputStream.close();
+            fileOutputStream.close();
+            objectInputStream.close();
+            objectOutputStream.close();
+        } catch (IOException ioException) {
+            throw new InputOutputOperationException(
+                    resourceBundle.getString("resourcesException"), ioException.getCause());
+        }
         logger.info(resourceBundle.getString("resourcesClosed"));
     }
 }

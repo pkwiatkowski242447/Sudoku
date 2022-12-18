@@ -4,20 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertTrue;
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
-
 import org.junit.jupiter.api.Test;
+import pl.sudoku.exceptions.FileException;
 import pl.sudoku.exceptions.InputOutputOperationException;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 public class FileSudokuBoardDaoTest {
 
     private final SudokuSolver exampleSolver_1 = new BacktrackingSudokuSolver();
     private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(exampleSolver_1);
-    private Dao<SudokuBoard> fileSudokuBoardDao;
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-    private final PrintStream originalOut = System.out;
 
     @Test
     public void IntroTest() {
@@ -26,31 +20,31 @@ public class FileSudokuBoardDaoTest {
     }
 
     @Test
-    public void writeReadTest () throws InputOutputOperationException {
-        fileSudokuBoardDao = getFileDao("someFileName");
+    public void writeReadTest () throws Exception {
+        Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("someFileName");
         assertNotNull(fileSudokuBoardDao);
         fileSudokuBoardDao.write(exampleSudokuBoard_1);
         assertTrue(exampleSudokuBoard_1.equals(fileSudokuBoardDao.read()));
+        fileSudokuBoardDao.close();
     }
 
     @Test
-    public void readException () {
-        fileSudokuBoardDao = getFileDao("yyy");
+    public void readException () throws Exception {
+        Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("yyy");
         assertThrows(InputOutputOperationException.class, () -> fileSudokuBoardDao.read());
+        fileSudokuBoardDao.close();
     }
 
     @Test
-    public void writeException () {
-        fileSudokuBoardDao = getFileDao("???");
-        assertThrows(InputOutputOperationException.class, () -> fileSudokuBoardDao.write(exampleSudokuBoard_1));
+    public void fileExceptionTest () {
+        assertThrows(FileException.class, () -> getFileDao("???"));
     }
 
     @Test
-    public void fileSudokuBoardDaoCloseTest() {
-        FileSudokuBoardDao someDao = (FileSudokuBoardDao) getFileDao("TestDao");
-        System.setOut(new PrintStream(outContent));
-        someDao.close();
-        System.setOut(originalOut);
-        //assertEquals(outContent.toString(), "Dokonano zamknięcia zasobów.\r\n");
+    public void writeExceptionTest() throws Exception {
+        Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("correctName");
+        fileSudokuBoardDao.close();
+        assertThrows(InputOutputOperationException.class,() -> fileSudokuBoardDao.write(exampleSudokuBoard_1));
+        assertThrows(InputOutputOperationException.class, () -> fileSudokuBoardDao.close());
     }
 }
