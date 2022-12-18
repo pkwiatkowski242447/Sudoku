@@ -202,6 +202,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         if (observer != null) {
             setOfObservers.add(observer);
         } else {
+            logger.debug(resourceBundle.getString("addingNullObserver"));
             throw new NullObserverException(
                     resourceBundle.getString("addingNullObserver"));
         }
@@ -212,6 +213,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         if (observer != null) {
             setOfObservers.remove(observer);
         } else {
+            logger.debug(resourceBundle.getString("removingNullObserver"));
             throw new NullObserverException(
                     resourceBundle.getString("removingNullObserver"));
         }
@@ -287,7 +289,6 @@ public class SudokuBoard implements Serializable, Cloneable {
 
             return sudokuBoard;
         } catch (IOException | ClassNotFoundException exception) {
-            logger.debug(resourceBundle.getString("sudokuBoardCloneException"));
             throw new SudokuBoardCloneException(
                     resourceBundle.getString("sudokuBoardCloneException"), exception.getCause());
         }

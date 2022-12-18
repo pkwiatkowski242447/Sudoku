@@ -23,9 +23,9 @@ public enum Difficulty {
         Difficulty difficulty = null;
         if (input != null) {
             switch (input) {
-                case "Łatwy" -> difficulty = Difficulty.EASY;
-                case "Średni" -> difficulty = Difficulty.MEDIUM;
-                case "Trudny" -> difficulty = Difficulty.HARD;
+                case "Łatwy", "Easy"-> difficulty = Difficulty.EASY;
+                case "Średni", "Medium" -> difficulty = Difficulty.MEDIUM;
+                case "Trudny", "Hard" -> difficulty = Difficulty.HARD;
             }
         }
         return difficulty;

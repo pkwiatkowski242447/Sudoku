@@ -1,14 +1,8 @@
 package org.example.view;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
-import java.nio.charset.Charset;
-import java.util.Locale;
 import java.util.ResourceBundle;
-
 import java.io.IOException;
 
 public class Main extends Application {
@@ -17,11 +11,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("main-form.fxml"), resourceBundle);
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        stage.setTitle(resourceBundle.getString("gameTitle"));
-        stage.setScene(scene);
-        stage.show();
+        StageSetup.buildStage(stage,"main-form.fxml",
+                resourceBundle.getString("gameTitle"), resourceBundle);
     }
 
     public static void main(String[] args) {

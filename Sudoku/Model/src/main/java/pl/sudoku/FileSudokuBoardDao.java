@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.exceptions.FileException;
+import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {
@@ -22,7 +23,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
 
-    public FileSudokuBoardDao(final String fileName) throws InputOutputOperationException {
+    public FileSudokuBoardDao(final String fileName) throws GeneralDaoException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         this.fileName = fileName + ".txt";
         try {
