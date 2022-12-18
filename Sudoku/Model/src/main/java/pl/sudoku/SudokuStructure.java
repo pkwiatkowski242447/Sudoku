@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import pl.sudoku.exceptions.SudokuStructureInvalidIndex;
 
 public abstract class SudokuStructure implements Serializable {
 
@@ -26,7 +27,7 @@ public abstract class SudokuStructure implements Serializable {
         if (someIndex >= 0 & someIndex < 9) {
             return group.get(someIndex).getFieldValue();
         } else {
-            return 0;
+            throw new SudokuStructureInvalidIndex("Podana współrzędna jest poza zakresem");
         }
     }
 

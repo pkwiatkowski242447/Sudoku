@@ -4,6 +4,8 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import pl.sudoku.exceptions.SudokuFieldInvalidIndexException;
+import pl.sudoku.exceptions.SudokuFieldNullObjectException;
 
 
 public class SudokuField implements Serializable, Cloneable, Comparable<SudokuField> {
@@ -17,6 +19,8 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
     public void setFieldValue(int value) {
         if (value >= 0 && value <= 9) {
             this.value = value;
+        } else {
+            throw new SudokuFieldInvalidIndexException("Wartość poza zakresem");
         }
     }
 
@@ -57,7 +61,7 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
                 return -1;
             }
         } else {
-            throw new NullPointerException("Podany argument jest referencją do null'a.");
+            throw new SudokuFieldNullObjectException("Podany argument jest referencją do null'a.");
         }
     }
 

@@ -15,6 +15,12 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import pl.sudoku.exceptions.NullObserverException;
+import pl.sudoku.exceptions.SudokuBoardInvalidIndexException;
+import pl.sudoku.exceptions.SudokuBoardInvalidValueException;
+import pl.sudoku.exceptions.SudokuBoxInvalidIndexException;
+import pl.sudoku.exceptions.SudokuColumnInvalidIndexException;
+import pl.sudoku.exceptions.SudokuRowInvalidIndexException;
 
 public class SudokuBoard implements Serializable, Cloneable {
 
@@ -74,7 +80,7 @@ public class SudokuBoard implements Serializable, Cloneable {
 
     public int get(int x, int y) {
         if (x >= 9 || y >= 9 || x < 0 || y < 0) {
-            return 0;
+            throw new SudokuBoardInvalidIndexException("Podane współrzędne są poza zakresem");
         } else {
             return board[x][y].getFieldValue();
         }
@@ -83,6 +89,8 @@ public class SudokuBoard implements Serializable, Cloneable {
     public void set(int x, int y, int value) {
         if (value >= 0 && value <= 9) {
             board[x][y].setFieldValue(value);
+        } else {
+            throw new SudokuBoardInvalidValueException("Podana wartość jest poza zakresem");
         }
         if (value == this.get(x, y)) {
             notifyObservers();
@@ -142,7 +150,7 @@ public class SudokuBoard implements Serializable, Cloneable {
             }
             return new SudokuRow(row);
         } else {
-            return null;
+            throw new SudokuRowInvalidIndexException("Podana współrzędna jest poza zakresem");
         }
     }
 
@@ -157,7 +165,7 @@ public class SudokuBoard implements Serializable, Cloneable {
             }
             return new SudokuColumn(column);
         } else {
-            return null;
+            throw new SudokuColumnInvalidIndexException("Podana współrzędna jest poza zakresem");
         }
     }
 
@@ -177,19 +185,23 @@ public class SudokuBoard implements Serializable, Cloneable {
             }
             return new SudokuBox(box);
         } else {
-            return null;
+            throw new SudokuBoxInvalidIndexException("Podane współrzędne są poza zakresem");
         }
     }
 
     public void addObserver(Observer observer) {
         if (observer != null) {
             setOfObservers.add(observer);
+        } else {
+            throw new NullObserverException("Podany argument jest referencją do null'a.");
         }
     }
 
     public void removeObserver(Observer observer) {
         if (observer != null) {
             setOfObservers.remove(observer);
+        } else {
+            throw new NullObserverException("Podany argument jest referencją do null'a.");
         }
     }
 

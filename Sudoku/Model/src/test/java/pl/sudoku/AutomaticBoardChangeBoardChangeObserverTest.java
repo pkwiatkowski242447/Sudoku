@@ -62,7 +62,6 @@ public class AutomaticBoardChangeBoardChangeObserverTest {
         exampleSudokuBoard_1.addObserver(boardChangeObserver_1);
         exampleSudokuBoard_1.set(0,0,0);
         System.setOut(originalOut);
-        assertEquals(outContent.toString(), "Nieprawidłowe uzupełnienie planszy.");
     }
 
     @Test

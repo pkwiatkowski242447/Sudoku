@@ -1,6 +1,8 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
+import pl.sudoku.exceptions.*;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -76,12 +78,12 @@ public class SudokuBoardTest {
 
     @Test
     public void valueGetterTest() {
-        assertEquals(0, exampleSudokuBoard_1.get(-9,-9));
-        assertEquals(0, exampleSudokuBoard_1.get(0,-9));
-        assertEquals(0, exampleSudokuBoard_1.get(-9,0));
-        assertEquals(0, exampleSudokuBoard_1.get(0,9));
-        assertEquals(0, exampleSudokuBoard_1.get(9,0));
-        assertEquals(0, exampleSudokuBoard_1.get(9,9));
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> {exampleSudokuBoard_1.get(-9,-9);});
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> {exampleSudokuBoard_1.get(0,-9);});
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> {exampleSudokuBoard_1.get(-9,0);});
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> {exampleSudokuBoard_1.get(0,9);});
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> {exampleSudokuBoard_1.get(9,0);});
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> {exampleSudokuBoard_1.get(9,9);});
         assertEquals(5, exampleSudokuBoard_1.get(4,4));
         assertEquals(5, exampleSudokuBoard_1.get(0,0));
         assertEquals(2, exampleSudokuBoard_1.get(0,8));
@@ -97,9 +99,9 @@ public class SudokuBoardTest {
         assertEquals(0,exampleSudokuBoard_1.get(0,0));
         exampleSudokuBoard_1.set(0,0,5);
         assertEquals(5,exampleSudokuBoard_1.get(0,0));
-        exampleSudokuBoard_1.set(0,0,-5);
+        assertThrows(SudokuBoardInvalidValueException.class, () -> {exampleSudokuBoard_1.set(0,0,-5);});
         assertEquals(5,exampleSudokuBoard_1.get(0,0));
-        exampleSudokuBoard_1.set(0,0,10);
+        assertThrows(SudokuBoardInvalidValueException.class, () -> {exampleSudokuBoard_1.set(0,0,10);});
         assertEquals(5,exampleSudokuBoard_1.get(0,0));
     }
 
@@ -193,7 +195,7 @@ public class SudokuBoardTest {
     @Test
     public void addObserverThatIsNullTest() {
         assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
-        exampleSudokuBoard_1.addObserver(null);
+        assertThrows(NullObserverException.class, () -> {exampleSudokuBoard_1.addObserver(null);});
         assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 0);
     }
 
@@ -227,7 +229,7 @@ public class SudokuBoardTest {
         assertEquals(boardChangeObserver.getClass(), NonAutomaticBoardChangeObserver.class);
         exampleSudokuBoard_1.addObserver(boardChangeObserver);
         assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
-        exampleSudokuBoard_1.removeObserver(null);
+        assertThrows(NullObserverException.class, () -> { exampleSudokuBoard_1.removeObserver(null);});
         assertEquals(exampleSudokuBoard_1.getSetOfObservers().size(), 1);
     }
 
@@ -256,8 +258,8 @@ public class SudokuBoardTest {
         for (int i = 0; i < 9; i++) {
             assertNotNull(exampleSudokuBoard_4.getRow(i));
         }
-        assertNull(exampleSudokuBoard_4.getRow(9));
-        assertNull(exampleSudokuBoard_4.getRow(-1));
+        assertThrows(SudokuRowInvalidIndexException.class, () -> {exampleSudokuBoard_4.getRow(9);});
+        assertThrows(SudokuRowInvalidIndexException.class, () -> {exampleSudokuBoard_4.getRow(-1);});
     }
 
     @Test
@@ -266,8 +268,8 @@ public class SudokuBoardTest {
         for (int i = 0; i < 9; i++) {
             assertNotNull(exampleSudokuBoard_4.getColumn(i));
         }
-        assertNull(exampleSudokuBoard_4.getColumn(9));
-        assertNull(exampleSudokuBoard_4.getColumn(-1));
+        assertThrows(SudokuColumnInvalidIndexException.class, () -> {exampleSudokuBoard_4.getColumn(9);});
+        assertThrows(SudokuColumnInvalidIndexException.class, () -> {exampleSudokuBoard_4.getColumn(-1);});
     }
 
     @Test
@@ -278,12 +280,12 @@ public class SudokuBoardTest {
                 assertNotNull(exampleSudokuBoard_4.getBox(3 * i,3* j));
             }
         }
-        assertNull(exampleSudokuBoard_4.getBox(-1,-1));
-        assertNull(exampleSudokuBoard_4.getBox(9,9));
-        assertNull(exampleSudokuBoard_4.getBox(-1,9));
-        assertNull(exampleSudokuBoard_4.getBox(9,-1));
-        assertNull(exampleSudokuBoard_4.getBox(9,5));
-        assertNull(exampleSudokuBoard_4.getBox(3,-1));
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> {assertNull(exampleSudokuBoard_4.getBox(-1,-1));});
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> {assertNull(exampleSudokuBoard_4.getBox(9,9));});
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> {assertNull(exampleSudokuBoard_4.getBox(-1,9));});
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> {assertNull(exampleSudokuBoard_4.getBox(9,-1));});
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> {assertNull(exampleSudokuBoard_4.getBox(9,5));});
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> {assertNull(exampleSudokuBoard_4.getBox(3,-1));});
     }
 
     @Test
