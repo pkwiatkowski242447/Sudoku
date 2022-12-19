@@ -1,5 +1,6 @@
 /*
 package pl.main;
+
 import java.lang.System;
 
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ public class Main {
         System.out.println(exampleSudoku.toString());
         Observer observer = new NonAutomaticBoardChangeObserver(exampleSudoku);
         exampleSudoku.addObserver(observer);
+        exampleSudoku.set(0, 0, 0);
         exampleSudoku.set(0,0,0);
         Logger logger = LoggerFactory.getLogger(Main.class);
         logger.info("Przykładowy komunikat.");

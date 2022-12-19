@@ -4,7 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.testng.AssertJUnit.assertNotNull;
 import static org.testng.AssertJUnit.assertTrue;
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
+
 import org.junit.jupiter.api.Test;
+import pl.sudoku.exceptions.FileSudokuBoardDaoInputException;
+import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import pl.sudoku.exceptions.FileException;
 import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
@@ -23,7 +30,7 @@ public class FileSudokuBoardDaoTest {
     }
 
     @Test
-    public void writeReadTest () throws Exception {
+    public void writeReadTest() throws Exception {
         SudokuBoard sudokuFromFile;
         try (Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("someFileName")) {
             fileSudokuBoardDao.write(exampleSudokuBoard_1);
@@ -50,9 +57,8 @@ public class FileSudokuBoardDaoTest {
         assertTrue(exampleSudokuBoard_2.equals(sudoku2));
     }
 
-    @Test
-    public void readException () throws Exception {
-        try(Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("yyy")) {
+    public void readException() throws Exception {
+        try (Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("yyy")) {
             assertThrows(InputOutputOperationException.class, () -> fileSudokuBoardDao.read());
         } catch (InputOutputOperationException e) {
             throw new GeneralDaoException(e.getMessage(), e.getCause());
@@ -60,7 +66,7 @@ public class FileSudokuBoardDaoTest {
     }
 
     @Test
-    public void fileExceptionTest () {
+    public void fileExceptionTest() {
         assertThrows(FileException.class, () -> getFileDao("???"));
     }
 

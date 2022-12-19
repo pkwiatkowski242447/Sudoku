@@ -1,7 +1,9 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
-import pl.sudoku.exceptions.IncorrectFieldValue;
+import pl.sudoku.exceptions.SudokuBoardInvalidValueException;
+import pl.sudoku.exceptions.SudokuFieldInvalidIndexException;
+import pl.sudoku.exceptions.SudokuStructureInvalidIndex;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -56,12 +58,14 @@ public class SudokuFieldTest {
         assertEquals(5, exampleSudokuField_1.getFieldValue());
         exampleSudokuField_1.setFieldValue(9);
         assertEquals(9, exampleSudokuField_1.getFieldValue());
-        assertThrows(IncorrectFieldValue.class, () -> {
+        assertThrows(SudokuFieldInvalidIndexException.class, () -> {
             exampleSudokuField_1.setFieldValue(-1);
         });
-        assertThrows(IncorrectFieldValue.class, () -> {
+        assertEquals(9, exampleSudokuField_1.getFieldValue());
+        assertThrows(SudokuFieldInvalidIndexException.class, () -> {
             exampleSudokuField_1.setFieldValue(10);
         });
+        assertEquals(9, exampleSudokuField_1.getFieldValue());
         exampleSudokuField_1.setFieldValue(0);
         assertEquals(0, exampleSudokuField_1.getFieldValue());
     }

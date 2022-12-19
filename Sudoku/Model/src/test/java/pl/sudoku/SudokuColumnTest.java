@@ -1,6 +1,9 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
+import pl.sudoku.exceptions.SudokuColumnInvalidIndexException;
+import pl.sudoku.exceptions.SudokuStructureInvalidIndex;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuColumnTest {
@@ -155,8 +158,8 @@ public class SudokuColumnTest {
 
     @Test
     public void getValueInStructureTest() {
-        assertEquals(exampleColumn_1.getValue(-1), 0);
-        assertEquals(exampleColumn_1.getValue(10), 0);
+        assertThrows(SudokuStructureInvalidIndex.class, () -> {exampleColumn_1.getValue(-1);});
+        assertThrows(SudokuStructureInvalidIndex.class, () -> {exampleColumn_1.getValue(10);});
         assertEquals(exampleColumn_1.getValue(0), 5);
         assertEquals(exampleColumn_1.getValue(8), 3);
     }

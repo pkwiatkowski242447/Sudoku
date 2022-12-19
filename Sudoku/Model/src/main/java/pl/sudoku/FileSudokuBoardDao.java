@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.exceptions.FileException;
+import pl.sudoku.exceptions.FileSudokuBoardDaoInputException;
 import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
 
@@ -23,7 +24,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
 
-    public FileSudokuBoardDao(final String fileName) throws GeneralDaoException {
+    public FileSudokuBoardDao(final String fileName) throws GeneralDaoException, FileException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         this.fileName = fileName;
         try {
@@ -40,13 +41,13 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     }
 
     @Override
-    public SudokuBoard read() throws InputOutputOperationException {
+    public SudokuBoard read() throws FileSudokuBoardDaoInputException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         SudokuBoard objectFile;
         try {
             objectFile = (SudokuBoard) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException exception) {
-            throw new InputOutputOperationException(
+            throw new FileSudokuBoardDaoInputException(
                     resourceBundle.getString("fileDaoReadException"), exception.getCause());
         }
         return objectFile;

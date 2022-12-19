@@ -1,10 +1,10 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
+import pl.sudoku.exceptions.*;
+
 import static org.junit.jupiter.api.Assertions.*;
-import pl.sudoku.exceptions.IncorrectFieldIndices;
-import pl.sudoku.exceptions.IncorrectValueException;
-import pl.sudoku.exceptions.InvalidSudokuStructureCoordinatesException;
+
 import pl.sudoku.exceptions.NullObserverException;
 
 import java.lang.reflect.InvocationTargetException;
@@ -15,51 +15,51 @@ import java.util.List;
 public class SudokuBoardTest {
 
     private final int[][] correctBoard1 = {
-            {5,3,4,6,7,8,9,1,2},
-            {6,7,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,5,6,7},
-            {8,5,9,7,6,1,4,2,3},
-            {4,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,8,7,4,1,9,6,3,5},
-            {3,4,5,2,8,6,1,7,9}
+            {5, 3, 4, 6, 7, 8, 9, 1, 2},
+            {6, 7, 2, 1, 9, 5, 3, 4, 8},
+            {1, 9, 8, 3, 4, 2, 5, 6, 7},
+            {8, 5, 9, 7, 6, 1, 4, 2, 3},
+            {4, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 9, 2, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 7, 2, 8, 4},
+            {2, 8, 7, 4, 1, 9, 6, 3, 5},
+            {3, 4, 5, 2, 8, 6, 1, 7, 9}
     };
 
     private final int[][] correctBoard2 = {
-            {3,6,8,4,1,2,5,7,9},
-            {4,5,9,3,6,7,2,8,1},
-            {7,2,1,5,8,9,3,4,6},
-            {1,8,5,2,4,6,9,3,7},
-            {2,7,6,8,9,3,4,1,5},
-            {9,3,4,1,7,5,8,6,2},
-            {5,1,2,6,3,4,7,9,8},
-            {8,4,7,9,2,1,6,5,3},
-            {6,9,3,7,5,8,1,2,4}
+            {3, 6, 8, 4, 1, 2, 5, 7, 9},
+            {4, 5, 9, 3, 6, 7, 2, 8, 1},
+            {7, 2, 1, 5, 8, 9, 3, 4, 6},
+            {1, 8, 5, 2, 4, 6, 9, 3, 7},
+            {2, 7, 6, 8, 9, 3, 4, 1, 5},
+            {9, 3, 4, 1, 7, 5, 8, 6, 2},
+            {5, 1, 2, 6, 3, 4, 7, 9, 8},
+            {8, 4, 7, 9, 2, 1, 6, 5, 3},
+            {6, 9, 3, 7, 5, 8, 1, 2, 4}
     };
 
     private final int[][] incorrectBoard1 = {
-            {5,3,9,6,7,8,9,5,2},
-            {6,5,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,1,6,7},
-            {8,4,9,7,6,1,4,2,3},
-            {5,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,8,7,4,1,9,6,3,5},
-            {3,4,5,2,8,6,1,7,9}
+            {5, 3, 9, 6, 7, 8, 9, 5, 2},
+            {6, 5, 2, 1, 9, 5, 3, 4, 8},
+            {1, 9, 8, 3, 4, 2, 1, 6, 7},
+            {8, 4, 9, 7, 6, 1, 4, 2, 3},
+            {5, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 9, 2, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 7, 2, 8, 4},
+            {2, 8, 7, 4, 1, 9, 6, 3, 5},
+            {3, 4, 5, 2, 8, 6, 1, 7, 9}
     };
 
     private final int[][] incorrectBoard2 = {
-            {5,3,9,6,7,8,9,10,2},
-            {6,-1,2,1,9,5,3,4,8},
-            {1,9,8,3,4,2,1,6,7},
-            {8,4,9,7,6,1,4,2,3},
-            {5,2,6,8,5,3,7,9,1},
-            {7,1,3,9,2,4,8,5,6},
-            {9,6,1,5,3,7,2,8,4},
-            {2,-3,7,4,1,9,6,-2,5},
-            {3,4,5,2,8,6,1,7,9}
+            {5, 3, 9, 6, 7, 8, 9, 10, 2},
+            {6, -1, 2, 1, 9, 5, 3, 4, 8},
+            {1, 9, 8, 3, 4, 2, 1, 6, 7},
+            {8, 4, 9, 7, 6, 1, 4, 2, 3},
+            {5, 2, 6, 8, 5, 3, 7, 9, 1},
+            {7, 1, 3, 9, 2, 4, 8, 5, 6},
+            {9, 6, 1, 5, 3, 7, 2, 8, 4},
+            {2, -3, 7, 4, 1, 9, 6, -2, 5},
+            {3, 4, 5, 2, 8, 6, 1, 7, 9}
     };
 
     private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(correctBoard1);
@@ -81,31 +81,31 @@ public class SudokuBoardTest {
 
     @Test
     public void valueGetterTest() {
-        assertThrows(IncorrectFieldIndices.class, () -> exampleSudokuBoard_1.get(-9,-9));
-        assertThrows(IncorrectFieldIndices.class, () -> exampleSudokuBoard_1.get(0,-9));
-        assertThrows(IncorrectFieldIndices.class, () -> exampleSudokuBoard_1.get(-9,0));
-        assertThrows(IncorrectFieldIndices.class, () -> exampleSudokuBoard_1.get(0,9));
-        assertThrows(IncorrectFieldIndices.class, () -> exampleSudokuBoard_1.get(9,0));
-        assertThrows(IncorrectFieldIndices.class, () -> exampleSudokuBoard_1.get(9,9));
-        assertEquals(5, exampleSudokuBoard_1.get(4,4));
-        assertEquals(5, exampleSudokuBoard_1.get(0,0));
-        assertEquals(2, exampleSudokuBoard_1.get(0,8));
-        assertEquals(3, exampleSudokuBoard_1.get(8,0));
-        assertEquals(9, exampleSudokuBoard_1.get(8,8));
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> exampleSudokuBoard_1.get(-9, -9));
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> exampleSudokuBoard_1.get(0, -9));
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> exampleSudokuBoard_1.get(-9, 0));
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> exampleSudokuBoard_1.get(0, 9));
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> exampleSudokuBoard_1.get(9, 0));
+        assertThrows(SudokuBoardInvalidIndexException.class, () -> exampleSudokuBoard_1.get(9, 9));
+        assertEquals(5, exampleSudokuBoard_1.get(4, 4));
+        assertEquals(5, exampleSudokuBoard_1.get(0, 0));
+        assertEquals(2, exampleSudokuBoard_1.get(0, 8));
+        assertEquals(3, exampleSudokuBoard_1.get(8, 0));
+        assertEquals(9, exampleSudokuBoard_1.get(8, 8));
     }
+
     @Test
-    public void valueSetterTest()
-    {
-        exampleSudokuBoard_1.set(0,0,9);
-        assertEquals(9,exampleSudokuBoard_1.get(0,0));
-        exampleSudokuBoard_1.set(0,0,0);
-        assertEquals(0,exampleSudokuBoard_1.get(0,0));
-        exampleSudokuBoard_1.set(0,0,5);
-        assertEquals(5,exampleSudokuBoard_1.get(0,0));
-        exampleSudokuBoard_1.set(0,0,-5);
-        assertEquals(5,exampleSudokuBoard_1.get(0,0));
-        exampleSudokuBoard_1.set(0,0,10);
-        assertEquals(5,exampleSudokuBoard_1.get(0,0));
+    public void valueSetterTest() {
+        exampleSudokuBoard_1.set(0, 0, 9);
+        assertEquals(9, exampleSudokuBoard_1.get(0, 0));
+        exampleSudokuBoard_1.set(0, 0, 0);
+        assertEquals(0, exampleSudokuBoard_1.get(0, 0));
+        exampleSudokuBoard_1.set(0, 0, 5);
+        assertEquals(5, exampleSudokuBoard_1.get(0, 0));
+        assertThrows(SudokuBoardInvalidValueException.class, () -> exampleSudokuBoard_1.set(0, 0, -5));
+        assertEquals(5, exampleSudokuBoard_1.get(0, 0));
+        assertThrows(SudokuBoardInvalidValueException.class, () -> exampleSudokuBoard_1.set(0, 0, 10));
+        assertEquals(5, exampleSudokuBoard_1.get(0, 0));
     }
 
     @Test
@@ -155,7 +155,7 @@ public class SudokuBoardTest {
 
         exampleSudokuBoard_2.solveGame();
 
-        for (int i = 0; i < 9; i ++) {
+        for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (exampleSudokuBoard_2.get(i, j) != boardContent.get(i * 9 + j)) {
                     areSudokusIdentical = false;
@@ -261,8 +261,8 @@ public class SudokuBoardTest {
         for (int i = 0; i < 9; i++) {
             assertNotNull(exampleSudokuBoard_4.getRow(i));
         }
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getRow(9));
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getRow(-1));
+        assertThrows(SudokuRowInvalidIndexException.class, () -> exampleSudokuBoard_4.getRow(9));
+        assertThrows(SudokuRowInvalidIndexException.class, () -> exampleSudokuBoard_4.getRow(-1));
     }
 
     @Test
@@ -271,8 +271,8 @@ public class SudokuBoardTest {
         for (int i = 0; i < 9; i++) {
             assertNotNull(exampleSudokuBoard_4.getColumn(i));
         }
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getColumn(9));
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getColumn(-1));
+        assertThrows(SudokuColumnInvalidIndexException.class, () -> exampleSudokuBoard_4.getColumn(9));
+        assertThrows(SudokuColumnInvalidIndexException.class, () -> exampleSudokuBoard_4.getColumn(-1));
     }
 
     @Test
@@ -280,15 +280,15 @@ public class SudokuBoardTest {
         exampleSudokuBoard_4.solveGame();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                assertNotNull(exampleSudokuBoard_4.getBox(3 * i,3* j));
+                assertNotNull(exampleSudokuBoard_4.getBox(3 * i, 3 * j));
             }
         }
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getBox(-1,-1));
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getBox(9,9));
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getBox(-1,9));
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getBox(9,-1));
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getBox(9,5));
-        assertThrows(InvalidSudokuStructureCoordinatesException.class, () -> exampleSudokuBoard_4.getBox(3,-1));
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> assertNull(exampleSudokuBoard_4.getBox(-1, -1)));
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> assertNull(exampleSudokuBoard_4.getBox(9, 9)));
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> assertNull(exampleSudokuBoard_4.getBox(-1, 9)));
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> assertNull(exampleSudokuBoard_4.getBox(9, -1)));
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> assertNull(exampleSudokuBoard_4.getBox(9, 5)));
+        assertThrows(SudokuBoxInvalidIndexException.class, () -> assertNull(exampleSudokuBoard_4.getBox(3, -1)));
     }
 
     @Test
@@ -352,8 +352,8 @@ public class SudokuBoardTest {
         }
         // Test rozłączonści pól SudokuBoard'a
 
-        sudokuBoard.set(0,0,2);
-        assertNotEquals(exampleSudokuBoard_1.get(0,0),sudokuBoard.get(0,0));
+        sudokuBoard.set(0, 0, 2);
+        assertNotEquals(exampleSudokuBoard_1.get(0, 0), sudokuBoard.get(0, 0));
 
         assertNotSame(sudokuBoard.getSolver(), exampleSudokuBoard_1.getSolver());
     }

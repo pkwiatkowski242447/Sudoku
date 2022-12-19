@@ -1,21 +1,19 @@
 package org.example.view;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
-import pl.sudoku.Dao;
-import pl.sudoku.SudokuBoard;
-import pl.sudoku.exceptions.FileException;
-import pl.sudoku.exceptions.GeneralDaoException;
-import pl.sudoku.exceptions.InputOutputOperationException;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import pl.sudoku.Dao;
+import pl.sudoku.SudokuBoard;
+import pl.sudoku.exceptions.GeneralDaoException;
+import pl.sudoku.exceptions.InputOutputOperationException;
 
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 
@@ -98,9 +96,9 @@ public class UserActionHandling {
         this.language = langSetting.getSelectionModel().getSelectedItem().toString();
 
         if (language.equals(resourceBundle.getString("PL"))) {
-            Locale.setDefault(new Locale("pl","PL"));
+            Locale.setDefault(new Locale("pl", "PL"));
         } else if (language.equals(resourceBundle.getString("EN"))) {
-            Locale.setDefault(new Locale("en","EN"));
+            Locale.setDefault(new Locale("en", "EN"));
         }
         resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         StageSetup.buildStage("main-form.fxml",

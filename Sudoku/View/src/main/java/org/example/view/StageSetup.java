@@ -1,6 +1,5 @@
 package org.example.view;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,6 +9,9 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class StageSetup {
+
+    private static Stage stage;
+
     private static Stage primaryStage;
 
     public static Stage getStage() {
