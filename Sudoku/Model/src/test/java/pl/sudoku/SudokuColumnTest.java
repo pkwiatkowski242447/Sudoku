@@ -167,8 +167,8 @@ public class SudokuColumnTest {
         assertNotNull(sudokuColumn);
         assertNotSame(sudokuColumn, exampleColumn_1);
         assertEquals(sudokuColumn, exampleColumn_1);
-        for (int i = 0; i< 9; i++) {
-            assertNotSame(sudokuColumn.getSudokuFieldList().get(i),exampleColumn_1.getSudokuFieldList().get(i));
-        }
+        // Test rozłączności
+        sudokuColumn.getSudokuFieldList().get(0).setFieldValue(2);
+        assertNotEquals(exampleColumn_1.getValue(0),  sudokuColumn.getValue(0));
     }
 }

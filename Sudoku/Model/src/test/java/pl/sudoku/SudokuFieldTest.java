@@ -1,6 +1,7 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
+import pl.sudoku.exceptions.IncorrectFieldValue;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -55,10 +56,12 @@ public class SudokuFieldTest {
         assertEquals(5, exampleSudokuField_1.getFieldValue());
         exampleSudokuField_1.setFieldValue(9);
         assertEquals(9, exampleSudokuField_1.getFieldValue());
-        exampleSudokuField_1.setFieldValue(-1);
-        assertEquals(9, exampleSudokuField_1.getFieldValue());
-        exampleSudokuField_1.setFieldValue(10);
-        assertEquals(9, exampleSudokuField_1.getFieldValue());
+        assertThrows(IncorrectFieldValue.class, () -> {
+            exampleSudokuField_1.setFieldValue(-1);
+        });
+        assertThrows(IncorrectFieldValue.class, () -> {
+            exampleSudokuField_1.setFieldValue(10);
+        });
         exampleSudokuField_1.setFieldValue(0);
         assertEquals(0, exampleSudokuField_1.getFieldValue());
     }
@@ -127,17 +130,20 @@ public class SudokuFieldTest {
         assertNotNull(sudokuField);
         assertTrue(sudokuField.equals(exampleSudokuField_1));
         assertNotSame(sudokuField, exampleSudokuField_1);
+        // Test rozłączonści
+        sudokuField.setFieldValue(2);
+        assertNotEquals(exampleSudokuField_1.getFieldValue(), sudokuField.getFieldValue());
     }
 
     @Test
     public void compareToTest() {
         exampleSudokuField_1.setFieldValue(1);
         exampleSudokuField_2.setFieldValue(2);
-        assertEquals(exampleSudokuField_1.compareTo(exampleSudokuField_2), -1);
+        assertTrue(exampleSudokuField_1.compareTo(exampleSudokuField_2) < 0);
         exampleSudokuField_2.setFieldValue(1);
-        assertEquals(exampleSudokuField_1.compareTo(exampleSudokuField_2), 0);
+        assertTrue(exampleSudokuField_1.compareTo(exampleSudokuField_2) == 0);
         exampleSudokuField_1.setFieldValue(3);
-        assertEquals(exampleSudokuField_1.compareTo(exampleSudokuField_2), 1);
+        assertTrue(exampleSudokuField_1.compareTo(exampleSudokuField_2) > 0);
         assertThrows(NullPointerException.class, () -> {
             exampleSudokuField_1.compareTo(null);
         });
