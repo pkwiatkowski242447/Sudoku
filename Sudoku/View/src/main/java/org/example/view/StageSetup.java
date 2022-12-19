@@ -1,5 +1,5 @@
 package org.example.view;
-import javafx.application.Application;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,37 +9,41 @@ import java.io.IOException;
 import java.util.ResourceBundle;
 
 public class StageSetup {
+
     private static Stage stage;
 
-    public static void setStage(Stage stage) {
-        StageSetup.stage = stage;
-    }
+    private static Stage primaryStage;
 
     public static Stage getStage() {
-        return stage;
+        return primaryStage;
     }
 
-    public static Parent loadFXMLFile(String path, ResourceBundle resourceBundle) throws IOException {
-        return new FXMLLoader(StageSetup.class.getResource(path),resourceBundle).load();
+    private static void setStage(Stage stage) {
+        StageSetup.primaryStage = stage;
     }
 
-    public static void setUpStage(String path, String title,ResourceBundle resourceBundle) throws IOException {
-        stage.setTitle(title);
-        stage.setScene(new Scene(loadFXMLFile(path,resourceBundle)));
-        stage.show();
+    public static Parent fxmlFileLoad(String fxmlFromPath, ResourceBundle bundle) throws IOException {
+        return new FXMLLoader(StageSetup.class.getResource(fxmlFromPath), bundle).load();
     }
 
-    public static void setUpStage(Stage stage, String path, String title, ResourceBundle resourceBundle) throws IOException {
+    public static void buildStage(String fxmlFormPath, ResourceBundle bundle) throws IOException {
+        primaryStage.setScene(new Scene(fxmlFileLoad(fxmlFormPath, bundle)));
+        primaryStage.sizeToScene();
+        primaryStage.show();
+    }
+
+    public static void buildStage(String fxmlFormPath, String title, ResourceBundle bundle) throws IOException {
+        primaryStage.setScene(new Scene(fxmlFileLoad(fxmlFormPath, bundle)));
+        primaryStage.setTitle(title);
+        primaryStage.sizeToScene();
+        primaryStage.show();
+    }
+
+    public static void buildStage(Stage stage, String fxmlFormPath, String title, ResourceBundle bundle) throws IOException {
         setStage(stage);
-        stage.setTitle(title);
-        stage.setScene(new Scene(loadFXMLFile(path,resourceBundle)));
-        stage.show();
+        primaryStage.setScene(new Scene(fxmlFileLoad(fxmlFormPath, bundle)));
+        primaryStage.setTitle(title);
+        primaryStage.sizeToScene();
+        primaryStage.show();
     }
-
-    public static void setUpStage(String path, ResourceBundle resourceBundle) throws IOException {
-        setStage(stage);
-        stage.setScene(new Scene(loadFXMLFile(path,resourceBundle)));
-        stage.show();
-    }
-
 }

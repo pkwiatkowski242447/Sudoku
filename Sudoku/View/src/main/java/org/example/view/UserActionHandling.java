@@ -5,57 +5,133 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.stage.FileChooser;
+
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import pl.sudoku.Dao;
+import pl.sudoku.SudokuBoard;
+import pl.sudoku.exceptions.GeneralDaoException;
+import pl.sudoku.exceptions.InputOutputOperationException;
+
+import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
+
 public class UserActionHandling {
+
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+
+    @FXML
+    private ChoiceBox diffLevel;
     @FXML
     private Label noDiffSelected;
     @FXML
-    private ChoiceBox diffLevel;
-    private static Difficulty difficulty;
+    private String language;
+    @FXML
+    private ChoiceBox langSetting;
+    @FXML
+    private Label noLangSelected;
+    @FXML
+    private Label firstAuthor;
+    @FXML
+    private Label secondAuthor;
 
-    @FXML
-    private ChoiceBox language_choice;
-    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("Language");
-    private String choice;
-    @FXML
-    private Label noLanguageSelected;
+    private static SudokuBoard fullSudokuBoard;
+
+    private static SudokuBoard userStartBoard;
+
+    private static SudokuBoard filledPartiallyBoard;
+
+    public static SudokuBoard getFullSudokuBoard() {
+        return fullSudokuBoard;
+    }
+
+    public static SudokuBoard getUserStartBoard() {
+        return userStartBoard;
+    }
+
+    public static SudokuBoard getFilledPartiallyBoard() {
+        return filledPartiallyBoard;
+    }
+
+    private static Difficulty difficulty;
 
     public static Difficulty getDifficulty() {
         return difficulty;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
     @FXML
-    protected void playGame(ActionEvent actionEvent) throws IOException {
+    public void initialize() {
+        loadData();
+    }
+
+    @FXML
+    protected void playGame() throws IOException {
         String input = diffLevel.getSelectionModel().getSelectedItem().toString();
         difficulty = Difficulty.toRealDiff(input);
         if (difficulty != null) {
-            StageSetup.setUpStage("game-view.fxml",resourceBundle);
+            StageSetup.buildStage("game-view.fxml", resourceBundle);
         } else {
-            noDiffSelected.setText("Nie wybrano poziomu trudności.");
+            noDiffSelected.setText(resourceBundle.getString("noDiffSelected"));
         }
     }
+
+    private void loadData() {
+        diffLevel.getItems().addAll(
+                resourceBundle.getString("diffLevelEasy"),
+                resourceBundle.getString("diffLevelMedium"),
+                resourceBundle.getString("diffLevelHard"));
+        langSetting.getItems().addAll(
+                resourceBundle.getString("PL"),
+                resourceBundle.getString("EN")
+        );
+    }
+
     @FXML
-    protected void chooseLanguage(ActionEvent actionEvent) throws IOException {
-        choice = language_choice.getSelectionModel().getSelectedItem().toString();
-        if(choice.equals(resourceBundle.getString("PL"))) {
-            Locale.setDefault(new Locale("pl","PL"));
-        }
-        else if(choice.equals(resourceBundle.getString("EN"))) {
+    public void selectLanguage() throws IOException {
+        this.language = langSetting.getSelectionModel().getSelectedItem().toString();
+
+        if (language.equals(resourceBundle.getString("PL"))) {
+            Locale.setDefault(new Locale("pl", "PL"));
+        } else if (language.equals(resourceBundle.getString("EN"))) {
             Locale.setDefault(new Locale("en", "EN"));
         }
-        else {
-            noLanguageSelected.setText("Nie wybrano języka");
-        }
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("Language");
-        StageSetup.setUpStage("game-view.fxml",resourceBundle);
+        resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+        StageSetup.buildStage("main-form.fxml",
+                resourceBundle.getString("gameTitle"), resourceBundle);
     }
-    @FXML
-    protected void saveToFile(ActionEvent actionEvent) throws IOException {
-        FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("*.txt");
 
+    @FXML
+    public void showAuthors() {
+        ResourceBundle authorBundle = ResourceBundle.getBundle("org.example.view.Authors");
+
+        if (firstAuthor.getText().isEmpty() && secondAuthor.getText().isEmpty()) {
+            firstAuthor.setText(authorBundle.getString("firstAuth"));
+            secondAuthor.setText(authorBundle.getString("secondAuth"));
+        } else {
+            firstAuthor.setText("");
+            secondAuthor.setText("");
+        }
+    }
+
+    @FXML
+    public void readFromAFile() throws Exception {
+        ResourceBundle resourceBundle1 = ResourceBundle.getBundle("ProKomBundle");
+        String pathToFile;
+        FileChooser chooseFile = new FileChooser();
+        try {
+            pathToFile = chooseFile.showOpenDialog(StageSetup.getStage()).getAbsolutePath();
+            Dao<SudokuBoard> fileDao = getFileDao(pathToFile);
+            fullSudokuBoard = fileDao.read();
+            userStartBoard = fileDao.read();
+            filledPartiallyBoard = fileDao.read();
+            StageSetup.buildStage("game-view.fxml", resourceBundle1);
+        } catch (InputOutputOperationException ex) {
+            throw new GeneralDaoException(ex.getMessage(), ex.getCause());
+        }
     }
 }

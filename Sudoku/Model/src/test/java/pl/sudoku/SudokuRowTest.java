@@ -1,7 +1,6 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
-import pl.sudoku.exceptions.SudokuRowInvalidIndexException;
 import pl.sudoku.exceptions.SudokuStructureInvalidIndex;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -2,6 +2,9 @@
 package pl.main;
 
 import java.lang.System;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.sudoku.BacktrackingSudokuSolver;
 import pl.sudoku.NonAutomaticBoardChangeObserver;
 import pl.sudoku.Observer;
@@ -18,7 +21,9 @@ public class Main {
         Observer observer = new NonAutomaticBoardChangeObserver(exampleSudoku);
         exampleSudoku.addObserver(observer);
         exampleSudoku.set(0, 0, 0);
-
+        exampleSudoku.set(0,0,0);
+        Logger logger = LoggerFactory.getLogger(Main.class);
+        logger.info("Przykładowy komunikat.");
     }
 }
 */

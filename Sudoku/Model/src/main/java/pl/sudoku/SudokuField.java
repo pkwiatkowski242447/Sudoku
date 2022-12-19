@@ -1,6 +1,7 @@
 package pl.sudoku;
 
 import java.io.Serializable;
+import java.util.ResourceBundle;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -17,10 +18,12 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
     }
 
     public void setFieldValue(int value) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (value >= 0 && value <= 9) {
             this.value = value;
         } else {
-            throw new SudokuFieldInvalidIndexException("Wartość poza zakresem");
+            throw new SudokuFieldInvalidIndexException(
+                    resourceBundle.getString("incorrectValue"));
         }
     }
 
@@ -52,19 +55,14 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
 
     @Override
     public int compareTo(SudokuField o) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (o != null) {
-            if (o.getFieldValue() < this.getFieldValue()) {
-                return 1;
-            } else if (o.getFieldValue() == this.getFieldValue()) {
-                return 0;
-            } else {
-                return -1;
-            }
+            return this.getFieldValue() - o.getFieldValue();
         } else {
-            throw new SudokuFieldNullObjectException("Podany argument jest referencją do null'a.");
+            throw new SudokuFieldNullObjectException(
+                    resourceBundle.getString("nullArgument"));
         }
     }
-
 
     @Override
     protected SudokuField clone() throws CloneNotSupportedException {
