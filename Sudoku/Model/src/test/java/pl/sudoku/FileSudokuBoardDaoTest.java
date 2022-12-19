@@ -13,11 +13,13 @@ public class FileSudokuBoardDaoTest {
 
     private final SudokuSolver exampleSolver_1 = new BacktrackingSudokuSolver();
     private final SudokuBoard exampleSudokuBoard_1 = new SudokuBoard(exampleSolver_1);
+    private final SudokuBoard exampleSudokuBoard_2 = new SudokuBoard(exampleSolver_1);
 
     @Test
     public void IntroTest() {
         assertNotNull(exampleSolver_1);
         assertNotNull(exampleSudokuBoard_1);
+        assertNotNull(exampleSudokuBoard_2);
     }
 
     @Test
@@ -30,6 +32,22 @@ public class FileSudokuBoardDaoTest {
             throw new GeneralDaoException(e.getMessage(), e.getCause());
         }
         assertTrue(exampleSudokuBoard_1.equals(sudokuFromFile));
+    }
+
+    @Test
+    public void writeReadTestMultiple() throws Exception {
+        SudokuBoard sudoku1;
+        SudokuBoard sudoku2;
+        try (Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("someFileName")) {
+            fileSudokuBoardDao.write(exampleSudokuBoard_1);
+            fileSudokuBoardDao.write(exampleSudokuBoard_2);
+            sudoku1 = fileSudokuBoardDao.read();
+            sudoku2 = fileSudokuBoardDao.read();
+        } catch (InputOutputOperationException e) {
+            throw new GeneralDaoException(e.getMessage(), e.getCause());
+        }
+        assertTrue(exampleSudokuBoard_1.equals(sudoku1));
+        assertTrue(exampleSudokuBoard_2.equals(sudoku2));
     }
 
     @Test

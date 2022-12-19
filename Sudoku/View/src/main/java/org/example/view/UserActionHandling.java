@@ -3,11 +3,21 @@ package org.example.view;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
+import javafx.stage.FileChooser;
+import pl.sudoku.Dao;
+import pl.sudoku.SudokuBoard;
+import pl.sudoku.exceptions.FileException;
+import pl.sudoku.exceptions.GeneralDaoException;
+import pl.sudoku.exceptions.InputOutputOperationException;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 
 public class UserActionHandling {
 
@@ -27,6 +37,25 @@ public class UserActionHandling {
     private Label firstAuthor;
     @FXML
     private Label secondAuthor;
+
+    private static SudokuBoard fullSudokuBoard;
+
+    private static SudokuBoard userStartBoard;
+
+    private static SudokuBoard filledPartiallyBoard;
+
+    public static SudokuBoard getFullSudokuBoard() {
+        return fullSudokuBoard;
+    }
+
+    public static SudokuBoard getUserStartBoard() {
+        return userStartBoard;
+    }
+
+    public static SudokuBoard getFilledPartiallyBoard() {
+        return filledPartiallyBoard;
+    }
+
     private static Difficulty difficulty;
 
     public static Difficulty getDifficulty() {
@@ -93,20 +122,18 @@ public class UserActionHandling {
 
     @FXML
     public void readFromAFile() throws Exception {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle(resourceBundle.getString("fileRead"));
-        dialog.setContentText(resourceBundle.getString("fileCtxText"));
-        dialog.setHeaderText(resourceBundle.getString("fileRead"));
-        dialog.show();
-        String path = dialog.getEditor().getText();
-        /*
-        try (Dao<SudokuBoard> someDao = getFileDao(path)) {
-
-        } catch () {
-
+        ResourceBundle resourceBundle1 = ResourceBundle.getBundle("ProKomBundle");
+        String pathToFile;
+        FileChooser chooseFile = new FileChooser();
+        try {
+            pathToFile = chooseFile.showOpenDialog(StageSetup.getStage()).getAbsolutePath();
+            Dao<SudokuBoard> fileDao = getFileDao(pathToFile);
+            fullSudokuBoard = fileDao.read();
+            userStartBoard = fileDao.read();
+            filledPartiallyBoard = fileDao.read();
+            StageSetup.buildStage("game-view.fxml", resourceBundle1);
+        } catch (InputOutputOperationException ex) {
+            throw new GeneralDaoException(ex.getMessage(), ex.getCause());
         }
-
-         */
     }
 }

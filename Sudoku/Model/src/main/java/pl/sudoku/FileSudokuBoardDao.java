@@ -25,7 +25,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
 
     public FileSudokuBoardDao(final String fileName) throws GeneralDaoException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
-        this.fileName = fileName + ".txt";
+        this.fileName = fileName;
         try {
             fileOutputStream = new FileOutputStream(this.fileName);
             objectOutputStream = new ObjectOutputStream(fileOutputStream);

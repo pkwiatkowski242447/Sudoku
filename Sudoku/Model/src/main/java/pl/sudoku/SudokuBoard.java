@@ -16,16 +16,12 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pl.sudoku.exceptions.IncorrectFieldIndices;
 import pl.sudoku.exceptions.InvalidSudokuStructureCoordinatesException;
 import pl.sudoku.exceptions.NullObserverException;
 import pl.sudoku.exceptions.SudokuBoardCloneException;
 
 public class SudokuBoard implements Serializable, Cloneable {
-
-    private final Logger logger = LoggerFactory.getLogger(SudokuBoard.class);
 
     private final SudokuField[][] board = new SudokuField[9][9];
     private final SudokuSolver solver;
@@ -202,7 +198,6 @@ public class SudokuBoard implements Serializable, Cloneable {
         if (observer != null) {
             setOfObservers.add(observer);
         } else {
-            logger.debug(resourceBundle.getString("addingNullObserver"));
             throw new NullObserverException(
                     resourceBundle.getString("addingNullObserver"));
         }
@@ -213,7 +208,6 @@ public class SudokuBoard implements Serializable, Cloneable {
         if (observer != null) {
             setOfObservers.remove(observer);
         } else {
-            logger.debug(resourceBundle.getString("removingNullObserver"));
             throw new NullObserverException(
                     resourceBundle.getString("removingNullObserver"));
         }
