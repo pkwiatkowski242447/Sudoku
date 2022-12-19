@@ -1,6 +1,5 @@
 package org.example.view;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -15,6 +14,7 @@ import pl.sudoku.SudokuBoard;
 import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
 
+import static pl.sudoku.SudokuBoardDaoFactory.getDao;
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 
 public class UserActionHandling {
@@ -123,9 +123,8 @@ public class UserActionHandling {
         ResourceBundle resourceBundle1 = ResourceBundle.getBundle("ProKomBundle");
         String pathToFile;
         FileChooser chooseFile = new FileChooser();
-        try {
-            pathToFile = chooseFile.showOpenDialog(StageSetup.getStage()).getAbsolutePath();
-            Dao<SudokuBoard> fileDao = getFileDao(pathToFile);
+        pathToFile = chooseFile.showOpenDialog(StageSetup.getStage()).getAbsolutePath();
+        try (Dao<SudokuBoard> fileDao = getFileDao(pathToFile)) {
             fullSudokuBoard = fileDao.read();
             userStartBoard = fileDao.read();
             filledPartiallyBoard = fileDao.read();

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.exceptions.FileException;
 import pl.sudoku.exceptions.FileSudokuBoardDaoInputException;
+import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
 import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
 
@@ -24,7 +25,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
 
-    public FileSudokuBoardDao(final String fileName) throws GeneralDaoException, FileException {
+    public FileSudokuBoardDao(final String fileName) throws GeneralDaoException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         this.fileName = fileName;
         try {
@@ -33,10 +34,11 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
             fileInputStream = new FileInputStream(this.fileName);
             objectInputStream = new ObjectInputStream(fileInputStream);
         } catch (FileNotFoundException exception) {
-            throw new FileException(resourceBundle.getString("fileNotFound"), exception.getCause());
-        } catch (IOException ioException) {
+            throw new FileException(
+                    resourceBundle.getString("fileNotFound"), exception.getCause());
+        } catch (IOException exception) {
             throw new InputOutputOperationException(
-                    resourceBundle.getString("IOException"), ioException.getCause());
+                    resourceBundle.getString("IOException"), exception.getCause());
         }
     }
 
@@ -54,12 +56,12 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     }
 
     @Override
-    public void write(SudokuBoard exampleSudokuBoard) throws InputOutputOperationException {
+    public void write(SudokuBoard exampleSudokuBoard) throws FileSudokuBoardDaoOutputException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         try {
             objectOutputStream.writeObject(exampleSudokuBoard);
         } catch (IOException exception) {
-            throw new InputOutputOperationException(
+            throw new FileSudokuBoardDaoOutputException(
                     resourceBundle.getString("fileDaoWriteException"), exception.getCause());
         }
     }

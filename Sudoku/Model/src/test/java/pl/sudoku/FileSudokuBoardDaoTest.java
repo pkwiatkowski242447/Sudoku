@@ -57,9 +57,10 @@ public class FileSudokuBoardDaoTest {
         assertTrue(exampleSudokuBoard_2.equals(sudoku2));
     }
 
+    @Test
     public void readException() throws Exception {
         try (Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("yyy")) {
-            assertThrows(InputOutputOperationException.class, () -> fileSudokuBoardDao.read());
+            assertThrows(FileSudokuBoardDaoInputException.class, () -> fileSudokuBoardDao.read());
         } catch (InputOutputOperationException e) {
             throw new GeneralDaoException(e.getMessage(), e.getCause());
         }
@@ -74,7 +75,7 @@ public class FileSudokuBoardDaoTest {
     public void writeExceptionTest() throws Exception {
         Dao<SudokuBoard> fileSudokuBoardDao = getFileDao("correctName");
         fileSudokuBoardDao.close();
-        assertThrows(InputOutputOperationException.class, () -> fileSudokuBoardDao.write(exampleSudokuBoard_1));
+        assertThrows(FileSudokuBoardDaoOutputException.class, () -> fileSudokuBoardDao.write(exampleSudokuBoard_1));
         assertThrows(InputOutputOperationException.class, () -> fileSudokuBoardDao.close());
     }
 }

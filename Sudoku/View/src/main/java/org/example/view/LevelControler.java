@@ -7,12 +7,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import pl.sudoku.*;
+import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
 import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
 
 import java.io.File;
 import java.util.*;
 
+import static pl.sudoku.SudokuBoardDaoFactory.getDao;
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 
 
@@ -128,13 +130,12 @@ public class LevelControler {
     @FXML
     public void saveToFile() throws Exception {
         FileChooser chooseFile = new FileChooser();
-        try {
-            File file = chooseFile.showSaveDialog(StageSetup.getStage());
-            Dao<SudokuBoard> fileDao = getFileDao(file.getAbsolutePath());
-            fileDao.write(sudokuBoard1);
-            fileDao.write(sudokuBoard2);
-            fileDao.write(sudokuBoard3);
-        } catch (InputOutputOperationException ex) {
+        File file = chooseFile.showSaveDialog(StageSetup.getStage());
+        try(Dao<SudokuBoard> fileFileDao = getDao(file.getAbsolutePath())) {
+            fileFileDao.write(sudokuBoard1);
+            fileFileDao.write(sudokuBoard2);
+            fileFileDao.write(sudokuBoard3);
+        } catch (FileSudokuBoardDaoOutputException ex) {
             throw new GeneralDaoException(ex.getMessage(), ex.getCause());
         }
     }

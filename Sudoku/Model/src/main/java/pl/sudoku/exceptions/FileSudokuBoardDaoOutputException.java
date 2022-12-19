@@ -2,8 +2,8 @@ package pl.sudoku.exceptions;
 
 import java.io.IOException;
 
-public class FileSudokuBoardDaoOutputException extends IOException {
-    public FileSudokuBoardDaoOutputException(String message) {
-        super(message);
+public class FileSudokuBoardDaoOutputException extends GeneralDaoException {
+    public FileSudokuBoardDaoOutputException(String message, Throwable cause) {
+        super(message, cause);
     }
 }
