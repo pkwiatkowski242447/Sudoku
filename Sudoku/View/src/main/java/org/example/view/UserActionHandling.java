@@ -2,15 +2,12 @@ package org.example.view;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
-
+import javafx.stage.FileChooser;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class UserActionHandling {
     @FXML
@@ -18,6 +15,13 @@ public class UserActionHandling {
     @FXML
     private ChoiceBox diffLevel;
     private static Difficulty difficulty;
+
+    @FXML
+    private ChoiceBox language_choice;
+    private static ResourceBundle resourceBundle = ResourceBundle.getBundle("Language");
+    private String choice;
+    @FXML
+    private Label noLanguageSelected;
 
     public static Difficulty getDifficulty() {
         return difficulty;
@@ -28,13 +32,30 @@ public class UserActionHandling {
         String input = diffLevel.getSelectionModel().getSelectedItem().toString();
         difficulty = Difficulty.toRealDiff(input);
         if (difficulty != null) {
-            Parent root = FXMLLoader.load(getClass().getResource("game-view.fxml"));
-            Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
+            StageSetup.setUpStage("game-view.fxml",resourceBundle);
         } else {
             noDiffSelected.setText("Nie wybrano poziomu trudności.");
         }
+    }
+    @FXML
+    protected void chooseLanguage(ActionEvent actionEvent) throws IOException {
+        choice = language_choice.getSelectionModel().getSelectedItem().toString();
+        if(choice.equals(resourceBundle.getString("PL"))) {
+            Locale.setDefault(new Locale("pl","PL"));
+        }
+        else if(choice.equals(resourceBundle.getString("EN"))) {
+            Locale.setDefault(new Locale("en", "EN"));
+        }
+        else {
+            noLanguageSelected.setText("Nie wybrano języka");
+        }
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("Language");
+        StageSetup.setUpStage("game-view.fxml",resourceBundle);
+    }
+    @FXML
+    protected void saveToFile(ActionEvent actionEvent) throws IOException {
+        FileChooser fileChooser = new FileChooser();
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("*.txt");
+
     }
 }

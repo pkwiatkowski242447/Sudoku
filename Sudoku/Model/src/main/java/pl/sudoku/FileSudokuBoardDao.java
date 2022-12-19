@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ResourceBundle;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.sudoku.exceptions.FileSudokuBoardDaoInputException;
@@ -26,10 +25,11 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("Language");
         SudokuBoard objectFile;
         try (FileInputStream fileIn = new FileInputStream(fileName);
-            ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
+             ObjectInputStream objectIn = new ObjectInputStream(fileIn)) {
             objectFile = (SudokuBoard) objectIn.readObject();
         } catch (IOException | ClassNotFoundException ex) {
-            throw new FileSudokuBoardDaoOutputException(resourceBundle.getString("FileSudokuBoardDaoOutputException"));
+            throw new FileSudokuBoardDaoOutputException(resourceBundle.getString(
+                    "FileSudokuBoardDaoOutputException"));
         }
         return objectFile;
     }
@@ -38,10 +38,12 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     public void write(SudokuBoard exampleSudokuBoard) throws FileSudokuBoardDaoInputException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("Language");
         try (FileOutputStream fileOut = new FileOutputStream(fileName);
-            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);) {
+             ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);) {
             objectOut.writeObject(exampleSudokuBoard);
         } catch (IOException ioException) {
-            throw new FileSudokuBoardDaoInputException(resourceBundle.getString("FileSudokuBoardDaoInputException"));
+            throw new
+                    FileSudokuBoardDaoInputException(resourceBundle.getString(
+                            "FileSudokuBoardDaoInputException"));
         }
     }
 
