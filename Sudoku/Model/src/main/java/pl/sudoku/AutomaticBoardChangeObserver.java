@@ -14,15 +14,13 @@ public class AutomaticBoardChangeObserver extends BoardChangeObserver {
 
     @Override
     public void update(final SudokuBoard boardAfterChange) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (!super.checkBoard(boardAfterChange)) {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
-            if (!super.checkBoard(boardAfterChange)) {
-                log.info(resourceBundle.getString("incorrectSudokuFill"));
-            } else {
-                for (int i = 0; i < 9; i++) {
-                    for (int j = 0; j < 9; j++) {
-                        this.board.set(i, j, boardAfterChange.convertToIntArray()[i][j]);
-                    }
+            log.info(resourceBundle.getString("incorrectSudokuFill"));
+        } else {
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    this.board.set(i, j, boardAfterChange.convertToIntArray()[i][j]);
                 }
             }
         }

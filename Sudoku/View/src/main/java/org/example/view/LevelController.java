@@ -9,16 +9,13 @@ import javafx.stage.FileChooser;
 import pl.sudoku.*;
 import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
 import pl.sudoku.exceptions.GeneralDaoException;
-import pl.sudoku.exceptions.InputOutputOperationException;
-
 import java.io.File;
 import java.util.*;
 
-import static pl.sudoku.SudokuBoardDaoFactory.getDao;
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 
 
-public class LevelControler {
+public class LevelController {
 
     @FXML
     private GridPane siatka;
@@ -57,19 +54,19 @@ public class LevelControler {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                Field field = new Field(i,j,new TextField());
+                Field field = new Field(i, j, new TextField());
                 field.getFieldValue().setMaxHeight(50.0);
                 field.getFieldValue().setMaxWidth(50.0);
                 field.getFieldValue().setFont(new Font(20));
-                if (sudokuBoard2.get(i,j) != 0) {
+                if (sudokuBoard2.get(i, j) != 0) {
                     field.getFieldValue().setDisable(true);
-                    field.getFieldValue().setText(String.valueOf(sudokuBoard2.get(i,j)));
+                    field.getFieldValue().setText(String.valueOf(sudokuBoard2.get(i, j)));
                 }
                 field.getFieldValue().textProperty().addListener((observableValue, prevVal, nextVal) -> {
                     if (nextVal.matches("[1-9]") & nextVal.length() == 1) {
                         int fieldValue = Integer.parseInt(field.getFieldValue().getText());
-                        int xCoordinate = field.getxValue();
-                        int yCoordinate = field.getyValue();
+                        int xCoordinate = field.getXValue();
+                        int yCoordinate = field.getYValue();
 
                         sudokuBoard2.set(xCoordinate, yCoordinate, fieldValue);
 
@@ -83,7 +80,7 @@ public class LevelControler {
                         field.getFieldValue().setText("");
                     }
                 });
-                siatka.add(field.getFieldValue(),i,j);
+                siatka.add(field.getFieldValue(),j,i);
             }
         }
     }
@@ -106,8 +103,8 @@ public class LevelControler {
                     field.getFieldValue().textProperty().addListener((observableValue, prevVal, nextVal) -> {
                         if (nextVal.matches("[1-9]") & nextVal.length() == 1) {
                             int fieldValue = Integer.parseInt(field.getFieldValue().getText());
-                            int xCoordinate = field.getxValue();
-                            int yCoordinate = field.getyValue();
+                            int xCoordinate = field.getXValue();
+                            int yCoordinate = field.getYValue();
 
                             sudokuBoard2.set(xCoordinate, yCoordinate, fieldValue);
 
@@ -121,8 +118,8 @@ public class LevelControler {
                             field.getFieldValue().setText("");
                         }
                     });
-                    siatka.add(field.getFieldValue(),i,j);
                 }
+                siatka.add(field.getFieldValue(), j, i);
             }
         }
     }
@@ -131,10 +128,13 @@ public class LevelControler {
     public void saveToFile() throws Exception {
         FileChooser chooseFile = new FileChooser();
         File file = chooseFile.showSaveDialog(StageSetup.getStage());
-        try(Dao<SudokuBoard> fileFileDao = getDao(file.getAbsolutePath())) {
+        try(Dao<SudokuBoard> fileFileDao = getFileDao(file.getAbsolutePath())) {
             fileFileDao.write(sudokuBoard1);
+            System.out.println("SudokuBoard1: " + sudokuBoard1);
             fileFileDao.write(sudokuBoard2);
+            System.out.println("SudokuBoard2: " + sudokuBoard2);
             fileFileDao.write(sudokuBoard3);
+            System.out.println("SudokuBoard3: " + sudokuBoard3);
         } catch (FileSudokuBoardDaoOutputException ex) {
             throw new GeneralDaoException(ex.getMessage(), ex.getCause());
         }

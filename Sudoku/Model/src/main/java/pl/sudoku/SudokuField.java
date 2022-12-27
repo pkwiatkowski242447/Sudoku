@@ -5,7 +5,7 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import pl.sudoku.exceptions.SudokuFieldInvalidIndexException;
+import pl.sudoku.exceptions.SudokuFieldInvalidValueException;
 import pl.sudoku.exceptions.SudokuFieldNullObjectException;
 
 
@@ -22,7 +22,7 @@ public class SudokuField implements Serializable, Cloneable, Comparable<SudokuFi
         if (value >= 0 && value <= 9) {
             this.value = value;
         } else {
-            throw new SudokuFieldInvalidIndexException(
+            throw new SudokuFieldInvalidValueException(
                     resourceBundle.getString("incorrectValue"));
         }
     }

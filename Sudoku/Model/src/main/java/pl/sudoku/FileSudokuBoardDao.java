@@ -25,21 +25,8 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
 
-    public FileSudokuBoardDao(final String fileName) throws GeneralDaoException {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+    public FileSudokuBoardDao(final String fileName) {
         this.fileName = fileName;
-        try {
-            fileOutputStream = new FileOutputStream(this.fileName);
-            objectOutputStream = new ObjectOutputStream(fileOutputStream);
-            fileInputStream = new FileInputStream(this.fileName);
-            objectInputStream = new ObjectInputStream(fileInputStream);
-        } catch (FileNotFoundException exception) {
-            throw new FileException(
-                    resourceBundle.getString("fileNotFound"), exception.getCause());
-        } catch (IOException exception) {
-            throw new InputOutputOperationException(
-                    resourceBundle.getString("IOException"), exception.getCause());
-        }
     }
 
     @Override
@@ -47,8 +34,13 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         SudokuBoard objectFile;
         try {
+            if (fileInputStream == null) {
+                fileInputStream = new FileInputStream(this.fileName);
+                objectInputStream = new ObjectInputStream(fileInputStream);
+            }
             objectFile = (SudokuBoard) objectInputStream.readObject();
         } catch (IOException | ClassNotFoundException exception) {
+            logger.error(exception.getClass().toString());
             throw new FileSudokuBoardDaoInputException(
                     resourceBundle.getString("fileDaoReadException"), exception.getCause());
         }
@@ -59,8 +51,13 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     public void write(SudokuBoard exampleSudokuBoard) throws FileSudokuBoardDaoOutputException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         try {
+            if (fileOutputStream == null) {
+                fileOutputStream = new FileOutputStream(this.fileName);
+                objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            }
             objectOutputStream.writeObject(exampleSudokuBoard);
         } catch (IOException exception) {
+            logger.error(exception.getClass().toString());
             throw new FileSudokuBoardDaoOutputException(
                     resourceBundle.getString("fileDaoWriteException"), exception.getCause());
         }
@@ -70,11 +67,16 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     public void close() throws InputOutputOperationException {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         try {
-            fileInputStream.close();
-            fileOutputStream.close();
-            objectInputStream.close();
-            objectOutputStream.close();
+            if (fileInputStream != null) {
+                fileInputStream.close();
+                objectInputStream.close();
+            }
+            if (fileOutputStream != null) {
+                fileOutputStream.close();
+                objectOutputStream.close();
+            }
         } catch (IOException ioException) {
+            logger.error(ioException.getClass().toString());
             throw new InputOutputOperationException(
                     resourceBundle.getString("resourcesException"), ioException.getCause());
         }

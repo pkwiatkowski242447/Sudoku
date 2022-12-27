@@ -1,6 +1,8 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,6 +46,8 @@ public class AutomaticBoardChangeBoardChangeObserverTest {
     private final BoardChangeObserver boardChangeObserver_3 =
             new AutomaticBoardChangeObserver(exampleSudokuBoard_3);
 
+    private final Logger log = LoggerFactory.getLogger(AutomaticBoardChangeBoardChangeObserverTest.class);
+
     @Test
     public void IntroTest() {
         assertNotNull(exampleSudokuBoard_1);
@@ -56,6 +60,8 @@ public class AutomaticBoardChangeBoardChangeObserverTest {
         assertEquals(boardChangeObserver_1.getClass(), AutomaticBoardChangeObserver.class);
         assertEquals(boardChangeObserver_2.getClass(), AutomaticBoardChangeObserver.class);
         assertEquals(boardChangeObserver_3.getClass(), AutomaticBoardChangeObserver.class);
+        assertNotNull(log);
+        log.info("exampleSudokuBoard1: " + exampleSudokuBoard_1);
     }
 
     @Test

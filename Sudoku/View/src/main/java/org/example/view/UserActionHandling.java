@@ -13,8 +13,6 @@ import pl.sudoku.Dao;
 import pl.sudoku.SudokuBoard;
 import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
-
-import static pl.sudoku.SudokuBoardDaoFactory.getDao;
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 
 public class UserActionHandling {
@@ -126,8 +124,11 @@ public class UserActionHandling {
         pathToFile = chooseFile.showOpenDialog(StageSetup.getStage()).getAbsolutePath();
         try (Dao<SudokuBoard> fileDao = getFileDao(pathToFile)) {
             fullSudokuBoard = fileDao.read();
+            System.out.println("FullSudokuBoard: " + fullSudokuBoard);
             userStartBoard = fileDao.read();
+            System.out.println("UserStartBoard: " + userStartBoard);
             filledPartiallyBoard = fileDao.read();
+            System.out.println("FilledPartiallyBoard: " + filledPartiallyBoard);
             StageSetup.buildStage("game-view.fxml", resourceBundle1);
         } catch (InputOutputOperationException ex) {
             throw new GeneralDaoException(ex.getMessage(), ex.getCause());
