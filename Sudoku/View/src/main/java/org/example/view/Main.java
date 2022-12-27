@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class Main extends Application {
 
-    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("ViewBundle");
 
     @Override
     public void start(Stage stage) throws IOException {

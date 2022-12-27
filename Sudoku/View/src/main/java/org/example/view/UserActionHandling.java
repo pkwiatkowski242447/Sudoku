@@ -17,18 +17,12 @@ import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 
 public class UserActionHandling {
 
-    private ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("ViewBundle");
 
     @FXML
     private ChoiceBox diffLevel;
     @FXML
     private Label noDiffSelected;
-    @FXML
-    private String language;
-    @FXML
-    private ChoiceBox langSetting;
-    @FXML
-    private Label noLangSelected;
     @FXML
     private Label firstAuthor;
     @FXML
@@ -52,14 +46,22 @@ public class UserActionHandling {
         return filledPartiallyBoard;
     }
 
+    public static void setFullSudokuBoard(SudokuBoard fullSudokuBoard) {
+        UserActionHandling.fullSudokuBoard = fullSudokuBoard;
+    }
+
+    public static void setUserStartBoard(SudokuBoard userStartBoard) {
+        UserActionHandling.userStartBoard = userStartBoard;
+    }
+
+    public static void setFilledPartiallyBoard(SudokuBoard filledPartiallyBoard) {
+        UserActionHandling.filledPartiallyBoard = filledPartiallyBoard;
+    }
+
     private static Difficulty difficulty;
 
     public static Difficulty getDifficulty() {
         return difficulty;
-    }
-
-    public String getLanguage() {
-        return language;
     }
 
     @FXML
@@ -83,22 +85,20 @@ public class UserActionHandling {
                 resourceBundle.getString("diffLevelEasy"),
                 resourceBundle.getString("diffLevelMedium"),
                 resourceBundle.getString("diffLevelHard"));
-        langSetting.getItems().addAll(
-                resourceBundle.getString("PL"),
-                resourceBundle.getString("EN")
-        );
     }
 
     @FXML
-    public void selectLanguage() throws IOException {
-        this.language = langSetting.getSelectionModel().getSelectedItem().toString();
+    public void switchToPL() throws IOException {
+        Locale.setDefault(new Locale("pl", "PL"));
+        resourceBundle = ResourceBundle.getBundle("ViewBundle");
+        StageSetup.buildStage("main-form.fxml",
+                resourceBundle.getString("gameTitle"), resourceBundle);
+    }
 
-        if (language.equals(resourceBundle.getString("PL"))) {
-            Locale.setDefault(new Locale("pl", "PL"));
-        } else if (language.equals(resourceBundle.getString("EN"))) {
-            Locale.setDefault(new Locale("en", "EN"));
-        }
-        resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+    @FXML
+    public void switchToEN() throws IOException {
+        Locale.setDefault(new Locale("en", "EN"));
+        resourceBundle = ResourceBundle.getBundle("ViewBundle");
         StageSetup.buildStage("main-form.fxml",
                 resourceBundle.getString("gameTitle"), resourceBundle);
     }
@@ -118,17 +118,14 @@ public class UserActionHandling {
 
     @FXML
     public void readFromAFile() throws Exception {
-        ResourceBundle resourceBundle1 = ResourceBundle.getBundle("ProKomBundle");
+        ResourceBundle resourceBundle1 = ResourceBundle.getBundle("ViewBundle");
         String pathToFile;
         FileChooser chooseFile = new FileChooser();
         pathToFile = chooseFile.showOpenDialog(StageSetup.getStage()).getAbsolutePath();
         try (Dao<SudokuBoard> fileDao = getFileDao(pathToFile)) {
             fullSudokuBoard = fileDao.read();
-            System.out.println("FullSudokuBoard: " + fullSudokuBoard);
             userStartBoard = fileDao.read();
-            System.out.println("UserStartBoard: " + userStartBoard);
             filledPartiallyBoard = fileDao.read();
-            System.out.println("FilledPartiallyBoard: " + filledPartiallyBoard);
             StageSetup.buildStage("game-view.fxml", resourceBundle1);
         } catch (InputOutputOperationException ex) {
             throw new GeneralDaoException(ex.getMessage(), ex.getCause());

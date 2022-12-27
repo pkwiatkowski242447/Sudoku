@@ -3,6 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -46,14 +48,17 @@
                 <Font name="Tahoma" size="14.0" />
             </font></Label>
 
-        <ChoiceBox fx:id="langSetting" prefWidth="150.0" value="%PL" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
+        <MenuButton mnemonicParsing="false" text="%languageSetting" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#switchToPL" text="%PL" />
+                <MenuItem mnemonicParsing="false" onAction="#switchToEN" text="%EN" />
+            </items>
+        </MenuButton>
 
         <Button mnemonicParsing="false" onAction="#showAuthors" text="%Authors" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM" />
-        <Button mnemonicParsing="false" onAction="#selectLanguage" text="%ApplyButton" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
 
-        <Label fx:id="noLangSelected" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
         <Label fx:id="firstAuthor" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
         <Label fx:id="secondAuthor" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM" />
-        <Button mnemonicParsing="false" text="%fileRead" onAction="#readFromAFile" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
+        <Button mnemonicParsing="false" onAction="#readFromAFile" text="%fileRead" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP" />
     </children>
 </GridPane>

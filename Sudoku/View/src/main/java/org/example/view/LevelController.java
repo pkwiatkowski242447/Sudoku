@@ -10,6 +10,7 @@ import pl.sudoku.*;
 import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
 import pl.sudoku.exceptions.GeneralDaoException;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
@@ -18,7 +19,7 @@ import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
 public class LevelController {
 
     @FXML
-    private GridPane siatka;
+    private GridPane mesh;
     @FXML
     private Label testLabel;
     private SudokuBoard sudokuBoard1;
@@ -51,7 +52,7 @@ public class LevelController {
     }
 
     private void fillBoard() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ViewBundle");
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 Field field = new Field(i, j, new TextField());
@@ -80,13 +81,13 @@ public class LevelController {
                         field.getFieldValue().setText("");
                     }
                 });
-                siatka.add(field.getFieldValue(),j,i);
+                mesh.add(field.getFieldValue(),j,i);
             }
         }
     }
 
     private void loadBoards() {
-        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ViewBundle");
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 Field field = new Field(i, j, new TextField());
@@ -119,9 +120,19 @@ public class LevelController {
                         }
                     });
                 }
-                siatka.add(field.getFieldValue(), j, i);
+                mesh.add(field.getFieldValue(), j, i);
             }
         }
+    }
+
+    @FXML
+    public void goBackToMainMenu() throws IOException {
+        UserActionHandling.setFullSudokuBoard(null);
+        UserActionHandling.setUserStartBoard(null);
+        UserActionHandling.setFilledPartiallyBoard(null);
+        ResourceBundle bundle = ResourceBundle.getBundle("ViewBundle");
+        StageSetup.buildStage("main-form.fxml",
+                bundle.getString("gameTitle"), bundle);
     }
 
     @FXML
@@ -130,11 +141,8 @@ public class LevelController {
         File file = chooseFile.showSaveDialog(StageSetup.getStage());
         try(Dao<SudokuBoard> fileFileDao = getFileDao(file.getAbsolutePath())) {
             fileFileDao.write(sudokuBoard1);
-            System.out.println("SudokuBoard1: " + sudokuBoard1);
             fileFileDao.write(sudokuBoard2);
-            System.out.println("SudokuBoard2: " + sudokuBoard2);
             fileFileDao.write(sudokuBoard3);
-            System.out.println("SudokuBoard3: " + sudokuBoard3);
         } catch (FileSudokuBoardDaoOutputException ex) {
             throw new GeneralDaoException(ex.getMessage(), ex.getCause());
         }

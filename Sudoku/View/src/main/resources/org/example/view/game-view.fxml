@@ -15,7 +15,7 @@
     </padding>
     <children>
       <Label fx:id="testLabel" />
-    <GridPane fx:id="siatka" alignment="CENTER" gridLinesVisible="true" maxHeight="450.0" maxWidth="450.0">
+    <GridPane fx:id="mesh" alignment="CENTER" gridLinesVisible="true" maxHeight="450.0" maxWidth="450.0">
         <columnConstraints>
             <ColumnConstraints minWidth="10.0" prefWidth="50.0" />
             <ColumnConstraints minWidth="10.0" prefWidth="50.0" />
@@ -39,6 +39,7 @@
             <RowConstraints minHeight="10.0" prefHeight="50.0" />
         </rowConstraints>
     </GridPane>
+        <Button mnemonicParsing="false" text="%goBackToMenu" onAction="#goBackToMainMenu"/>
         <Button mnemonicParsing="false" onAction="#saveToFile" text="%fileSave" />
     </children>
 </VBox>

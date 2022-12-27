@@ -9,7 +9,7 @@ public enum Difficulty {
     EASY(40), MEDIUM(50), HARD(60);
 
     private final int enumValue;
-    private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
+    private static final ResourceBundle resourceBundle = ResourceBundle.getBundle("ViewBundle");
 
     Difficulty(int i) {
         enumValue = i;
