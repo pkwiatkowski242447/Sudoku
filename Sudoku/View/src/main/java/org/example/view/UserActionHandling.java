@@ -28,15 +28,9 @@ public class UserActionHandling {
     @FXML
     private Label secondAuthor;
 
-    private static SudokuBoard fullSudokuBoard;
-
     private static SudokuBoard userStartBoard;
 
     private static SudokuBoard filledPartiallyBoard;
-
-    public static SudokuBoard getFullSudokuBoard() {
-        return fullSudokuBoard;
-    }
 
     public static SudokuBoard getUserStartBoard() {
         return userStartBoard;
@@ -44,10 +38,6 @@ public class UserActionHandling {
 
     public static SudokuBoard getFilledPartiallyBoard() {
         return filledPartiallyBoard;
-    }
-
-    public static void setFullSudokuBoard(SudokuBoard fullSudokuBoard) {
-        UserActionHandling.fullSudokuBoard = fullSudokuBoard;
     }
 
     public static void setUserStartBoard(SudokuBoard userStartBoard) {
@@ -123,7 +113,6 @@ public class UserActionHandling {
         FileChooser chooseFile = new FileChooser();
         pathToFile = chooseFile.showOpenDialog(StageSetup.getStage()).getAbsolutePath();
         try (Dao<SudokuBoard> fileDao = getFileDao(pathToFile)) {
-            fullSudokuBoard = fileDao.read();
             userStartBoard = fileDao.read();
             filledPartiallyBoard = fileDao.read();
             StageSetup.buildStage("game-view.fxml", resourceBundle1);

@@ -126,7 +126,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         return method;
     }
 
-    private boolean checkBoard() {
+    public boolean checkBoard() {
         boolean correctBoard = true;
         for (int i = 0; i < 9; i++) {
             if (!getRow(i).verify()) {
