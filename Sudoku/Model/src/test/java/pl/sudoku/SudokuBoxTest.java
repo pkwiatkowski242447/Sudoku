@@ -1,7 +1,6 @@
 package pl.sudoku;
 
 import org.junit.jupiter.api.Test;
-import pl.sudoku.exceptions.SudokuBoxInvalidIndexException;
 import pl.sudoku.exceptions.SudokuStructureInvalidIndex;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,14 +58,6 @@ public class SudokuBoxTest {
         assertNotNull(exampleSudokuBoard_2);
 
         SudokuBox tempBox = exampleSudokuBoard_2.getBox(0,2);
-
-        assertNotNull(tempBox);
-
-        assertFalse(tempBox.verify());
-
-        exampleSudokuBoard_2.set(0,4,0);
-
-        tempBox = exampleSudokuBoard_2.getBox(0,4);
 
         assertNotNull(tempBox);
 

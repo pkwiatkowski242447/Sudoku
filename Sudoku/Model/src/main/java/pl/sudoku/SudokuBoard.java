@@ -101,9 +101,7 @@ public class SudokuBoard implements Serializable, Cloneable {
             throw new SudokuBoardInvalidValueException(
                     resourceBundle.getString("valueOutOfBounds"));
         }
-        if (value == this.get(x, y)) {
-            notifyObservers();
-        }
+        notifyObservers();
     }
 
     public Set<Observer> getSetOfObservers() {

@@ -53,7 +53,7 @@ public class NonAutomaticBoardChangeTest {
     public void updateIncorrectBoardTest() {
         exampleSudokuBoard_1.addObserver(observer_1);
         int[][] preChange = observer_1.getBoard();
-        exampleSudokuBoard_1.set(0,2,0);
+        exampleSudokuBoard_1.set(0,2,9);
         int[][] postChange = observer_1.getBoard();
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
