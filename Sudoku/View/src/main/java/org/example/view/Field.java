@@ -13,11 +13,11 @@ public class Field {
         this.fieldValue = fieldValue;
     }
 
-    public int getxValue() {
+    public int getXValue() {
         return xValue;
     }
 
-    public int getyValue() {
+    public int getYValue() {
         return yValue;
     }
 

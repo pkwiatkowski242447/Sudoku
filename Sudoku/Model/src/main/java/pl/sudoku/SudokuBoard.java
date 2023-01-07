@@ -46,7 +46,7 @@ public class SudokuBoard implements Serializable, Cloneable {
 
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
-                if (sudokuBoard[i][z] <= 0) {
+                if (sudokuBoard[i][z] < 0) {
                     correctBoard = false;
                 } else if (sudokuBoard[i][z] > 9) {
                     correctBoard = false;
@@ -91,14 +91,14 @@ public class SudokuBoard implements Serializable, Cloneable {
     }
 
     public void set(int x, int y, int value) {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
         if (value >= 0 && value <= 9) {
             board[x][y].setFieldValue(value);
         } else {
-            throw new SudokuBoardInvalidValueException("Podana wartość jest poza zakresem");
+            throw new SudokuBoardInvalidValueException(
+                    resourceBundle.getString("valueOutOfBounds"));
         }
-        if (value == this.get(x, y)) {
-            notifyObservers();
-        }
+        notifyObservers();
     }
 
     public Set<Observer> getSetOfObservers() {
@@ -121,7 +121,7 @@ public class SudokuBoard implements Serializable, Cloneable {
         return method;
     }
 
-    private boolean checkBoard() {
+    public boolean checkBoard() {
         boolean correctBoard = true;
         for (int i = 0; i < 9; i++) {
             if (!getRow(i).verify()) {

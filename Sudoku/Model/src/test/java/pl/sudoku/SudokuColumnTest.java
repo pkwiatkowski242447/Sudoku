@@ -72,13 +72,6 @@ public class SudokuColumnTest {
         assertNotNull(tempColumn);
 
         assertFalse(tempColumn.verify());
-        exampleSudokuBoard_2.set(0,0,0);
-
-        tempColumn = exampleSudokuBoard_2.getColumn(0);
-
-        assertNotNull(tempColumn);
-
-        assertFalse(tempColumn.verify());
     }
 
     @Test

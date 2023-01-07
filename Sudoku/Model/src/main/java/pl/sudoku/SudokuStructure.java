@@ -40,7 +40,7 @@ public abstract class SudokuStructure implements Serializable {
         int valueInAGroup;
         for (int i = 0; i < 9; i++) {
             valueInAGroup = group.get(i).getFieldValue();
-            if (valuesInAGroup.contains(valueInAGroup) || valueInAGroup == 0) {
+            if (valuesInAGroup.contains(valueInAGroup) & valueInAGroup != 0) {
                 return false;
             } else {
                 valuesInAGroup.add(valueInAGroup);
