@@ -1,9 +1,9 @@
 ----------------------------------------------------------------
-Fri Jan 06 22:11:58 CET 2023D001 : [0] The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046), [1] a816c00e-0185-88ed-1adf-00000cc99bf8, [2] C:\Users\DELL\IdeaProjects\Repozytorium\jm_pn_1200_06\Sudoku\Model\SudokuBoardDataBase, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@6be46e8f, [4] file:/D:/Maven/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
+Sat Jan 07 19:52:21 CET 2023D001 : [0] The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046), [1] a816c00e-0185-8d93-a3cb-0000011d9790, [2] C:\Users\gabin\IdeaProjects\Repozytorium\jm_pn_1200_06\Sudoku\Model\SudokuBoardDataBase, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@6be46e8f, [4] file:/C:/Users/gabin/.m2/repository/org/apache/derby/derby/10.16.1.1/derby-10.16.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=17.0.2+8-86
-user.dir=C:\Users\DELL\IdeaProjects\Repozytorium\jm_pn_1200_06\Sudoku\Model
-os.name=Windows 10
+user.dir=C:\Users\gabin\IdeaProjects\Repozytorium\jm_pn_1200_06\Sudoku\Model
+os.name=Windows 11
 os.arch=amd64
 os.version=10.0
 derby.system.home=null

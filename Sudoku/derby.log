@@ -1,3 +1,18 @@
+<<<<<<< HEAD
+----------------------------------------------------------------
+Sat Jan 07 14:50:36 UTC 2023:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): instance a816c00e-0185-8cb6-4fec-000007600000 
+on database directory C:\Users\gabin\IdeaProjects\Repozytorium\jm_pn_1200_06\Sudoku\SudokuBoardDataBase with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@45ff54e6 
+Loaded from file:/C:/Users/gabin/AppData/Roaming/JetBrains/IntelliJIdea2022.2/jdbc-drivers/Apache%20Derby/10.15.2.0/derby-10.15.2.0.jar
+java.vendor=JetBrains s.r.o.
+java.runtime.version=17.0.4+7-b469.53
+user.dir=C:\Users\gabin\IdeaProjects\Repozytorium\jm_pn_1200_06\Sudoku
+os.name=Windows 11
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+=======
 ----------------------------------------------------------------
 Fri Jan 06 22:03:45 CET 2023:
 Booting Derby version The Apache Software Foundation - Apache Derby - 10.16.1.1 - (1901046): instance a816c00e-0185-88e5-93bf-00000da8e360 
@@ -11,3 +26,4 @@ os.arch=amd64
 os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
+>>>>>>> 59bd1da636f51a8ef615e192628e37380fc221a6

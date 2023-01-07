@@ -19,22 +19,21 @@ import pl.sudoku.exceptions.StatementExecutionException;
 import pl.sudoku.exceptions.SudokuBoardNameDuplicateException;
 
 public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
-
-    private final Logger log = LoggerFactory.getLogger(JdbcSudokuBoardDao.class);
-    private String boardName;
     private final ResourceBundle bundle = ResourceBundle.getBundle("ProKomBundle");
+    private static Connection connection = null;
+    private static final Logger logger = LoggerFactory.getLogger(JdbcSudokuBoardDao.class);
+    private String boardName;
     private final String javaDatabaseUrl = "jdbc:derby:SudokuBoardDataBase;create=true";
-    private Connection connection;
 
     public JdbcSudokuBoardDao() throws GeneralDaoException {
         try {
             connection = DriverManager.getConnection(this.javaDatabaseUrl);
             connection.setAutoCommit(false);
-            log.info(bundle.getString("connectionEstablished"));
+            logger.info(bundle.getString("connectionEstablished"));
             createDatabaseTables();
         } catch (SQLException sql) {
             throw new DatabaseErrorException(
-                    bundle.getString("dataBaseErrorException"), sql);
+                    bundle.getString("databaseErrorException"), sql);
         }
     }
 
@@ -42,11 +41,11 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
     public SudokuBoard read() throws DatabaseErrorException {
         int[][] sudokuTable = new int[9][9];
         if (this.boardName == null) {
-            log.debug(bundle.getString("databaseNameIsNull"));
+            logger.debug(bundle.getString("databaseNameIsNull"));
             throw new DatabaseNameException(
                     bundle.getString("databaseNameException"), null);
         }
-        log.debug(bundle.getString("databaseNameIsNotNull"));
+        logger.debug(bundle.getString("databaseNameIsNotNull"));
         String getBoardId = "SELECT f.fieldValue, f.xValue, f.yValue "
                 + "FROM fields f "
                 + "JOIN boards b ON b.boardID = f.boardId "
@@ -98,7 +97,7 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
                         }
                     }
                     connection.commit();
-                    log.debug(bundle.getString("commitMessage"));
+                    logger.debug(bundle.getString("commitMessage"));
                 } catch (SQLException fieldInsert) {
                     throw new StatementExecutionException(
                             bundle.getString("statementExecutionException"), fieldInsert);
@@ -115,11 +114,29 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
             try {
                 connection.rollback();
             } catch (SQLException rollbackException) {
-                log.debug(bundle.getString("rollbackException"));
+                logger.debug(bundle.getString("rollbackException"));
                 throw new StatementExecutionException(
                         bundle.getString("statementExecutionException"), rollbackException);
             }
         }
+    }
+
+
+    public List<String> retrieveUsedBoardNames() throws StatementExecutionException {
+        List<String> namesList = new ArrayList<>();
+        String getBoardNames = "SELECT boardName "
+                + "FROM boards";
+        try (PreparedStatement getNames = connection.prepareStatement(getBoardNames);
+             ResultSet results = getNames.executeQuery()) {
+            while (results.next()) {
+                logger.debug(results.getString("boardName"));
+                namesList.add(results.getString("boardName"));
+            }
+        } catch (SQLException sqlStatement) {
+            throw new StatementExecutionException(
+                    bundle.getString("statementExecutionException"), sqlStatement);
+        }
+        return namesList;
     }
 
     private void createDatabaseTables() throws StatementExecutionException {
@@ -137,49 +154,32 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
                 + "CONSTRAINT pkFields PRIMARY KEY (boardId, fieldValue, xValue, yValue))";
         try (Statement boardsCreate = connection.createStatement()) {
             boardsCreate.execute(createBoards);
-            log.debug(bundle.getString("boardTableCreated"));
+            logger.debug(bundle.getString("boardTableCreated"));
             connection.commit();
-            log.debug(bundle.getString("commitMessage"));
+            logger.debug(bundle.getString("commitMessage"));
         } catch (SQLException boardsCreationException) {
             if (boardsCreationException.getSQLState().equals("X0Y32")) {
-                log.debug(bundle.getString("boardsTableExist"));
+                logger.debug(bundle.getString("boardsTableExist"));
             } else {
-                log.debug(bundle.getString("boardsTableCreationException"));
+                logger.debug(bundle.getString("boardsTableCreationException"));
                 throw new StatementExecutionException(
                         bundle.getString("boardsTableCreationException"), boardsCreationException);
             }
         }
         try (Statement fieldsCreate = connection.createStatement()) {
             fieldsCreate.execute(createFields);
-            log.debug(bundle.getString("fieldsTableCreated"));
+            logger.debug(bundle.getString("fieldsTableCreated"));
             connection.commit();
-            log.debug(bundle.getString("commitMessage"));
+            logger.debug(bundle.getString("commitMessage"));
         } catch (SQLException fieldsCreationException) {
             if (fieldsCreationException.getSQLState().equals("X0Y32")) {
-                log.debug(bundle.getString("fieldsTableExist"));
+                logger.debug(bundle.getString("fieldsTableExist"));
             } else {
-                log.debug(bundle.getString("fieldsTableCreationException"));
+                logger.debug(bundle.getString("fieldsTableCreationException"));
                 throw new StatementExecutionException(
                         bundle.getString("fieldsTableCreationException"), fieldsCreationException);
             }
         }
-    }
-
-    public List<String> retrieveUsedBoardNames() throws StatementExecutionException {
-        List<String> namesList = new ArrayList<>();
-        String getBoardNames = "SELECT boardName "
-                + "FROM boards";
-        try (PreparedStatement getNames = connection.prepareStatement(getBoardNames);
-            ResultSet results = getNames.executeQuery()) {
-            while (results.next()) {
-                log.debug(results.getString("boardName"));
-                namesList.add(results.getString("boardName"));
-            }
-        } catch (SQLException sqlStatement) {
-            throw new StatementExecutionException(
-                    bundle.getString("statementExecutionException"), sqlStatement);
-        }
-        return namesList;
     }
 
     public void deleteAddedElements(String nameOfTheBoard) throws DatabaseErrorException {
@@ -211,17 +211,32 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
             boardDelete.setString(1, nameOfTheBoard);
             boardDelete.executeUpdate();
             connection.commit();
-            log.debug(bundle.getString("commitMessage"));
+            logger.debug(bundle.getString("commitMessage"));
         } catch (SQLException gettingBoardID) {
-            log.info(bundle.getString("deleteBoardFromDBException"));
+            logger.info(bundle.getString("deleteBoardFromDBException"));
             try {
                 connection.rollback();
-                log.debug(bundle.getString("rollbackException"));
+                logger.debug(bundle.getString("rollbackException"));
             } catch (SQLException exception) {
                 throw new StatementExecutionException(
                         bundle.getString("statementExecutionException"), exception);
             }
         }
+    }
+
+    @Override
+    public void close() throws CloseDatabaseException {
+        try {
+            connection.commit();
+            logger.debug(bundle.getString("commitMessage"));
+            connection.close();
+        } catch (SQLException sql) {
+            if (!sql.getSQLState().equals("08006")) {
+                throw new CloseDatabaseException(
+                        bundle.getString("closeDatabaseException"), sql);
+            }
+        }
+        logger.info(bundle.getString("jdbcDaoResourcesClosed"));
     }
 
     public String getBoardName() {
@@ -230,20 +245,5 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
 
     public void setBoardName(String boardName) {
         this.boardName = boardName;
-    }
-
-    @Override
-    public void close() throws CloseDatabaseException {
-        try {
-            connection.commit();
-            log.debug(bundle.getString("commitMessage"));
-            connection.close();
-        } catch (SQLException sql) {
-            if (!sql.getSQLState().equals("08006")) {
-                throw new CloseDatabaseException(
-                        bundle.getString("closeDataBaseException"), sql);
-            }
-        }
-        log.info(bundle.getString("jdbcDaoResourcesClosed"));
     }
 }
