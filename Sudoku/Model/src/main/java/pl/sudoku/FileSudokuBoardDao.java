@@ -1,7 +1,6 @@
 package pl.sudoku;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -9,10 +8,8 @@ import java.io.ObjectOutputStream;
 import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.sudoku.exceptions.FileException;
 import pl.sudoku.exceptions.FileSudokuBoardDaoInputException;
 import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
-import pl.sudoku.exceptions.GeneralDaoException;
 import pl.sudoku.exceptions.InputOutputOperationException;
 
 public class FileSudokuBoardDao implements Dao<SudokuBoard> {
@@ -76,7 +73,6 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
                 objectOutputStream.close();
             }
         } catch (IOException ioException) {
-            logger.error(ioException.getClass().toString());
             throw new InputOutputOperationException(
                     resourceBundle.getString("resourcesException"), ioException.getCause());
         }

@@ -1,12 +1,10 @@
 package pl.sudoku;
 
-import pl.sudoku.exceptions.DataBaseNameException;
-import pl.sudoku.exceptions.FileSudokuBoardDaoInputException;
-import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
-import pl.sudoku.exceptions.StatementExecutionException;
+import pl.sudoku.exceptions.GeneralDaoException;
+
 
 public interface Dao<T> extends AutoCloseable {
-    T read() throws FileSudokuBoardDaoOutputException, FileSudokuBoardDaoInputException, DataBaseNameException, StatementExecutionException;
+    T read() throws GeneralDaoException;
 
-    void write(T obj) throws FileSudokuBoardDaoOutputException, DataBaseNameException, StatementExecutionException;
+    void write(T obj) throws GeneralDaoException;
 }

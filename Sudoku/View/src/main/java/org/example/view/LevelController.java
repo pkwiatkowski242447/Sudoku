@@ -4,20 +4,28 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
-import pl.sudoku.*;
+import pl.sudoku.Dao;
+import pl.sudoku.JdbcSudokuBoardDao;
+import pl.sudoku.SudokuBoard;
+import pl.sudoku.SudokuSolver;
+import pl.sudoku.BacktrackingSudokuSolver;
+import pl.sudoku.SudokuBox;
+import pl.sudoku.exceptions.DatabaseErrorException;
 import pl.sudoku.exceptions.FileSudokuBoardDaoOutputException;
 import pl.sudoku.exceptions.GeneralDaoException;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 import static pl.sudoku.SudokuBoardDaoFactory.getFileDao;
+import static pl.sudoku.SudokuBoardDaoFactory.getJdbcDao;
 
 
 public class LevelController {
@@ -153,11 +161,13 @@ public class LevelController {
     private void isTheGameFinished() {
         ResourceBundle bundle = ResourceBundle.getBundle("ViewBundle");
         if (checkBoardCorrectness()) {
-            testLabel.setText(bundle.getString("theGameIsWon"));
             System.out.println(bundle.getString("theGameIsWon"));
-            // Tutaj z pewnego powodu, komunikat nie jest wpisywany do label'a w GUI.
-        } else {
-            testLabel.setText(bundle.getString("printNothing"));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Gratulacje");
+            alert.setHeaderText("Zwycięstwo!");
+            alert.setContentText("Brawo! Udało ci się rozwiązać sudoku.");
+            alert.showAndWait();
+            goBackToMainMenu();
         }
     }
 
@@ -204,12 +214,16 @@ public class LevelController {
     }
 
     @FXML
-    public void goBackToMainMenu() throws IOException {
+    public void goBackToMainMenu() {
         UserActionHandling.setUserStartBoard(null);
         UserActionHandling.setFilledPartiallyBoard(null);
         ResourceBundle bundle = ResourceBundle.getBundle("ViewBundle");
-        StageSetup.buildStage("main-form.fxml",
-                bundle.getString("gameTitle"), bundle);
+        try {
+            StageSetup.buildStage("main-form.fxml",
+                    bundle.getString("gameTitle"), bundle);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
     }
 
     @FXML
@@ -219,8 +233,28 @@ public class LevelController {
         try(Dao<SudokuBoard> fileFileDao = getFileDao(file.getAbsolutePath())) {
             fileFileDao.write(sudokuBoard2);
             fileFileDao.write(sudokuBoard3);
-        } catch (FileSudokuBoardDaoOutputException ex) {
-            throw new GeneralDaoException(ex.getMessage(), ex.getCause());
+        } catch (FileSudokuBoardDaoOutputException daoException) {
+            throw new GeneralDaoException(
+                    daoException.getMessage(), daoException.getCause());
+        }
+    }
+
+    @FXML
+    public void saveToDatabase() throws Exception {
+        String boardName = null;
+        TextInputDialog td = new TextInputDialog();
+        td.setTitle("Podaj nazwę planszy, która zostanie zapisana do bazy danych");
+        td.setHeaderText("Wybór nazwy");
+        td.setContentText("Nazwa planszy: ");
+        boardName = td.showAndWait().get();
+        try (JdbcSudokuBoardDao databaseDao = (JdbcSudokuBoardDao) getJdbcDao()) {
+            databaseDao.setBoardName(boardName);
+            databaseDao.write(sudokuBoard2);
+            databaseDao.setBoardName("_" + boardName);
+            databaseDao.write(sudokuBoard3);
+        } catch (DatabaseErrorException daoException) {
+            throw new GeneralDaoException(
+                    daoException.getMessage(), daoException.getCause());
         }
     }
 }

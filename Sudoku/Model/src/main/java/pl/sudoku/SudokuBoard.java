@@ -16,8 +16,6 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pl.sudoku.exceptions.NullObserverException;
 import pl.sudoku.exceptions.SudokuBoardCloneException;
 import pl.sudoku.exceptions.SudokuBoardInvalidIndexException;
@@ -48,7 +46,7 @@ public class SudokuBoard implements Serializable, Cloneable {
 
         for (int i = 0; i < 9; i++) {
             for (int z = 0; z < 9; z++) {
-                if (sudokuBoard[i][z] <= 0) {
+                if (sudokuBoard[i][z] < 0) {
                     correctBoard = false;
                 } else if (sudokuBoard[i][z] > 9) {
                     correctBoard = false;
@@ -94,7 +92,6 @@ public class SudokuBoard implements Serializable, Cloneable {
 
     public void set(int x, int y, int value) {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("ProKomBundle");
-        Logger log = LoggerFactory.getLogger(SudokuBoard.class);
         if (value >= 0 && value <= 9) {
             board[x][y].setFieldValue(value);
         } else {

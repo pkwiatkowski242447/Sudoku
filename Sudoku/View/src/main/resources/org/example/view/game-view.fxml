@@ -39,7 +39,20 @@
             <RowConstraints minHeight="10.0" prefHeight="50.0" />
         </rowConstraints>
     </GridPane>
-        <Button mnemonicParsing="false" text="%goBackToMenu" onAction="#goBackToMainMenu"/>
-        <Button mnemonicParsing="false" onAction="#saveToFile" text="%fileSave" />
+        <GridPane prefHeight="58.0" prefWidth="760.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Button mnemonicParsing="false" onAction="#goBackToMainMenu" text="%goBackToMenu" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#saveToFile" text="%fileSave" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                <Button mnemonicParsing="false" onAction="#saveToDatabase" text="%writeToDatabase" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            </children>
+        </GridPane>
     </children>
 </VBox>
