@@ -49,10 +49,9 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
         String getBoardId = "SELECT f.fieldValue, f.xValue, f.yValue "
                 + "FROM fields f "
                 + "JOIN boards b ON b.boardID = f.boardId "
-                + "WHERE boardName = ?";
-        try (PreparedStatement stmt = connection.prepareStatement(getBoardId)) {
-            stmt.setString(1, this.boardName);
-            ResultSet results = stmt.executeQuery();
+                + "WHERE boardName = '%s'";
+        try (ResultSet results = connection.prepareStatement(
+                String.format(getBoardId, this.boardName)).executeQuery()) {
             while (results.next()) {
                 int x = results.getInt("xValue");
                 int y = results.getInt("yValue");
@@ -79,16 +78,13 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
         try (PreparedStatement boardInsert = connection.prepareStatement(insertBoard)) {
             boardInsert.setString(1, this.boardName);
             boardInsert.execute();
-            try (Statement getId = connection.createStatement()) {
-                ResultSet results = getId.executeQuery(getCurrentId);
+            try (ResultSet results = connection.createStatement().executeQuery(getCurrentId)) {
                 while (results.next()) {
                     currentId = results.getInt("boardID");
                 }
-                try {
+                try (PreparedStatement fieldsInsert = connection.prepareStatement(insertFields)) {
                     for (int i = 0; i < 9; i++) {
                         for (int j = 0; j < 9; j++) {
-                            PreparedStatement fieldsInsert =
-                                    connection.prepareStatement(insertFields);
                             fieldsInsert.setInt(1, currentId);
                             fieldsInsert.setInt(2, obj.get(i, j));
                             fieldsInsert.setInt(3, i);
@@ -183,35 +179,36 @@ public class JdbcSudokuBoardDao implements Dao<SudokuBoard> {
     }
 
     public void deleteAddedElements(String nameOfTheBoard) throws DatabaseErrorException {
-        int idOfTheBoard = 0;
+        int idOfTheBoard = -1;
         if (nameOfTheBoard == null) {
             throw new DatabaseNameException(
                     bundle.getString("databaseNameException"), null);
         }
         String getBoardId = "SELECT boardID "
                 + "FROM boards "
-                + "WHERE boardName = ?";
+                + "WHERE boardName = '%s'";
         String deleteFields = "DELETE FROM fields f "
                 + "WHERE boardId = ?";
         String deleteBoard = "DELETE FROM boards b "
                 + "WHERE boardName = ?";
-        try (PreparedStatement boardId = connection.prepareStatement(getBoardId)) {
+        try (ResultSet results = connection.prepareStatement(
+                String.format(getBoardId, nameOfTheBoard)).executeQuery()) {
             // Getting boardId from database
-            boardId.setString(1, nameOfTheBoard);
-            ResultSet results = boardId.executeQuery();
             if (results.next()) {
                 idOfTheBoard = results.getInt("boardID");
             }
-            // Removing fields from fields table
-            PreparedStatement fieldsDelete = connection.prepareStatement(deleteFields);
-            fieldsDelete.setInt(1, idOfTheBoard);
-            fieldsDelete.executeUpdate();
-            // Removing board entry in boards row
-            PreparedStatement boardDelete = connection.prepareStatement(deleteBoard);
-            boardDelete.setString(1, nameOfTheBoard);
-            boardDelete.executeUpdate();
-            connection.commit();
-            logger.debug(bundle.getString("commitMessage"));
+            try (PreparedStatement fieldsDelete = connection.prepareStatement(deleteFields)) {
+                // Removing fields from fields table
+                fieldsDelete.setInt(1, idOfTheBoard);
+                fieldsDelete.executeUpdate();
+                try (PreparedStatement boardDelete = connection.prepareStatement(deleteBoard)) {
+                    // Removing board entry in boards row
+                    boardDelete.setString(1, nameOfTheBoard);
+                    boardDelete.executeUpdate();
+                    connection.commit();
+                    logger.debug(bundle.getString("commitMessage"));
+                }
+            }
         } catch (SQLException gettingBoardID) {
             logger.info(bundle.getString("deleteBoardFromDBException"));
             try {

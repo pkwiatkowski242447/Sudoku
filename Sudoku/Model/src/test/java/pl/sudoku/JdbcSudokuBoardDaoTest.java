@@ -131,4 +131,54 @@ public class JdbcSudokuBoardDaoTest {
             throw new GeneralDaoException(daoException.getMessage(), daoException);
         }
     }
+
+    @Test
+    public void deleteAddedElementFunctionTest() throws GeneralDaoException {
+        List<String> namesAfterRemoval;
+        try (JdbcSudokuBoardDao someDao = (JdbcSudokuBoardDao) getJdbcDao()) {
+            someDao.setBoardName("BoardNo1");
+            someDao.write(exampleSudokuBoard_1);
+            someDao.deleteAddedElements("BoardNo1");
+            namesAfterRemoval = someDao.retrieveUsedBoardNames();
+        } catch (DatabaseErrorException daoException) {
+            throw new GeneralDaoException(daoException.getMessage(), daoException);
+        }
+        assertTrue(namesAfterRemoval.isEmpty());
+    }
+
+    @Test
+    public void deleteAddedElementFunctionTestWhenThereAreMultipleElements() throws GeneralDaoException {
+        List<String> namesAfterRemoval;
+        try (JdbcSudokuBoardDao someDao = (JdbcSudokuBoardDao) getJdbcDao()) {
+            someDao.setBoardName("BoardNo1");
+            someDao.write(exampleSudokuBoard_1);
+            someDao.setBoardName("BoardNo2");
+            someDao.write(exampleSudokuBoard_2);
+            someDao.deleteAddedElements("BoardNo2");
+            namesAfterRemoval = someDao.retrieveUsedBoardNames();
+            someDao.deleteAddedElements("BoardNo1");
+        } catch (DatabaseErrorException daoException) {
+            throw new GeneralDaoException(daoException.getMessage(), daoException);
+        }
+        assertTrue(namesAfterRemoval.size() == 1);
+        assertTrue(namesAfterRemoval.get(0).equals("BoardNo1"));
+    }
+
+    @Test
+    public void deleteBoardWhichNameIsNull() throws GeneralDaoException {
+        try (JdbcSudokuBoardDao someDao = (JdbcSudokuBoardDao) getJdbcDao()) {
+            assertThrows(DatabaseNameException.class, () -> someDao.deleteAddedElements(null));
+        } catch (DatabaseErrorException daoException) {
+            throw new GeneralDaoException(daoException.getMessage(), daoException);
+        }
+    }
+
+    @Test
+    public void deleteBoardThatIsNotInADatabase() throws GeneralDaoException {
+        try (JdbcSudokuBoardDao someDao = (JdbcSudokuBoardDao) getJdbcDao()) {
+            someDao.deleteAddedElements("SomeBoard");
+        } catch (DatabaseErrorException daoException) {
+            throw new GeneralDaoException(daoException.getMessage(), daoException);
+        }
+    }
 }
